@@ -4,8 +4,29 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "start": "node -r dotenv/config -r @babel/register ./src/app.js",
+    "dev": "nodemon -r dotenv/config -r @babel/register ./src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server-express": "^2.22.2",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-jwt": "^6.0.0",
+    "graphql": "^15.5.0",
+    "graphql-compose": "^7.25.1",
+    "graphql-compose-mongoose": "^9.2.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.3",
+    "mongoose-bcrypt": "^1.9.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.15",
+    "@babel/preset-env": "^7.13.15",
+    "@babel/register": "^7.13.14",
+    "nodemon": "^2.0.7"
+  }
 }
