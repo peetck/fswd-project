@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import bcrypt from "mongoose-bcrypt";
 import { composeWithMongoose } from "graphql-compose-mongoose";
 
 const { Schema } = mongoose;
@@ -26,8 +25,6 @@ const ProductSchema = new Schema({
     required: true,
   },
 });
-
-ProductSchema.plugin(bcrypt);
 
 export const ProductModel = mongoose.model("Product", ProductSchema);
 
