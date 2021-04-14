@@ -3,9 +3,9 @@ import { composeWithMongooseDiscriminators } from "graphql-compose-mongoose";
 
 const { Schema } = mongoose;
 
-const DKey = 'type';
+const DKey = "promotion";
 const enumProductType = {
-  DISCOUNT: 'Discount'
+  DISCOUNT: "Discount"
 }
 
 const ProductSchema = new Schema({
@@ -40,11 +40,11 @@ const DiscountProductSchema = new Schema({
   description: {type: String, require: true}
 })
 
-ProductSchema.set('discriminatorKey', DKey);
+ProductSchema.set("discriminatorKey", DKey);
 
 const discriminatorOptions = {
   inputType: {
-    removeFields: ['timestamp']
+    removeFields: ["timestamp"]
   }
 }
 
