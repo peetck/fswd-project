@@ -3,10 +3,23 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client/react";
+
+import { AuthContextProvider } from "./contexts/AuthContext";
+
+const client = new ApolloClient({
+  uri: "http://localhost:3001/graphql",
+  cache: new InMemoryCache(),
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ApolloProvider client={client}>
+      <AuthContextProvider>
+        <App />
+      </AuthContextProvider>
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

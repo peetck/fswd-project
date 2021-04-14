@@ -1,12 +1,22 @@
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
-import Home from "./pages/Home";
+import Navbar from "./components/Navbar";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 
 const App = () => {
   const routes = (
     <Router>
-      <Route path="/">
-        <Home />
+      <Navbar />
+      <Route path="/" exact>
+        <HomePage />
+      </Route>
+      <Route path="/login" exact>
+        <LoginPage />
+      </Route>
+      <Route path="/register" exact>
+        <RegisterPage />
       </Route>
     </Router>
   );
