@@ -9,15 +9,9 @@ const App = () => {
   const routes = (
     <Router>
       <Navbar />
-      <Route path="/" exact>
-        <HomePage />
-      </Route>
-      <Route path="/login" exact>
-        <LoginPage />
-      </Route>
-      <Route path="/register" exact>
-        <RegisterPage />
-      </Route>
+      <Route path="/" component={HomePage} exact />
+      <Route path="/login" component={LoginPage} exact />
+      <Route path="/register" component={RegisterPage} exact />
     </Router>
   );
 

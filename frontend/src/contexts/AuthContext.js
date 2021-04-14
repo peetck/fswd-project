@@ -1,6 +1,7 @@
-import { useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import { useCookies } from "react-cookie";
+import jwt_decode from "jwt-decode";
 
 import { LOGIN_MUTATION } from "../graphql/mutations/login";
 
@@ -13,13 +14,24 @@ export const AuthContextProvider = (props) => {
 
   const [login] = useMutation(LOGIN_MUTATION);
 
+  useEffect(() => {
+    const token = cookies["fswd-token"];
+    if (token) {
+      const data = jwt_decode(token);
+      if (Date.now() < data.exp * 1000) {
+        setUser(data);
+      } else {
+        removeCookie("fswd-token");
+      }
+    }
+  }, [cookies, removeCookie]);
+
   const handleLogin = async (username, password) => {
     try {
       const response = await login({
         variables: { username: username, password: password },
       });
 
-      setUser(response?.data?.login?.user);
       setCookie("fswd-token", response?.data?.login?.token);
     } catch (err) {
       console.log(err.message);

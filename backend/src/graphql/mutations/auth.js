@@ -48,6 +48,7 @@ export const login = schemaComposer.createResolver({
       token: jsonwebtoken.sign(
         {
           _id: user._id,
+          username: user.username,
         },
         process.env.SECRET,
         {

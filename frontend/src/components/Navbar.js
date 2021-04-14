@@ -16,9 +16,12 @@ const Navbar = (props) => {
           src="favicon.webp"
           width="40px"
           height="40px"
+          alt="Can't load img"
         />
 
-        <span className="font-semibold text-xl tracking-tight">SHOP NAME</span>
+        <span className="font-semibold text-xl tracking-tight">
+          {user && `Welcome: ${user.username}`}
+        </span>
       </Link>
 
       <input className="menu-btn hidden" type="checkbox" id="menu-btn" />

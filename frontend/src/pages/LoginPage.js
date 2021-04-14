@@ -6,11 +6,12 @@ const LoginPage = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const { login, token } = useAuthContext();
+  const { login } = useAuthContext();
 
   const loginHandler = async (e) => {
     e.preventDefault();
     await login(username, password);
+    props.history.push("/");
   };
 
   return (
