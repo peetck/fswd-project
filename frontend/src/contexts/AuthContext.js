@@ -4,6 +4,7 @@ import { useCookies } from "react-cookie";
 import jwt_decode from "jwt-decode";
 
 import { LOGIN_MUTATION } from "../graphql/mutations/login";
+import { REGISTER_MUTATION } from "../graphql/mutations/register";
 
 const AuthContext = createContext();
 
@@ -13,6 +14,7 @@ export const AuthContextProvider = (props) => {
   const [cookies, setCookie, removeCookie] = useCookies(["fswd-token"]);
 
   const [login] = useMutation(LOGIN_MUTATION);
+  const [register] = useMutation(REGISTER_MUTATION);
 
   useEffect(() => {
     const token = cookies["fswd-token"];
@@ -43,7 +45,15 @@ export const AuthContextProvider = (props) => {
     removeCookie("fswd-token");
   };
 
-  // const register = () => {};
+  const handleRegister = async (username, password) => {
+    try {
+      await register({
+        variables: { username: username, password: password },
+      });
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
 
   return (
     <AuthContext.Provider
@@ -51,6 +61,7 @@ export const AuthContextProvider = (props) => {
         user: user,
         token: cookies["fswd-token"],
         login: handleLogin,
+        register: handleRegister,
         logout: handleLogout,
       }}
     >

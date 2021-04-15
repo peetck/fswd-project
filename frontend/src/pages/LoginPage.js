@@ -8,14 +8,14 @@ const LoginPage = (props) => {
 
   const { login } = useAuthContext();
 
-  const loginHandler = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     await login(username, password);
     props.history.push("/");
   };
 
   return (
-    <form onSubmit={loginHandler}>
+    <form onSubmit={handleLogin}>
       <label htmlFor="username">Username: </label>
       <input
         type="text"

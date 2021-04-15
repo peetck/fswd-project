@@ -3,10 +3,11 @@ import { composeWithMongooseDiscriminators } from "graphql-compose-mongoose";
 
 const { Schema } = mongoose;
 
-const DKey = "promotion";
+const DKey = "type";
 const enumProductType = {
-  DISCOUNT: "Discount"
-}
+  NORMAL: "NormalProduct",
+  PROMOTION: "PromotionProduct",
+};
 
 const ProductSchema = new Schema({
   title: {
@@ -29,27 +30,39 @@ const ProductSchema = new Schema({
     type: Number,
     required: true,
   },
-  promotion: {
-    type: Object.keys(enumProductType)
-  }
+  type: {
+    type: String,
+    required: true,
+    enum: Object.keys(enumProductType),
+  },
 });
-
-// discount product price
-const DiscountProductSchema = new Schema({
-  discount: {type: Number, require: true},
-  description: {type: String, require: true}
-})
 
 ProductSchema.set("discriminatorKey", DKey);
 
-const discriminatorOptions = {
-  inputType: {
-    removeFields: ["timestamp"]
-  }
-}
+const NormalProductSchema = new Schema({});
+
+const PromotionProductSchema = new Schema({
+  discount: { type: Number, required: true },
+  description: { type: String, required: true },
+});
 
 export const ProductModel = mongoose.model("Product", ProductSchema);
-export const DiscountProductModel = ProductModel.discriminator(enumProductType.DISCOUNT, DiscountProductSchema);
+export const NormalProductModel = ProductModel.discriminator(
+  enumProductType.NORMAL,
+  NormalProductSchema
+);
+export const PromotionProductModel = ProductModel.discriminator(
+  enumProductType.PROMOTION,
+  PromotionProductSchema
+);
 
 export const ProductTC = composeWithMongooseDiscriminators(ProductModel);
-export const DiscountProductTC = ProductTC.discriminator(DiscountProductModel, {name: enumProductType.DISCOUNT, ...discriminatorOptions});
+export const NormalProductTC = ProductTC.discriminator(NormalProductModel, {
+  name: enumProductType.NORMAL,
+});
+export const PromotionProductTC = ProductTC.discriminator(
+  PromotionProductModel,
+  {
+    name: enumProductType.PROMOTION,
+  }
+);

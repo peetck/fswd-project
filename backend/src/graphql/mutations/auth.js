@@ -2,7 +2,7 @@ import { UserInputError } from "apollo-server-express";
 import { schemaComposer } from "graphql-compose";
 import jsonwebtoken from "jsonwebtoken";
 
-import { UserTC, UserModel } from "../../models";
+import { CustomerUserTC, CustomerUserModel } from "../../models";
 
 const LoginInput = schemaComposer.createInputTC({
   name: "LoginInput",
@@ -16,7 +16,7 @@ const LoginPayload = schemaComposer.createObjectTC({
   name: "LoginPayload",
   fields: {
     token: "String",
-    user: UserTC.getType(),
+    user: CustomerUserTC.getType(),
   },
 });
 
@@ -31,7 +31,7 @@ export const login = schemaComposer.createResolver({
 
     const { username, password } = record;
 
-    const user = await UserModel.findOne({ username: username });
+    const user = await CustomerUserModel.findOne({ username: username });
 
     if (!user) {
       throw new UserInputError(`Username ${username} not found`);

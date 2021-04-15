@@ -1,3 +1,6 @@
-import { ProductTC } from "../../models";
+import { NormalProductTC, PromotionProductTC } from "../../models";
 
-export const createProduct = ProductTC.getResolver("createOne");
+export const createNormalProduct = NormalProductTC.getResolver("createOne");
+export const createPromotionProduct = PromotionProductTC.getResolver(
+  "createOne"
+);

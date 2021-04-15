@@ -1,3 +1,3 @@
-import { UserTC } from "../../models";
+import { CustomerUserTC } from "../../models";
 
-export const createUser = UserTC.getResolver("createOne");
+export const createCustomerUser = CustomerUserTC.getResolver("createOne");

@@ -16,7 +16,7 @@ const Navbar = (props) => {
           src="favicon.webp"
           width="40px"
           height="40px"
-          alt="Can't load img"
+          alt="logo"
         />
 
         <span className="font-semibold text-xl tracking-tight">
