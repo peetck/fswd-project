@@ -6,15 +6,12 @@ const { Schema } = mongoose;
 const ObjectId = Schema.Types.ObjectId;
 
 const OrderSchema = new Schema({
-  quantity: {
-    type: Number,
-    required: true,
-  },
-  product: {
-    type: ObjectId,
-    required: true,
-    ref: "Product",
-  },
+  products: [
+    {
+      product: { type: Object, required: true },
+      quantity: { type: Number, required: true },
+    },
+  ],
   userId: {
     type: ObjectId,
     required: true,

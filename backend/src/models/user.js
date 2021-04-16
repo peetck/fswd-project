@@ -4,12 +4,29 @@ import { composeWithMongooseDiscriminators } from "graphql-compose-mongoose";
 
 const { Schema } = mongoose;
 
+const ObjectId = Schema.Types.ObjectId;
+
 const DKey = "type";
 
 const enumUserType = {
   CUSTOMER: "CustomerUser",
   ADMIN: "AdminUser",
 };
+
+const CartSchema = new Schema(
+  {
+    productId: {
+      type: ObjectId,
+      required: true,
+      ref: "Product",
+    },
+    quantity: {
+      type: Number,
+      required: true,
+    },
+  },
+  { _id: false }
+);
 
 const UserSchema = new Schema({
   username: {
@@ -22,6 +39,7 @@ const UserSchema = new Schema({
     required: true,
     bcrypt: true,
   },
+  cart: [CartSchema],
   type: {
     type: String,
     required: true,
@@ -35,6 +53,12 @@ UserSchema.set("discriminatorKey", DKey);
 const CustomerUserSchema = new Schema({});
 
 const AdminUserSchema = new Schema({});
+
+const discriminatorOptions = {
+  inputType: {
+    removeFields: ["cart"],
+  },
+};
 
 export const UserModel = mongoose.model("User", UserSchema);
 export const CustomerUserModel = UserModel.discriminator(
@@ -51,7 +75,9 @@ export const UserTC = composeWithMongooseDiscriminators(UserModel).removeField(
 );
 export const CustomerUserTC = UserTC.discriminator(CustomerUserModel, {
   name: enumUserType.CUSTOMER,
+  ...discriminatorOptions,
 });
 export const AdminUserTC = UserTC.discriminator(AdminUserModel, {
   name: enumUserType.ADMIN,
+  ...discriminatorOptions,
 });
