@@ -1,9 +1,8 @@
-import { CustomerUserTC } from "../../models";
+import { CustomerUserModel, CustomerUserTC, AdminUserTC } from "../../models";
 import { schemaComposer } from "graphql-compose";
 
-import { CustomerUserModel } from "../../models";
-
 export const createCustomerUser = CustomerUserTC.getResolver("createOne");
+export const createAdminUser = AdminUserTC.getResolver("createOne");
 
 const UpdateCartInput = schemaComposer.createInputTC({
   name: "UpdateCartInput",
