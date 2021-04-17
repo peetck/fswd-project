@@ -50,7 +50,7 @@ export const login = schemaComposer.createResolver({
           _id: user._id,
           username: user.username,
         },
-        process.env.SECRET,
+        process.env.SECRET ?? "RAIN_DROP_FALLING_ON_MY_HEAD",
         {
           expiresIn: "1d",
           algorithm: "HS256",

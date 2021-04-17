@@ -19,7 +19,7 @@ const server = new ApolloServer({
 app.use(
   PATH,
   jwt({
-    secret: process.env.SECRET,
+    secret: process.env.SECRET ?? "RAIN_DROP_FALLING_ON_MY_HEAD",
     algorithms: ["HS256"],
     credentialsRequired: false,
     getToken: (req) => {
@@ -43,7 +43,7 @@ app.use(
 server.applyMiddleware({ app: app, path: PATH });
 
 mongoose
-  .connect("mongodb://localhost:27017", {
+  .connect(process.env.MONGODB_URI ?? "mongodb://localhost:27017", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
