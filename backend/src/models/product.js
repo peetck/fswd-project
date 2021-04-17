@@ -34,6 +34,7 @@ const ProductSchema = new Schema({
     type: String,
     required: true,
     enum: Object.keys(enumProductType),
+    index: true,
   },
 });
 

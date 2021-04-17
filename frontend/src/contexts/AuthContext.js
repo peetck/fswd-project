@@ -34,24 +34,24 @@ export const AuthContextProvider = (props) => {
         variables: { username: username, password: password },
       });
 
-      setCookie("fswd-token", response?.data?.login?.token);
-    } catch (err) {
-      console.log(err.message);
+      setCookie("fswd-token", response?.data?.login?.token, { path: "/" });
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
   const handleLogout = () => {
     setUser(null);
-    removeCookie("fswd-token");
+    removeCookie("fswd-token", { path: "/" });
   };
 
-  const handleRegister = async (username, password) => {
+  const handleRegister = async (username, password, address) => {
     try {
       await register({
-        variables: { username: username, password: password },
+        variables: { username: username, password: password, address: address },
       });
-    } catch (err) {
-      console.log(err.message);
+    } catch (error) {
+      console.log(error.message);
     }
   };
 

@@ -1,3 +1,4 @@
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 
 import { useAuthContext } from "../contexts/AuthContext";
@@ -34,12 +35,28 @@ const Navbar = (props) => {
 
       <ul className="flex menu border-gray-500 border-b justify-end m-0 w-full md:border-none md:w-auto">
         {user ? (
-          <button onClick={logout}>Logout</button>
+          <Fragment>
+            {user.type === "AdminUser" ? (
+              <Fragment>
+                <Link to="/admin/products">admin products || </Link>
+                <Link to="/admin/product/create">create product || </Link>
+                <Link to="/admin/promotions">admin promotions || </Link>
+                <Link to="/admin/promotion/create">create promotion || </Link>
+                <Link to="/admin/orders">admin orders || </Link>
+              </Fragment>
+            ) : (
+              <Fragment>
+                <Link to="/products">products || </Link>
+                <Link to="/promotions">promotions || </Link>
+              </Fragment>
+            )}
+            <button onClick={logout}>Logout</button>
+          </Fragment>
         ) : (
-          <>
+          <Fragment>
             <Link to="/register">Register</Link>
             <Link to="/login">Login</Link>
-          </>
+          </Fragment>
         )}
       </ul>
     </nav>

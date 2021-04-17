@@ -5,12 +5,13 @@ import { useAuthContext } from "../contexts/AuthContext";
 const RegisterPage = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [address, setAddress] = useState("");
 
   const { register } = useAuthContext();
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    await register(username, password);
+    await register(username, password, address);
   };
 
   return (
@@ -30,6 +31,15 @@ const RegisterPage = (props) => {
         name="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        className="border border-black"
+      />
+
+      <label htmlFor="address">Address: </label>
+      <input
+        type="text"
+        name="address"
+        value={address}
+        onChange={(e) => setAddress(e.target.value)}
         className="border border-black"
       />
 

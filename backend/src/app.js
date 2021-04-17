@@ -1,7 +1,9 @@
+import path from "path";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import mongoose from "mongoose";
 import jwt from "express-jwt";
+import { graphqlUploadExpress } from "graphql-upload";
 
 import schema from "./graphql/index.js";
 
@@ -13,8 +15,16 @@ const app = express();
 const server = new ApolloServer({
   schema: schema,
   playground: true,
-  context: ({ req }) => ({ user: req.user }),
+  context: ({ req }) => ({
+    user: req.user,
+    serverUrl: req.protocol + "://" + req.get("host"),
+  }),
+  uploads: false,
 });
+
+app.use("/images", express.static(path.join(process.cwd(), "images")));
+
+app.use(PATH, graphqlUploadExpress({ maxFiles: 20 }));
 
 app.use(
   PATH,

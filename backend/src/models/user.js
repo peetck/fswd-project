@@ -39,7 +39,6 @@ const UserSchema = new Schema({
     required: true,
     bcrypt: true,
   },
-  cart: [CartSchema],
   type: {
     type: String,
     required: true,
@@ -50,7 +49,16 @@ const UserSchema = new Schema({
 UserSchema.plugin(bcrypt);
 UserSchema.set("discriminatorKey", DKey);
 
-const CustomerUserSchema = new Schema({});
+const CustomerUserSchema = new Schema({
+  phoneNumber: {
+    type: String,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  cart: [CartSchema],
+});
 
 const AdminUserSchema = new Schema({});
 

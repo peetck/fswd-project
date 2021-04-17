@@ -3,7 +3,8 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, InMemoryCache, ApolloLink, from } from "@apollo/client";
+import { createUploadLink } from "apollo-upload-client";
 import { ApolloProvider } from "@apollo/client/react";
 
 import { AuthContextProvider } from "./contexts/AuthContext";
@@ -11,6 +12,18 @@ import { AuthContextProvider } from "./contexts/AuthContext";
 const client = new ApolloClient({
   uri: "http://localhost:3001/graphql",
   cache: new InMemoryCache(),
+  link: from([
+    new ApolloLink((op, fw) => {
+      const customHeaders = op.getContext().hasOwnProperty("headers")
+        ? op.getContext().headers
+        : {};
+      op.setContext({ headers: { ...customHeaders } });
+      return fw(op);
+    }),
+    createUploadLink({
+      uri: "http://localhost:3001/graphql",
+    }),
+  ]),
 });
 
 ReactDOM.render(

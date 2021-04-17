@@ -1,3 +1,5 @@
-import { ProductTC } from "../../models";
+import { ProductTC, NormalProductTC, PromotionProductTC } from "../../models";
 
-export const products = ProductTC.getResolver("findMany");
+export const normalProducts = NormalProductTC.getResolver("pagination");
+export const productById = ProductTC.getResolver("findById");
+export const promotionProducts = PromotionProductTC.getResolver("findMany");

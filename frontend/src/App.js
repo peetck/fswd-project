@@ -1,5 +1,10 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import React, { Fragment } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
@@ -14,8 +19,11 @@ import Payment from "./pages/Payment";
 
 import AdminRoute from "./pages/admin/AdminRoute";
 import CustomerRoute from "./pages/customer/CustomerRoute";
+import { useAuthContext } from "./contexts/AuthContext";
 
 const App = () => {
+  const { user } = useAuthContext();
+
   const routes = (
     <Router>
       <Navbar />
@@ -26,11 +34,18 @@ const App = () => {
         <Route path="/products" component={Products} exact />
         <Route path="/product/:productSlug" component={ProductDetail} exact />
         <Route path="/promotions" component={Promotions} exact />
-        <Route path="/cart" component={Cart} exact />
-        <Route path="/checkout" component={Checkout} exact />
-        <Route path="/payment" component={Payment} exact />
-        <Route path="/customer" component={CustomerRoute} />
-        <Route path="/admin" component={AdminRoute} />
+
+        {user &&
+          (user?.type === "AdminUser" ? (
+            <Route path="/admin" component={AdminRoute} />
+          ) : (
+            <Fragment>
+              <Route path="/cart" component={Cart} exact />
+              <Route path="/checkout" component={Checkout} exact />
+              <Route path="/payment" component={Payment} exact />
+              <Route path="/customer" component={CustomerRoute} />
+            </Fragment>
+          ))}
       </Switch>
     </Router>
   );
