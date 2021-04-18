@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 
 import { useAuthContext } from "../../contexts/AuthContext";
+import { UPLOAD_FILES_MUTATION } from "../../graphql/mutations/uploadFiles";
 import { CREATE_NORMAL_PRODUCT_MUTATION } from "../../graphql/mutations/createNormalProduct";
 
 const AdminCreateProduct = () => {
@@ -20,17 +21,24 @@ const AdminCreateProduct = () => {
       },
     },
   });
+  const [uploadFiles] = useMutation(UPLOAD_FILES_MUTATION);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      const urls = await uploadFiles({
+        variables: {
+          files: images,
+        },
+      });
+
       await createNormalProduct({
         variables: {
           title: title,
           description,
           price: +price,
-          images,
+          images: urls?.data?.uploadFiles?.urls,
           quantity: +quantity,
         },
       });
@@ -46,31 +54,31 @@ const AdminCreateProduct = () => {
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        className="border border-black"
+        className="border"
       />
       Description:{" "}
       <input
         type="text"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        className="border border-black"
+        className="border"
       />
       Price:
       <input
         type="text"
         value={price}
         onChange={(e) => setPrice(e.target.value)}
-        className="border border-black"
+        className="border"
       />
       Quantity:{" "}
       <input
         type="text"
         value={quantity}
         onChange={(e) => setQuantity(e.target.value)}
-        className="border border-black"
+        className="border"
       />
       <input type="file" multiple onChange={(e) => setImages(e.target.files)} />
-      <input type="submit" value="create" />
+      <input type="submit" value="Create Normal Product" />
     </form>
   );
 };

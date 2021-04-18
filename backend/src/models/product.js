@@ -3,8 +3,6 @@ import { composeWithMongooseDiscriminators } from "graphql-compose-mongoose";
 
 const { Schema } = mongoose;
 
-const ObjectId = Schema.Types.ObjectId;
-
 const enumProductType = {
   NORMAL: "NormalProduct",
   PROMOTION: "PromotionProduct",
@@ -31,6 +29,11 @@ const ProductSchema = new Schema({
   quantity: {
     type: Number,
     required: true,
+  },
+  type: {
+    type: String,
+    required: true,
+    enum: Object.keys(enumProductType),
   },
 });
 

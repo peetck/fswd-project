@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import { schemaComposer } from "graphql-compose";
 import { v4 as uuidv4 } from "uuid";
 
@@ -21,7 +23,7 @@ export const uploadFiles = schemaComposer.createResolver({
     record: UploadFilesInput,
   },
   type: UploadFilesPayload,
-  resolve: async ({ args }) => {
+  resolve: async ({ args, context }) => {
     const { files } = args.record;
 
     const { serverUrl } = context;
@@ -38,6 +40,8 @@ export const uploadFiles = schemaComposer.createResolver({
       urls.push(serverUrl + `/images/${fileName}`);
     }
 
-    return urls;
+    return {
+      urls,
+    };
   },
 });

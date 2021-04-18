@@ -5,39 +5,33 @@ import { NORMAL_PRODUCTS_QUERY } from "../graphql/queries/normalProducts";
 import { PROMOTION_PRODUCTS_QUERY } from "../graphql/queries/promotionProducts";
 
 const Home = (props) => {
-  const { loading: loadingN, error: errorN, data: dataN } = useQuery(
-    NORMAL_PRODUCTS_QUERY
-  );
-  const { loading: loadingP, error: errorP, data: dataP } = useQuery(
-    PROMOTION_PRODUCTS_QUERY
-  );
-
-  if (loadingN || loadingP) {
-    return <h1>Loading...</h1>;
-  }
-
-  if (errorN || errorP) {
-    console.log(errorN || errorP);
-  }
+  const {
+    data: products,
+    loading: loadingProducts,
+    error: errorProducts,
+  } = useQuery(NORMAL_PRODUCTS_QUERY);
+  const {
+    data: promotions,
+    loading: loadingPromotions,
+    error: errorPromotions,
+  } = useQuery(PROMOTION_PRODUCTS_QUERY);
 
   return (
-    <h1>
-      Products
-      {dataN.normalProducts.items.map((product) => (
+    <div>
+      <h1>Products List</h1>
+      {products?.normalProducts.map((product) => (
         <p key={product._id}>
-          {product._id} - {product.title}
-          <img src={product.images[1]} alt="" />
+          _id: {product._id} - title: {product.title}
         </p>
       ))}
-      <hr />
-      Promotions
-      {dataP.promotionProducts.map((product) => (
+
+      <h1>Promotions List</h1>
+      {promotions?.promotionProducts.map((product) => (
         <p key={product._id}>
-          {product._id} - {product.title}
-          <img src={product.images[1]} alt="" />
+          _id: {product._id} - title: {product.title}
         </p>
       ))}
-    </h1>
+    </div>
   );
 };
 

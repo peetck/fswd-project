@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
+import AdminSidebar from "./components/AdminSidebar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -24,33 +25,50 @@ import { useAuthContext } from "./contexts/AuthContext";
 const App = () => {
   const { user } = useAuthContext();
 
-  const routes = (
-    <Router>
-      <Navbar />
-      <Switch>
-        <Route path="/" component={Home} exact />
-        <Route path="/login" component={Login} exact />
-        <Route path="/register" component={Register} exact />
-        <Route path="/products" component={Products} exact />
-        <Route path="/product/:productSlug" component={ProductDetail} exact />
-        <Route path="/promotions" component={Promotions} exact />
+  let routes;
 
-        {user &&
-          (user?.type === "AdminUser" ? (
-            <Route path="/admin" component={AdminRoute} />
-          ) : (
-            <Fragment>
-              <Route path="/cart" component={Cart} exact />
-              <Route path="/checkout" component={Checkout} exact />
-              <Route path="/payment" component={Payment} exact />
-              <Route path="/customer" component={CustomerRoute} />
-            </Fragment>
-          ))}
-      </Switch>
-    </Router>
-  );
+  if (!user) {
+    routes = (
+      <Fragment>
+        <Navbar />
+        <Switch>
+          <Route path="/" component={Home} exact />
+          <Route path="/login" component={Login} exact />
+          <Route path="/register" component={Register} exact />
+          <Route path="/products" component={Products} exact />
+          <Route path="/product/:productSlug" component={ProductDetail} exact />
+          <Route path="/promotions" component={Promotions} exact />
+        </Switch>
+      </Fragment>
+    );
+  } else if (user.type === "CustomerUser") {
+    routes = (
+      <Fragment>
+        <Navbar />
+        <Switch>
+          <Route path="/" component={Home} exact />
+          <Route path="/products" component={Products} exact />
+          <Route path="/product/:productSlug" component={ProductDetail} exact />
+          <Route path="/promotions" component={Promotions} exact />
+          <Route path="/cart" component={Cart} exact />
+          <Route path="/checkout" component={Checkout} exact />
+          <Route path="/payment" component={Payment} exact />
+          <Route path="/customer" component={CustomerRoute} />
+        </Switch>
+      </Fragment>
+    );
+  } else {
+    routes = (
+      <Fragment>
+        <AdminSidebar />
+        <div className="relative md:ml-64 bg-blueGray-100">
+          <Route path="/admin" component={AdminRoute} />
+        </div>
+      </Fragment>
+    );
+  }
 
-  return routes;
+  return <Router basename={process.env.PUBLIC_URL}>{routes}</Router>;
 };
 
 export default App;

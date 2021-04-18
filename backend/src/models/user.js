@@ -52,12 +52,12 @@ const CartSchema = new Schema(
 const CustomerUserSchema = new Schema({
   email: {
     type: String,
+    required: true,
+    unique: true,
   },
-  phoneNumber: {
-    type: String,
-  },
-  address: {
-    type: String,
+  addresses: {
+    type: [String],
+    required: true,
   },
   gender: {
     type: String,
@@ -66,6 +66,7 @@ const CustomerUserSchema = new Schema({
       FEMALE: "Female",
       OTHER: "Other",
     },
+    required: true,
   },
   avatar: {
     type: String,

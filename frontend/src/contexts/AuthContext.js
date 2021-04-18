@@ -45,10 +45,16 @@ export const AuthContextProvider = (props) => {
     removeCookie("fswd-token", { path: "/" });
   };
 
-  const handleRegister = async (username, password, address) => {
+  const handleRegister = async (
+    username,
+    password,
+    email,
+    addresses,
+    gender
+  ) => {
     try {
       await register({
-        variables: { username: username, password: password, address: address },
+        variables: { username, password, email, addresses, gender },
       });
     } catch (error) {
       console.log(error.message);
