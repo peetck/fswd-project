@@ -12,6 +12,11 @@ const OrderSchema = new Schema({
       quantity: { type: Number, required: true },
     },
   ],
+  status: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
   userId: {
     type: ObjectId,
     required: true,

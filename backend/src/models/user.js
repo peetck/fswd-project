@@ -13,21 +13,6 @@ const enumUserType = {
   ADMIN: "AdminUser",
 };
 
-const CartSchema = new Schema(
-  {
-    productId: {
-      type: ObjectId,
-      required: true,
-      ref: "Product",
-    },
-    quantity: {
-      type: Number,
-      required: true,
-    },
-  },
-  { _id: false }
-);
-
 const UserSchema = new Schema({
   username: {
     type: String,
@@ -49,13 +34,41 @@ const UserSchema = new Schema({
 UserSchema.plugin(bcrypt);
 UserSchema.set("discriminatorKey", DKey);
 
+const CartSchema = new Schema(
+  {
+    productId: {
+      type: ObjectId,
+      required: true,
+      ref: "Product",
+    },
+    quantity: {
+      type: Number,
+      required: true,
+    },
+  },
+  { _id: false }
+);
+
 const CustomerUserSchema = new Schema({
+  email: {
+    type: String,
+  },
   phoneNumber: {
     type: String,
   },
   address: {
     type: String,
-    required: true,
+  },
+  gender: {
+    type: String,
+    enum: {
+      MALE: "Male",
+      FEMALE: "Female",
+      OTHER: "Other",
+    },
+  },
+  avatar: {
+    type: String,
   },
   cart: [CartSchema],
 });

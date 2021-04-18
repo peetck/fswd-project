@@ -3,7 +3,8 @@ import { composeWithMongooseDiscriminators } from "graphql-compose-mongoose";
 
 const { Schema } = mongoose;
 
-const DKey = "type";
+const ObjectId = Schema.Types.ObjectId;
+
 const enumProductType = {
   NORMAL: "NormalProduct",
   PROMOTION: "PromotionProduct",
@@ -13,6 +14,7 @@ const ProductSchema = new Schema({
   title: {
     type: String,
     required: true,
+    unique: true,
   },
   description: {
     type: String,
@@ -30,21 +32,17 @@ const ProductSchema = new Schema({
     type: Number,
     required: true,
   },
-  type: {
-    type: String,
-    required: true,
-    enum: Object.keys(enumProductType),
-    index: true,
-  },
 });
 
-ProductSchema.set("discriminatorKey", DKey);
+ProductSchema.set("discriminatorKey", "type");
 
 const NormalProductSchema = new Schema({});
 
 const PromotionProductSchema = new Schema({
-  discount: { type: Number, required: true },
-  description: { type: String, required: true },
+  percent: {
+    type: Number,
+    required: true,
+  },
 });
 
 export const ProductModel = mongoose.model("Product", ProductSchema);
