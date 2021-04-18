@@ -18,15 +18,39 @@ const Navbar = (props) => {
           </Link>
         </div>
         <div className="lg:flex flex-grow items-center">
+          <ul className="flex flex-1 flex-col lg:flex-row list-none ml-auto">
+            <li className="nav-item">
+              <Link
+                className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug hover:opacity-75"
+                to="/products"
+              >
+                Products
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug hover:opacity-75"
+                to="/promotions"
+              >
+                Promotions
+              </Link>
+            </li>
+          </ul>
+
           <ul className="flex flex-col lg:flex-row list-none ml-auto">
             {user ? (
               <Fragment>
+                <li className="nav-item">
+                  <span className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug hover:opacity-75 cursor-pointer">
+                    <span class="material-icons mr-1">shopping_cart</span> cart
+                  </span>
+                </li>
                 <li className="nav-item">
                   <span
                     className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug hover:opacity-75 cursor-pointer"
                     onClick={logout}
                   >
-                    Logout
+                    <span class="material-icons mr-1">person</span> {user.username}
                   </span>
                 </li>
               </Fragment>

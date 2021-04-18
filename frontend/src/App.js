@@ -38,6 +38,9 @@ const App = () => {
           <Route path="/products" component={Products} exact />
           <Route path="/product/:productSlug" component={ProductDetail} exact />
           <Route path="/promotions" component={Promotions} exact />
+          <Route>
+            <Redirect to="/" />
+          </Route>
         </Switch>
       </Fragment>
     );
@@ -54,6 +57,9 @@ const App = () => {
           <Route path="/checkout" component={Checkout} exact />
           <Route path="/payment" component={Payment} exact />
           <Route path="/customer" component={CustomerRoute} />
+          <Route>
+            <Redirect to="/" />
+          </Route>
         </Switch>
       </Fragment>
     );
@@ -63,6 +69,9 @@ const App = () => {
         <AdminSidebar />
         <div className="relative md:ml-64 bg-blueGray-100">
           <Route path="/admin" component={AdminRoute} />
+          <Route>
+            <Redirect to="/admin" />
+          </Route>
         </div>
       </Fragment>
     );

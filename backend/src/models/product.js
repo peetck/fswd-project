@@ -8,34 +8,39 @@ const enumProductType = {
   PROMOTION: "PromotionProduct",
 };
 
-const ProductSchema = new Schema({
-  title: {
-    type: String,
-    required: true,
-    unique: true,
+const ProductSchema = new Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    images: {
+      type: [String],
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      required: true,
+    },
+    type: {
+      type: String,
+      required: true,
+      enum: Object.keys(enumProductType),
+    },
   },
-  description: {
-    type: String,
-    required: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-  images: {
-    type: [String],
-    required: true,
-  },
-  quantity: {
-    type: Number,
-    required: true,
-  },
-  type: {
-    type: String,
-    required: true,
-    enum: Object.keys(enumProductType),
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 ProductSchema.set("discriminatorKey", "type");
 
@@ -47,6 +52,12 @@ const PromotionProductSchema = new Schema({
     required: true,
   },
 });
+
+const discriminatorOptions = {
+  inputType: {
+    removeFields: ["timestamp"],
+  },
+};
 
 export const ProductModel = mongoose.model("Product", ProductSchema);
 export const NormalProductModel = ProductModel.discriminator(
@@ -61,10 +72,12 @@ export const PromotionProductModel = ProductModel.discriminator(
 export const ProductTC = composeWithMongooseDiscriminators(ProductModel);
 export const NormalProductTC = ProductTC.discriminator(NormalProductModel, {
   name: enumProductType.NORMAL,
+  ...discriminatorOptions,
 });
 export const PromotionProductTC = ProductTC.discriminator(
   PromotionProductModel,
   {
     name: enumProductType.PROMOTION,
+    ...discriminatorOptions,
   }
 );

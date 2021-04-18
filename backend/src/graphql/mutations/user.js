@@ -31,7 +31,7 @@ export const updateCart = schemaComposer.createResolver({
 
     const { userId, productId } = record;
 
-    let { quantity } = record;
+    const { quantity } = record;
 
     const user = await CustomerUserModel.findById(userId);
 
@@ -46,16 +46,20 @@ export const updateCart = schemaComposer.createResolver({
     );
 
     if (index !== -1) {
-      quantity = updatedCart[index].quantity + quantity;
+      // replace
       if (quantity > 0) {
         updatedCart[index] = {
           productId: productId,
           quantity: quantity,
         };
-      } else {
+      }
+      // remove from cart
+      else {
         updatedCart.splice(index, 1);
       }
-    } else if (quantity > 0) {
+    }
+    // add new product
+    else if (quantity > 0) {
       updatedCart.push({ productId: productId, quantity: quantity });
     }
 

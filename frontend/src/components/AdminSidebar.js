@@ -26,8 +26,10 @@ const AdminSidebar = (props) => {
                 className="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
                 to="/admin"
               >
-                <i className="fas fa-tools mr-2 text-sm "></i>
-                Dashboard
+                <div className="flex items-center">
+                  <span className="material-icons mr-1">dashboard</span>
+                  Dashboard
+                </div>
               </Link>
             </li>
           </ul>
@@ -44,8 +46,10 @@ const AdminSidebar = (props) => {
                 className="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
                 to="/admin/products"
               >
-                <i className="fas fa-tools mr-2 text-sm "></i>
-                Products
+                <div className="flex items-center">
+                  <span className="material-icons mr-1">inventory_2</span>
+                  Products
+                </div>
               </Link>
             </li>
             <li className="items-center">
@@ -53,8 +57,10 @@ const AdminSidebar = (props) => {
                 className="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
                 to="/admin/product/create"
               >
-                <i className="fas fa-tools mr-2 text-sm "></i>
-                Create Product
+                <div className="flex items-center">
+                  <span className="material-icons mr-1">inventory_2</span>
+                  Create Product
+                </div>
               </Link>
             </li>
           </ul>
@@ -71,8 +77,10 @@ const AdminSidebar = (props) => {
                 className="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
                 to="/admin/promotions"
               >
-                <i className="fas fa-tools mr-2 text-sm "></i>
-                Promotions
+                <div className="flex items-center">
+                  <span className="material-icons mr-1">inventory_2</span>
+                  Promotions
+                </div>
               </Link>
             </li>
             <li className="items-center">
@@ -80,8 +88,10 @@ const AdminSidebar = (props) => {
                 className="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
                 to="/admin/promotion/create"
               >
-                <i className="fas fa-tools mr-2 text-sm "></i>
-                Create Promotion
+                <div className="flex items-center">
+                  <span className="material-icons mr-1">inventory_2</span>
+                  Create Promotion
+                </div>
               </Link>
             </li>
           </ul>
@@ -98,8 +108,10 @@ const AdminSidebar = (props) => {
                 className="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
                 to="/admin/orders"
               >
-                <i className="fas fa-tools mr-2 text-sm "></i>
-                Orders
+                <div className="flex items-center">
+                  <span className="material-icons mr-1">inventory_2</span>
+                  Orders
+                </div>
               </Link>
             </li>
           </ul>
@@ -112,8 +124,10 @@ const AdminSidebar = (props) => {
                 className="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 cursor-pointer"
                 onClick={logout}
               >
-                <i className="fas fa-tools mr-2 text-sm "></i>
-                Logout
+                <div className="flex items-center">
+                  <span className="material-icons mr-1">logout</span>
+                  Logout
+                </div>
               </span>
             </li>
           </ul>
