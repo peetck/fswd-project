@@ -7,7 +7,7 @@ import { ApolloClient, InMemoryCache, ApolloLink, from } from "@apollo/client";
 import { createUploadLink } from "apollo-upload-client";
 import { ApolloProvider } from "@apollo/client/react";
 
-import { AuthContextProvider } from "./contexts/AuthContext";
+import { UserContextProvider } from "./contexts/UserContext";
 
 const client = new ApolloClient({
   uri: "http://localhost:3001/graphql",
@@ -29,9 +29,9 @@ const client = new ApolloClient({
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <AuthContextProvider>
+      <UserContextProvider>
         <App />
-      </AuthContextProvider>
+      </UserContextProvider>
     </ApolloProvider>
   </React.StrictMode>,
   document.getElementById("root")

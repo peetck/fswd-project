@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { useAuthContext } from "../contexts/AuthContext";
+import { useUserContext } from "../contexts/UserContext";
 
 const RegisterPage = (props) => {
   const [username, setUsername] = useState("");
@@ -10,7 +10,7 @@ const RegisterPage = (props) => {
   const [address, setAddress] = useState("");
   const [gender, setGender] = useState("Male");
 
-  const { register } = useAuthContext();
+  const { register } = useUserContext();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -23,7 +23,7 @@ const RegisterPage = (props) => {
     <div className="flex flex-col container mx-auto px-4 h-full mt-20">
       <div className="flex content-center items-center justify-center h-full">
         <div className="w-full lg:w-6/12 px-4">
-          <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg border-0">
+          <div className="relative flex flex-col min-w-0 break-words w-full mb-6 rounded-lg border-0">
             <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
               <div className="text-center my-5 font-bold text-4xl uppercase">
                 Register

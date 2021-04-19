@@ -1,20 +1,48 @@
 import { useState, createContext, useContext, useEffect } from "react";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery, gql } from "@apollo/client";
 import { useCookies } from "react-cookie";
 import jwt_decode from "jwt-decode";
 
 import { LOGIN_MUTATION } from "../graphql/mutations/login";
 import { REGISTER_MUTATION } from "../graphql/mutations/register";
+import { UPDATE_PRODUCT_IN_CART_MUTATION } from "../graphql/mutations/updateProductInCart";
 
-const AuthContext = createContext();
+const UserContext = createContext();
 
-export const AuthContextProvider = (props) => {
+export const UserContextProvider = (props) => {
   const [user, setUser] = useState(null);
+  const { data: cart, refetch } = useQuery(
+    gql`
+      query($_id: MongoID!) {
+        customerUser(_id: $_id) {
+          cart {
+            productId
+            quantity
+            product {
+              type
+              title
+              description
+              price
+              images
+              quantity
+            }
+          }
+        }
+      }
+    `,
+    {
+      variables: {
+        _id: user?._id,
+      },
+      fetchPolicy: "network-only",
+    }
+  );
 
   const [cookies, setCookie, removeCookie] = useCookies(["fswd-token"]);
 
   const [login] = useMutation(LOGIN_MUTATION);
   const [register] = useMutation(REGISTER_MUTATION);
+  const [updateProductInCart] = useMutation(UPDATE_PRODUCT_IN_CART_MUTATION);
 
   useEffect(() => {
     const token = cookies["fswd-token"];
@@ -61,21 +89,39 @@ export const AuthContextProvider = (props) => {
     }
   };
 
+  const handleUpdateCart = async (productId, quantity, replace) => {
+    try {
+      await updateProductInCart({
+        variables: {
+          userId: user._id,
+          productId: productId,
+          quantity: +quantity,
+          replace: replace,
+        },
+      });
+      await refetch();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <AuthContext.Provider
+    <UserContext.Provider
       value={{
         user: user,
         token: cookies["fswd-token"],
+        cart: cart?.customerUser?.cart ?? [],
         login: handleLogin,
         register: handleRegister,
         logout: handleLogout,
+        updateCart: handleUpdateCart,
       }}
     >
       {props.children}
-    </AuthContext.Provider>
+    </UserContext.Provider>
   );
 };
 
-export const useAuthContext = () => useContext(AuthContext);
+export const useUserContext = () => useContext(UserContext);
 
-export default AuthContext;
+export default UserContext;

@@ -34,7 +34,7 @@ const UserSchema = new Schema({
 UserSchema.plugin(bcrypt);
 UserSchema.set("discriminatorKey", DKey);
 
-const CartSchema = new Schema(
+export const CartSchema = new Schema(
   {
     productId: {
       type: ObjectId,

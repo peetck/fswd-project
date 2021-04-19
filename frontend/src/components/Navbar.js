@@ -1,10 +1,11 @@
 import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
+import "./Navbar.css";
 
-import { useAuthContext } from "../contexts/AuthContext";
+import { useUserContext } from "../contexts/UserContext";
 
 const Navbar = (props) => {
-  const { user, logout } = useAuthContext();
+  const { user, logout, cart } = useUserContext();
 
   return (
     <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg bg-white mb-3 border-b border-coolGray-400">
@@ -41,17 +42,40 @@ const Navbar = (props) => {
             {user ? (
               <Fragment>
                 <li className="nav-item">
-                  <span className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug hover:opacity-75 cursor-pointer">
-                    <span class="material-icons mr-1">shopping_cart</span> cart
-                  </span>
-                </li>
-                <li className="nav-item">
-                  <span
+                  <Link
                     className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug hover:opacity-75 cursor-pointer"
-                    onClick={logout}
+                    to="/cart"
                   >
-                    <span class="material-icons mr-1">person</span> {user.username}
-                  </span>
+                    <span className="material-icons mr-1">shopping_cart</span>{" "}
+                    cart(
+                    {cart.length})
+                  </Link>
+                </li>
+
+                <li className="user-dropdown nav-item">
+                  <Link
+                    className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug cursor-pointer hover:opacity-75"
+                    to="/customer"
+                  >
+                    <span className="material-icons mr-1">person</span>
+                    {user.username}
+                  </Link>
+                  <div className="user-dropdown-content absolute hidden w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Link
+                      className="flex items-center px-4 py-2 text-xs uppercase leading-snug cursor-pointer hover:opacity-75"
+                      to="/customer/orders"
+                    >
+                      <span className="material-icons mr-1">list_alt</span>
+                      my orders
+                    </Link>
+
+                    <div
+                      className="flex items-center px-4 py-2 text-xs uppercase leading-snug cursor-pointer hover:opacity-75"
+                      onClick={logout}
+                    >
+                      <span className="material-icons mr-1">logout</span>Logout
+                    </div>
+                  </div>
                 </li>
               </Fragment>
             ) : (

@@ -20,10 +20,10 @@ import Payment from "./pages/Payment";
 
 import AdminRoute from "./pages/admin/AdminRoute";
 import CustomerRoute from "./pages/customer/CustomerRoute";
-import { useAuthContext } from "./contexts/AuthContext";
+import { useUserContext } from "./contexts/UserContext";
 
 const App = () => {
-  const { user } = useAuthContext();
+  const { user } = useUserContext();
 
   let routes;
 

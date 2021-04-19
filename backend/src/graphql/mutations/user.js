@@ -4,34 +4,35 @@ import { schemaComposer } from "graphql-compose";
 export const createCustomerUser = CustomerUserTC.getResolver("createOne");
 export const createAdminUser = AdminUserTC.getResolver("createOne");
 
-const UpdateCartInput = schemaComposer.createInputTC({
-  name: "UpdateCartInput",
+const UpdateProductInCartInput = schemaComposer.createInputTC({
+  name: "UpdateProductInCart",
   fields: {
-    userId: "String!",
-    productId: "String!",
+    userId: "MongoID!",
+    productId: "MongoID!",
     quantity: "Int!",
+    replace: "Boolean",
   },
 });
 
-const UpdateCartPayload = schemaComposer.createObjectTC({
-  name: "UpdateCartPayload",
+const UpdateProductInCartPayload = schemaComposer.createObjectTC({
+  name: "UpdateProductInCartPayload",
   fields: {
     cart: CustomerUserTC.getFieldType("cart"),
   },
 });
 
-export const updateCart = schemaComposer.createResolver({
-  name: "updateCart",
+export const updateProductInCart = schemaComposer.createResolver({
+  name: "addToCart",
   args: {
-    record: UpdateCartInput,
+    record: UpdateProductInCartInput,
   },
-  type: UpdateCartPayload,
+  type: UpdateProductInCartPayload,
   resolve: async ({ args }) => {
     const { record } = args;
 
-    const { userId, productId } = record;
+    const { userId, productId, replace } = record;
 
-    const { quantity } = record;
+    let { quantity } = record;
 
     const user = await CustomerUserModel.findById(userId);
 
@@ -46,20 +47,19 @@ export const updateCart = schemaComposer.createResolver({
     );
 
     if (index !== -1) {
-      // replace
+      if (!replace) {
+        quantity = updatedCart[index].quantity + quantity;
+      }
+
       if (quantity > 0) {
         updatedCart[index] = {
           productId: productId,
           quantity: quantity,
         };
-      }
-      // remove from cart
-      else {
+      } else {
         updatedCart.splice(index, 1);
       }
-    }
-    // add new product
-    else if (quantity > 0) {
+    } else if (quantity > 0) {
       updatedCart.push({ productId: productId, quantity: quantity });
     }
 

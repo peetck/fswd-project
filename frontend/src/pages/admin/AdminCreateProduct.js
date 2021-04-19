@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 
-import { useAuthContext } from "../../contexts/AuthContext";
+import { useUserContext } from "../../contexts/UserContext";
 import { UPLOAD_FILES_MUTATION } from "../../graphql/mutations/uploadFiles";
 import { CREATE_NORMAL_PRODUCT_MUTATION } from "../../graphql/mutations/createNormalProduct";
 
@@ -12,7 +12,7 @@ const AdminCreateProduct = () => {
   const [images, setImages] = useState([]);
   const [quantity, setQuantity] = useState();
 
-  const { token } = useAuthContext();
+  const { token } = useUserContext();
 
   const [createNormalProduct] = useMutation(CREATE_NORMAL_PRODUCT_MUTATION, {
     context: {
