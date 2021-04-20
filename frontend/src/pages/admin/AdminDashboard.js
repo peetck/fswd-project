@@ -1,7 +1,11 @@
 import React from "react";
 
+import Admin from "../../components/Cards/CardStat";
+
 const AdminDashboard = () => {
-  return <div>AdminDashboard</div>;
+  return (
+    <h1>Dashboard ไอสัส</h1>
+  );
 };
 
 export default AdminDashboard;

@@ -4,6 +4,7 @@ import { useMutation } from "@apollo/client";
 import { useUserContext } from "../../contexts/UserContext";
 import { UPLOAD_FILES_MUTATION } from "../../graphql/mutations/uploadFiles";
 import { CREATE_NORMAL_PRODUCT_MUTATION } from "../../graphql/mutations/createNormalProduct";
+import Button from "../../components/Button";
 
 const AdminCreateProduct = () => {
   const [title, setTitle] = useState();
@@ -48,6 +49,10 @@ const AdminCreateProduct = () => {
   };
 
   return (
+    // <div className="flex flex-1">
+    //   <h1 className="text-xl m-6 uppercase">Create Product</h1>
+    // </div>
+
     <form onSubmit={handleSubmit}>
       Title:{" "}
       <input

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { NORMAL_PRODUCTS_QUERY } from "../graphql/queries/normalProducts";
 import { PROMOTION_PRODUCTS_QUERY } from "../graphql/queries/promotionProducts";
 import { useUserContext } from "../contexts/UserContext";
-import Card from "../components/Card";
+import Card from "../components/Cards/Card";
 
 const Home = (props) => {
   const {

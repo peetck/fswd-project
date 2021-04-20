@@ -7,13 +7,25 @@ const AdminSidebar = (props) => {
   const { logout } = useUserContext();
 
   return (
-    <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
-      <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
-        <span className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0">
-          Picnic shop admin
-        </span>
+    <div class="md:flex flex-col md:flex-row md:min-h-screen md:w-64 w-full shadow-xl">
+      <div class="flex flex-col w-full md:w-64 text-gray-700 bg-white dark-mode:text-gray-200 dark-mode:bg-gray-800 flex-shrink-0">
+        <div class="flex-shrink-0 px-8 py-4 flex flex-col">
+          <div className="flex items-center justify-between">
+            <span className="md:block text-left md:pb-6 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0">
+              Picnic shop admin
+            </span>
 
-        <div className="md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded ">
+            <span
+              className="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 cursor-pointer md:hidden"
+              onClick={logout}
+            >
+              <div className="flex items-center">
+                <span className="material-icons mr-1">logout</span>
+                Logout
+              </div>
+            </span>
+          </div>
+
           <hr className="my-4 md:min-w-full" />
 
           <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
@@ -118,7 +130,7 @@ const AdminSidebar = (props) => {
 
           <hr className="my-4 md:min-w-full" />
 
-          <ul className="md:flex-col md:min-w-full flex flex-col list-none">
+          <ul className="md:flex-col md:min-w-full md:flex flex-col list-none hidden">
             <li className="items-center">
               <span
                 className="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500 cursor-pointer"
@@ -133,7 +145,7 @@ const AdminSidebar = (props) => {
           </ul>
         </div>
       </div>
-    </nav>
+    </div>
   );
 };
 

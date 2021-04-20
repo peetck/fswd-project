@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 
 import { useUserContext } from "../contexts/UserContext";
+import Button from "../components/Button";
+import Input from "../components/Input";
 
 const RegisterPage = (props) => {
   const [username, setUsername] = useState("");
@@ -30,16 +32,10 @@ const RegisterPage = (props) => {
               </div>
               <form onSubmit={handleRegister}>
                 <div className="relative w-full mb-7 pt-6">
-                  <label
-                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                    htmlFor="username"
-                  >
-                    Username
-                  </label>
-                  <input
+                  <Input
+                    label="Username"
                     type="text"
                     name="username"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     placeholder="Username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
@@ -47,16 +43,10 @@ const RegisterPage = (props) => {
                 </div>
 
                 <div className="relative w-full mb-7">
-                  <label
-                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                    htmlFor="password"
-                  >
-                    Password
-                  </label>
-                  <input
+                  <Input
+                    label="Password"
                     type="password"
                     name="password"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -64,16 +54,10 @@ const RegisterPage = (props) => {
                 </div>
 
                 <div className="relative w-full mb-7">
-                  <label
-                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                    htmlFor="confirmPassword"
-                  >
-                    Confirm Password
-                  </label>
-                  <input
+                  <Input
+                    label="Confirm Password"
                     type="password"
                     name="confirmPassword"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     placeholder="Confirm Password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -81,16 +65,10 @@ const RegisterPage = (props) => {
                 </div>
 
                 <div className="relative w-full mb-7">
-                  <label
-                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                    htmlFor="email"
-                  >
-                    Email
-                  </label>
-                  <input
+                  <Input
+                    label="Email"
                     type="email"
                     name="email"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -98,49 +76,34 @@ const RegisterPage = (props) => {
                 </div>
 
                 <div className="relative w-full mb-7">
-                  <label
-                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                    htmlFor="address"
-                  >
-                    Address
-                  </label>
-                  <textarea
+                  <Input
+                    label="Address"
+                    type="textarea"
                     name="address"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 resize-none"
                     placeholder="Address"
-                    rows={4}
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
+                    rows={4}
                   />
                 </div>
 
                 <div className="relative w-full mb-7">
-                  <label
-                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                    htmlFor="gender"
-                  >
-                    Gender
-                  </label>
-
-                  <select
+                  <Input
+                    label="Gender"
+                    type="select"
                     name="gender"
+                    placeholder="Gender"
                     value={gender}
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 resize-none"
                     onChange={(e) => setGender(e.target.value)}
                   >
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                     <option value="Other">Other</option>
-                  </select>
+                  </Input>
                 </div>
 
                 <div className="text-center mt-10">
-                  <button
-                    className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-                    type="submit"
-                  >
-                    Register
-                  </button>
+                  <Button onClick={handleRegister}>Register</Button>
                 </div>
               </form>
             </div>

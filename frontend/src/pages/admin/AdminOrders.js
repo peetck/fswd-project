@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useQuery, gql } from "@apollo/client";
 
 const AdminOrders = () => {
@@ -6,14 +7,18 @@ const AdminOrders = () => {
     gql`
       query {
         orders {
+          _id
           products {
-            product
-            quantity
+            product {
+              title
+              type
+              price
+            }
           }
+          totalPrice
           deliveryAddress
           status
-          userId
-          _id
+          createdAt
         }
       }
     `,
@@ -31,7 +36,9 @@ const AdminOrders = () => {
   return (
     <div>
       {data.orders.map((order) => (
-        <h1 key={order._id}>{order._id}</h1>
+        <h1 key={order._id}>
+          {order._id} - <Link to={`/admin/order/${order._id}`}>detail</Link>
+        </h1>
       ))}
     </div>
   );

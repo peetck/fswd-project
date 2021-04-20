@@ -5,16 +5,41 @@ const { Schema } = mongoose;
 
 const ObjectId = Schema.Types.ObjectId;
 
-const Mixed = Schema.Types.Mixed;
+export const ProductInOrderSchema = new Schema(
+  {
+    product: {
+      title: {
+        type: String,
+        required: true,
+      },
+      type: {
+        type: String,
+        required: true,
+      },
+      price: {
+        type: Number,
+        required: true,
+      },
+    },
+    quantity: {
+      type: Number,
+      required: true,
+    },
+  },
+  { _id: false }
+);
 
 const OrderSchema = new Schema(
   {
     products: [
       {
-        product: { type: Mixed, required: true },
-        quantity: { type: Number, required: true },
+        type: ProductInOrderSchema,
+        required: true,
       },
     ],
+    totalPrice: {
+      type: Number,
+    },
     deliveryAddress: {
       type: String,
       required: true,
@@ -33,11 +58,6 @@ const OrderSchema = new Schema(
     timestamps: true,
   }
 );
-
-OrderSchema.pre("save", (next) => {
-  // หักจาก stock
-  next();
-});
 
 export const OrderModel = mongoose.model("Order", OrderSchema);
 

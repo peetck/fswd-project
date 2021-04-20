@@ -19,12 +19,12 @@ export const UserContextProvider = (props) => {
             productId
             quantity
             product {
-              type
               title
-              description
               price
               images
-              quantity
+              type
+              percent
+              finalPrice
             }
           }
         }

@@ -66,8 +66,9 @@ const App = () => {
   } else {
     routes = (
       <Fragment>
-        <AdminSidebar />
-        <div className="relative md:ml-64 bg-blueGray-100">
+        <div className="flex flex-col md:flex-row">
+          <AdminSidebar />
+
           <Route path="/admin" component={AdminRoute} />
           <Route>
             <Redirect to="/admin" />

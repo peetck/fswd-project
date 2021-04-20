@@ -15,7 +15,8 @@ const AdminProducts = () => {
     <div>
       {products.normalProducts.map((product) => (
         <p key={product._id}>
-          _id: {product._id} - title: {product.title}
+          _id: {product._id} - title: {product.title}-{" "}
+          <Link to={`/admin/product/${product._id}`}>detail</Link>
         </p>
       ))}
     </div>
