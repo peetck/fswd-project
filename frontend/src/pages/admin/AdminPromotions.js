@@ -1,6 +1,7 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
 import { Link } from "react-router-dom";
+import Truncate from "react-truncate"
 
 import { PROMOTION_PRODUCTS_QUERY } from "../../graphql/queries/promotionProducts";
 
@@ -36,7 +37,9 @@ const AdminPromotions = () => {
                         <td className="py-3 px-6 text-left whitespace-nowrap">
                           <div className="flex items-center">
                             <div className="mr-2">
+                            <Truncate width={200}>
                               {product._id}
+                              </Truncate>
                             </div>
                           </div>
                         </td>
@@ -45,12 +48,16 @@ const AdminPromotions = () => {
                             <div className="mr-2">
                               <img className="w-6 h-6 rounded-full" src={product.images[0]} />
                             </div>
+                            <Truncate width={160}>
                             <span>{product.title}</span>
+                            </Truncate>
                           </div>
                         </td>
                         <td className="py-3 px-6 text-center">
                           <div className="flex items-center justify-center">
+                          <Truncate width={160}>
                             <span>THB {product.price}</span>
+                            </Truncate>
                           </div>
                         </td>
                         <td className="py-3 px-6 text-center">

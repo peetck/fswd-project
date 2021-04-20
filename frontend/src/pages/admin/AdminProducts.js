@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
+import Truncate from "react-truncate"
 
 import { NORMAL_PRODUCTS_QUERY } from "../../graphql/queries/normalProducts";
 
@@ -33,7 +34,9 @@ const AdminProducts = () => {
                       <td className="py-3 px-6 text-left whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="mr-2 ">
-                            {product._id}
+                            <Truncate width={200}>
+                              <span>{product._id}</span>
+                            </Truncate>
                           </div>
                         </div>
                       </td>
@@ -42,16 +45,23 @@ const AdminProducts = () => {
                           <div className="mr-2">
                             <img className="w-6 h-6 rounded-full" src={product.images[0]} />
                           </div>
-                          <span>{product.title}</span>
+                          <Truncate width={160}>
+                            <span>{product.title}</span>
+                          </Truncate>
                         </div>
                       </td>
                       <td className="py-3 px-6 text-center">
                         <div className="flex items-center justify-center">
-                          <span>THB {product.price}</span>
+                          <Truncate width={160}>
+                            <span>THB {product.price}</span>
+                          </Truncate>
+
                         </div>
                       </td>
                       <td className="py-3 px-6 text-center">
-                        <span className="bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs">{product.quantity} Item</span>
+                        <span className="bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs" >
+                          {product.quantity} Item
+                     </span>
                       </td>
                       <td className="py-3 px-6 text-center">
                         <div className="flex item-center justify-center">

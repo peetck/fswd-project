@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 
+
 import { NORMAL_PRODUCTS_QUERY } from "../../graphql/queries/normalProducts";
 import { CREATE_PROMOTION_PRODUCT_MUTATION } from "../../graphql/mutations/createPromotionProduct";
+import Truncate from "react-truncate";
 
 const AdminCreatePromotion = () => {
   const [product, setProduct] = useState();
@@ -41,7 +43,7 @@ const AdminCreatePromotion = () => {
           <div className="border focus-within:border-blue-500 focus-within:text-blue-500 transition-all duration-500 relative rounded p-1">
             <div className="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
               <p>
-                <label for="name" className="bg-white text-gray-600 px-1">Title *</label>
+                <label for="name" className="bg-white text-gray-600 px-1 ">Title *</label>
               </p>
             </div>
             <p>
@@ -56,7 +58,9 @@ const AdminCreatePromotion = () => {
                 <option value="default">--select--</option>
                 {products?.normalProducts.map((product) => (
                   <option value={product._id} key={product._id}>
-                    {product.title}
+                  
+                      {product.title}
+              
                   </option>
                 ))}
               </select>
