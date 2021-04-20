@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useQuery, gql } from "@apollo/client";
+import Truncate from "react-truncate"
 
 const AdminOrders = () => {
   const { data, loading } = useQuery(
@@ -57,19 +58,24 @@ const AdminOrders = () => {
                         <td className="py-3 px-6 text-left whitespace-nowrap">
                           <div className="flex items-center">
                             <div className="mr-2">
+                            <Truncate width={200}>
                               {order._id}
+                              </Truncate>
                             </div>
                           </div>
                         </td>
                         <td className="py-3 px-6 text-left">
                           <div className="flex items-center">
-                          
-                            <span>{String(order.userId.username)}</span>
+                          <Truncate width={200}>
+                            <span>{String(order.userId)}</span>
+                            </Truncate>
                           </div>
                         </td>
                         
                         <td className="py-3 px-6 text-center">
+                        <Truncate width={160}>
                           <span >{order.totalPrice}</span>
+                          </Truncate>
                         </td>
                         <td className="py-3 px-6 text-center">
                           <div className="flex items-center justify-center">
