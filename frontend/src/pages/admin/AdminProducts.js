@@ -34,9 +34,9 @@ const AdminProducts = () => {
                       <td className="py-3 px-6 text-left whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="mr-2 ">
-                          <Truncate width={200}>
-                            <span>{product._id}</span>
-                          </Truncate>
+                            <Truncate width={200}>
+                              <span>{product._id}</span>
+                            </Truncate>
                           </div>
                         </div>
                       </td>
@@ -52,16 +52,16 @@ const AdminProducts = () => {
                       </td>
                       <td className="py-3 px-6 text-center">
                         <div className="flex items-center justify-center">
-                        <Truncate width={160}>
+                          <Truncate width={160}>
                             <span>THB {product.price}</span>
                           </Truncate>
-                       
+
                         </div>
                       </td>
                       <td className="py-3 px-6 text-center">
-                      <Truncate width={140} className="bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs">
-                        <span >{product.quantity} Item</span>
-                     </Truncate>
+                        <span className="bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs" >
+                          {product.quantity} Item
+                     </span>
                       </td>
                       <td className="py-3 px-6 text-center">
                         <div className="flex item-center justify-center">

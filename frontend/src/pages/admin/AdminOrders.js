@@ -81,7 +81,7 @@ const AdminOrders = () => {
                           <div className="flex items-center justify-center">
                             {String(order.status) === "false"?
                             <span className="bg-red-200 text-red-600 py-1 px-3 rounded-full text-xs">{String(order.status)}</span>
-                            : <span className="bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs">{String(order.status)}</span>
+                            : <span className="bg-green-200 text-green-600 py-1 px-4 rounded-full text-xs">{String(order.status)}</span>
                             }
                             
                           </div>
