@@ -38,7 +38,6 @@ const CustomerInfo = () => {
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
