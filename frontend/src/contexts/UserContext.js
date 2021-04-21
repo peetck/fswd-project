@@ -11,13 +11,15 @@ const UserContext = createContext();
 
 export const UserContextProvider = (props) => {
   const [user, setUser] = useState(null);
-  const { data: cart, refetch } = useQuery(
+  const { data: cart, refetch: refetchCart } = useQuery(
     gql`
       query($_id: MongoID!) {
         customerUser(_id: $_id) {
           cart {
             productId
             quantity
+            color
+            size
             product {
               title
               price
@@ -34,7 +36,6 @@ export const UserContextProvider = (props) => {
       variables: {
         _id: user?._id,
       },
-      fetchPolicy: "network-only",
     }
   );
 
@@ -89,7 +90,13 @@ export const UserContextProvider = (props) => {
     }
   };
 
-  const handleUpdateCart = async (productId, quantity, replace) => {
+  const handleUpdateCart = async (
+    productId,
+    quantity,
+    replace,
+    color,
+    size
+  ) => {
     try {
       await updateProductInCart({
         variables: {
@@ -97,9 +104,11 @@ export const UserContextProvider = (props) => {
           productId: productId,
           quantity: +quantity,
           replace: replace,
+          color: color,
+          size: +size,
         },
       });
-      await refetch();
+      await refetchCart();
     } catch (error) {
       console.log(error);
     }
@@ -115,6 +124,7 @@ export const UserContextProvider = (props) => {
         register: handleRegister,
         logout: handleLogout,
         updateCart: handleUpdateCart,
+        refetchCart: refetchCart,
       }}
     >
       {props.children}

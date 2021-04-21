@@ -9,6 +9,8 @@ const UpdateProductInCartInput = schemaComposer.createInputTC({
   fields: {
     userId: "MongoID!",
     productId: "MongoID!",
+    color: "String!",
+    size: "Float!",
     quantity: "Int!",
     replace: "Boolean",
   },
@@ -30,7 +32,7 @@ export const updateProductInCart = schemaComposer.createResolver({
   resolve: async ({ args }) => {
     const { record } = args;
 
-    const { userId, productId, replace } = record;
+    const { userId, productId, replace, color, size } = record;
 
     let { quantity } = record;
 
@@ -43,7 +45,10 @@ export const updateProductInCart = schemaComposer.createResolver({
     const updatedCart = [...user.cart];
 
     const index = updatedCart.findIndex(
-      (prod) => prod.productId.toString() === productId
+      (prod) =>
+        prod.productId.toString() === productId &&
+        prod.color === color &&
+        prod.size === size
     );
 
     if (index !== -1) {
@@ -55,12 +60,19 @@ export const updateProductInCart = schemaComposer.createResolver({
         updatedCart[index] = {
           productId: productId,
           quantity: quantity,
+          color,
+          size,
         };
       } else {
         updatedCart.splice(index, 1);
       }
     } else if (quantity > 0) {
-      updatedCart.push({ productId: productId, quantity: quantity });
+      updatedCart.push({
+        productId: productId,
+        quantity: quantity,
+        color,
+        size,
+      });
     }
 
     user.cart = updatedCart;

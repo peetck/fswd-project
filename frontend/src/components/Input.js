@@ -5,6 +5,7 @@ const Input = ({
   type,
   name,
   placeholder,
+  defaultValue,
   value,
   onChange,
   rows,
@@ -36,6 +37,7 @@ const Input = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          defaultValue={defaultValue}
         >
           {children}
         </select>

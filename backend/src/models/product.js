@@ -13,6 +13,7 @@ const ProductSchema = new Schema(
     title: {
       type: String,
       required: true,
+      index: true,
       unique: true,
     },
     description: {
@@ -27,10 +28,22 @@ const ProductSchema = new Schema(
       type: [String],
       required: true,
     },
-    quantity: {
-      type: Number,
-      required: true,
-    },
+    stock: [
+      {
+        color: {
+          type: String,
+          required: true,
+        },
+        size: {
+          type: Number,
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
     type: {
       type: String,
       required: true,

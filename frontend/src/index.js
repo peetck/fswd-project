@@ -24,6 +24,11 @@ const client = new ApolloClient({
       uri: "http://localhost:3001/graphql",
     }),
   ]),
+  defaultOptions: {
+    query: {
+      fetchPolicy: "network-only",
+    },
+  },
 });
 
 ReactDOM.render(

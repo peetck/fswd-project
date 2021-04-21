@@ -8,6 +8,11 @@ export const PRODUCT_BY_TITLE_QUERY = gql`
       description
       price
       images
+      stock {
+        quantity
+        color
+        size
+      }
       quantity
       createdAt
       type

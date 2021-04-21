@@ -1,9 +1,16 @@
 import { ProductTC } from "../../models";
 
-// ProductTC.addFields({
-//   timestamp: {
-//     type: "String",
-//     resolve: (source) => new Date().toISOString(),
-//     projection: { timestamp: 1 },
-//   },
-// });
+ProductTC.addFields({
+  quantity: {
+    type: "Int",
+    resolve: (source) => {
+      const { stock } = source;
+      const quantity = stock.reduce(
+        (prev, current) => prev + current.quantity,
+        0
+      );
+      return quantity;
+    },
+    projection: { stock: true },
+  },
+});

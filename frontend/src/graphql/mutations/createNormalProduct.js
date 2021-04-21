@@ -6,7 +6,7 @@ export const CREATE_NORMAL_PRODUCT_MUTATION = gql`
     $description: String!
     $price: Float!
     $images: [String!]!
-    $quantity: Float!
+    $stock: [ProductStockInput!]!
   ) {
     createNormalProduct(
       record: {
@@ -14,7 +14,7 @@ export const CREATE_NORMAL_PRODUCT_MUTATION = gql`
         description: $description
         price: $price
         images: $images
-        quantity: $quantity
+        stock: $stock
       }
     ) {
       recordId

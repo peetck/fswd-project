@@ -6,6 +6,8 @@ export const UPDATE_PRODUCT_IN_CART_MUTATION = gql`
     $productId: MongoID!
     $quantity: Int!
     $replace: Boolean
+    $color: String!
+    $size: Float!
   ) {
     updateProductInCart(
       record: {
@@ -13,6 +15,8 @@ export const UPDATE_PRODUCT_IN_CART_MUTATION = gql`
         productId: $productId
         quantity: $quantity
         replace: $replace
+        color: $color
+        size: $size
       }
     ) {
       cart {

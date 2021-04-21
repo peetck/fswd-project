@@ -69,7 +69,19 @@ export const createOrder = schemaComposer.createResolver({
 
       totalPrice += price * cartItem.quantity;
 
-      product.quantity -= cartItem.quantity;
+      const stock = [...product.stock];
+
+      for (let i in stock) {
+        if (
+          stock[i].color === cartItem.color &&
+          stock[i].size === cartItem.size
+        ) {
+          stock[i].quantity -= cartItem.quantity;
+          break;
+        }
+      }
+
+      product.stock = stock;
 
       await product.save();
 
@@ -78,6 +90,8 @@ export const createOrder = schemaComposer.createResolver({
           title: product.title,
           type: product.type,
           price: price,
+          color: cartItem.color,
+          size: cartItem.size,
         },
         quantity: cartItem.quantity,
       });

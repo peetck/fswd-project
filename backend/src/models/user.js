@@ -41,6 +41,14 @@ export const CartSchema = new Schema(
       required: true,
       ref: "Product",
     },
+    color: {
+      type: String,
+      required: true,
+    },
+    size: {
+      type: Number,
+      required: true,
+    },
     quantity: {
       type: Number,
       required: true,

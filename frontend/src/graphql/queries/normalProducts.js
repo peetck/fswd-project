@@ -8,7 +8,11 @@ export const NORMAL_PRODUCTS_QUERY = gql`
       description
       price
       images
-      quantity
+      stock {
+        quantity
+        color
+        size
+      }
     }
   }
 `;

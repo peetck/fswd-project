@@ -9,7 +9,11 @@ export const NORMAL_PRODUCTS_PAGINATION_QUERY = gql`
         description
         price
         images
-        quantity
+        stock {
+          quantity
+          color
+          size
+        }
         createdAt
       }
       count

@@ -1,19 +1,11 @@
 import { gql } from "@apollo/client";
 
 export const CREATE_ORDER_MUTATION = gql`
-  mutation(
-    $products: [OrderProductsInput]
-    $deliveryAddress: String!
-    $userId: MongoID!
-  ) {
+  mutation($userId: MongoID!, $deliveryAddress: String!) {
     createOrder(
-      record: {
-        products: $products
-        deliveryAddress: $deliveryAddress
-        userId: $userId
-      }
+      record: { userId: $userId, deliveryAddress: $deliveryAddress }
     ) {
-      recordId
+      success
     }
   }
 `;

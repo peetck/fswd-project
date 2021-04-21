@@ -31,7 +31,6 @@ const CustomerOrders = () => {
       variables: {
         userId: user._id,
       },
-      fetchPolicy: "network-only",
     }
   );
 

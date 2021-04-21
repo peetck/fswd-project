@@ -14,7 +14,17 @@ const Cart = () => {
       {cart.map((product) => (
         <h1 key={product.productId}>
           {product.productId} x {product.quantity} -{" "}
-          <button onClick={() => updateCart(product.productId, 0, true)}>
+          <button
+            onClick={() =>
+              updateCart(
+                product.productId,
+                0,
+                true,
+                product.color,
+                product.size
+              )
+            }
+          >
             [Remove]
           </button>
         </h1>
