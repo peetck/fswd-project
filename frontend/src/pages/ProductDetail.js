@@ -38,7 +38,7 @@ const ProductDetail = () => {
   // reduce of quantity
   const reduceQuantity = () => {
     if (quantity > 0)
-    setQuantity(quantity - 1)
+      setQuantity(quantity - 1)
   }
 
   return (
@@ -58,11 +58,11 @@ const ProductDetail = () => {
               <div class="mt-2">
                 <label class="text-gray-700 text-sm" for="count">Count:</label>
                 <div class="flex items-center mt-1">
-                  <button class="text-gray-500 focus:outline-none focus:text-gray-600" onClick = {reduceQuantity}>
+                  <button class="text-gray-500 focus:outline-none focus:text-gray-600" onClick={reduceQuantity}>
                     <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                   </button>
                   <span class="text-gray-700 text-lg mx-2">{quantity}</span>
-                  <button class="text-gray-500 focus:outline-none focus:text-gray-600" onClick = {increaseQuantity}>
+                  <button class="text-gray-500 focus:outline-none focus:text-gray-600" onClick={increaseQuantity}>
                     <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                   </button>
                 </div>
@@ -76,7 +76,7 @@ const ProductDetail = () => {
                 </div>
               </div>
               <div class="flex items-center mt-6">
-                <button class="px-8 py-2 bg-indigo-600 text-white text-sm font-medium rounded hover:bg-indigo-500 focus:outline-none focus:bg-indigo-500" onClick = {() => {
+                <button class="px-8 py-2 bg-indigo-600 text-white text-sm font-medium rounded hover:bg-indigo-500 focus:outline-none focus:bg-indigo-500" onClick={() => {
                   updateCart(product.productByTitle._id, quantity, false)
                 }}>Add to Cart</button>
                 <button class="mx-2 text-gray-600 border rounded-md p-2 hover:bg-gray-200 focus:outline-none">
@@ -87,7 +87,7 @@ const ProductDetail = () => {
           </div>
           <div class="mt-16">
             <h3 class="text-gray-600 text-2xl font-medium">More Products</h3>
-            <div className="flex">
+            <div className="flex py-6 w-11/12 flex-wrap">
               {products?.normalProducts.map((product) => (
                 <Card
                   key={product._id}
