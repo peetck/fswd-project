@@ -6,12 +6,13 @@ import { PRODUCT_BY_TITLE_QUERY } from "../graphql/queries/productByTitle";
 import { NORMAL_PRODUCTS_PAGINATION_QUERY } from "../graphql/queries/normalProductsPagination";
 import { useUserContext } from "../contexts/UserContext";
 
-import Card from '../components/Cards/Card';
+import Item from '../components/Items/Items';
 
 const ProductDetail = () => {
   const { productSlug } = useParams();
   const { updateCart } = useUserContext();
   const [quantity, setQuantity] = useState(0);
+  const [index, setIndex] = useState(0);
 
   const { data: product, loading, error } = useQuery(PRODUCT_BY_TITLE_QUERY, {
     variables: {
@@ -24,7 +25,7 @@ const ProductDetail = () => {
     {
       variables: {
         page: 1,
-        perPage: 5,
+        perPage: 4,
       },
     }
   );
@@ -39,16 +40,23 @@ const ProductDetail = () => {
   }
 
 
-  // increase of quantity
+  // Increase of quantity
   const increaseQuantity = () => {
     if (quantity < product.productByTitle.quantity)
       setQuantity(quantity + 1);
   }
 
-  // reduce of quantity
+  // Reduce of quantity
   const reduceQuantity = () => {
     if (quantity > 0)
-      setQuantity(quantity - 1)
+      setQuantity(quantity - 1);
+  }
+
+  // Change image
+  const changeImage = (e) => {
+    let id = Number(e.target.id);
+    if (id < product?.productByTitle.images.length)
+      setIndex(id);
   }
 
   return (
@@ -59,7 +67,7 @@ const ProductDetail = () => {
         <div className="container mx-auto px-6">
           <div className="md:flex md:items-center">
             <div className="w-full h-64 md:w-1/2 lg:h-96">
-              <img className="h-full w-full rounded-md object-cover max-w-lg mx-auto" src={`${product?.productByTitle.images[0]}`} alt="Nike Air" />
+              <img className="h-full w-full rounded-md object-cover max-w-lg mx-auto" src={`${product?.productByTitle.images[index]}`} alt="Nike Air" />
             </div>
             <div className="w-full max-w-lg mx-auto mt-5 md:ml-8 md:mt-0 md:w-1/2">
               <h3 className="text-gray-700 uppercase text-lg">{product?.productByTitle.title}</h3>
@@ -80,9 +88,9 @@ const ProductDetail = () => {
               <div className="mt-3">
                 <label className="text-gray-700 text-sm" htmlFor="count">Color:</label>
                 <div className="flex items-center mt-1">
-                  <button className="h-5 w-5 rounded-full bg-blue-600 border-2 border-blue-200 mr-2 focus:outline-none"></button>
-                  <button className="h-5 w-5 rounded-full bg-teal-600 mr-2 focus:outline-none"></button>
-                  <button className="h-5 w-5 rounded-full bg-pink-600 mr-2 focus:outline-none"></button>
+                  <button className="h-5 w-5 rounded-full bg-trueGray-400 mr-2 focus:outline-none" id='0' onClick={changeImage}></button>
+                  <button className="h-5 w-5 rounded-full bg-pink-600 mr-2 focus:outline-none" id='1' onClick={changeImage}></button>
+                  <button className="h-5 w-5 rounded-full bg-teal-600 mr-2 focus:outline-none" id='2' onClick={changeImage}></button>
                 </div>
               </div>
               <div className="flex items-center mt-6">
@@ -97,13 +105,14 @@ const ProductDetail = () => {
           </div>
           <div className="mt-16">
             <h3 className="text-gray-600 text-2xl font-medium">More Products</h3>
-            <div className="flex py-6 w-11/12 flex-wrap">
+            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
               {products?.normalProductsPagination.items.map((product) => (
-                <Card
+                <Item
                   key={product._id}
                   title={product.title}
                   imageUrl={product.images[0]}
                   price={product.price}
+                  quantity={quantity}
                 />
               ))}
             </div>
