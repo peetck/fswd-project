@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 
 import { PRODUCT_BY_TITLE_QUERY } from "../graphql/queries/productByTitle";
-import { NORMAL_PRODUCTS_QUERY } from "../graphql/queries/normalProducts";
+import { NORMAL_PRODUCTS_PAGINATION_QUERY } from "../graphql/queries/normalProductsPagination";
 import { useUserContext } from "../contexts/UserContext";
 
 import Card from '../components/Cards/Card';
@@ -19,18 +19,22 @@ const ProductDetail = () => {
     },
   });
 
-  const {
-    data: products,
-    loading: loadingProducts,
-    error: errorProducts,
-  } = useQuery(NORMAL_PRODUCTS_QUERY);
+  const { data: products, loadingNormalProduct, errorNormalProudct } = useQuery(
+    NORMAL_PRODUCTS_PAGINATION_QUERY,
+    {
+      variables: {
+        page: 1,
+        perPage: 5,
+      },
+    }
+  );
 
   //every change product is set quantity to 0
   useEffect(() => {
     setQuantity(0)
   }, [productSlug])
 
-  if (loading) {
+  if (loading || loadingNormalProduct) {
     return <h1>Loading...</h1>;
   }
 
@@ -94,7 +98,7 @@ const ProductDetail = () => {
           <div className="mt-16">
             <h3 className="text-gray-600 text-2xl font-medium">More Products</h3>
             <div className="flex py-6 w-11/12 flex-wrap">
-              {products?.normalProducts.map((product) => (
+              {products?.normalProductsPagination.items.map((product) => (
                 <Card
                   key={product._id}
                   title={product.title}
