@@ -7,7 +7,6 @@ module.exports = {
     extend: {},
     colors: {
       ...colors,
-      coolPurple: "#4f46e5",
     },
   },
   variants: {
