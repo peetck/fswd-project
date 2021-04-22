@@ -10,7 +10,7 @@ import Item from "../components/Items/Items";
 
 const ProductDetail = () => {
   const { productSlug } = useParams();
-  const { updateCart } = useUserContext();
+  const { updateCart, cart } = useUserContext();
 
   const [quantity, setQuantity] = useState(1);
 
@@ -65,13 +65,40 @@ const ProductDetail = () => {
     setQuantity((prev) => prev + n);
   };
 
+  const addToCart = async () => {
+    const quantityInCart =
+      cart.find((c) => c.color === selectedColor && c.size === selectedSize)
+        ?.quantity ?? 0;
+
+    const prod = product.productByTitle.stock.find(
+      (p) => p.color === selectedColor && p.size === selectedSize
+    );
+
+    if (quantity + quantityInCart > prod.quantity) {
+      return alert(
+        "You have reached the maximum quantity available for this item"
+      );
+    }
+
+    await updateCart(
+      product.productByTitle._id,
+      quantity,
+      false,
+      selectedColor,
+      selectedSize
+    );
+  };
+
   useEffect(() => {
     if (selectedColor && selectedSize) {
       const prod = product.productByTitle.stock.find(
         (p) => p.color === selectedColor && p.size === selectedSize
       );
+      const quantityInCart =
+        cart.find((c) => c.color === selectedColor && c.size === selectedSize)
+          ?.quantity ?? 0;
 
-      if (quantity > prod.quantity) {
+      if (quantity + quantityInCart > prod.quantity) {
         setQuantity(1);
       }
     }
@@ -292,15 +319,7 @@ const ProductDetail = () => {
               <div className="flex items-center mt-6">
                 <button
                   className="px-8 py-2 bg-indigo-600 text-white text-sm font-medium rounded hover:bg-indigo-500 focus:outline-none focus:bg-indigo-500"
-                  onClick={() => {
-                    updateCart(
-                      product.productByTitle._id,
-                      quantity,
-                      false,
-                      selectedColor,
-                      selectedSize
-                    );
-                  }}
+                  onClick={addToCart}
                 >
                   Add to Cart
                 </button>

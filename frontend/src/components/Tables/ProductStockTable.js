@@ -27,14 +27,14 @@ const ProductStockTable = ({ stock, removeFromStock }) => {
                         key={uuidv4()}
                       >
                         <td className="py-3 px-6 text-left whitespace-nowrap">
-                          <div className="flex items-center">
+                          <div className="flex items-center justify-center">
                             <div className="mr-2 ">
                               <span>{st.size}</span>
                             </div>
                           </div>
                         </td>
                         <td className="py-3 px-6 text-left">
-                          <div className="flex items-center">
+                          <div className="flex items-center justify-center">
                             <div className="mr-2">
                               <span>{st.color}</span>
                             </div>
