@@ -1,24 +1,30 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { v4 as uuidv4 } from "uuid";
+import { useHistory } from "react-router-dom";
 
 import { useUserContext } from "../../contexts/UserContext";
 import { UPLOAD_FILES_MUTATION } from "../../graphql/mutations/uploadFiles";
 import { CREATE_NORMAL_PRODUCT_MUTATION } from "../../graphql/mutations/createNormalProduct";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
+import ProductInformationForm from "../../components/Forms/ProductInformationForm";
+import ProductStockForm from "../../components/Forms/ProductStockForm";
+import Card from "../../components/Cards/Card";
 
 const AdminCreateProduct = () => {
-  const [title, setTitle] = useState();
-  const [description, setDescription] = useState();
-  const [price, setPrice] = useState();
-  const [images, setImages] = useState();
+  const history = useHistory();
+
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState(0);
+  const [images, setImages] = useState([]);
 
   const [stock, setStock] = useState([]);
 
-  const [color, setColor] = useState();
-  const [size, setSize] = useState();
-  const [quantity, setQuantity] = useState();
+  const [color, setColor] = useState("");
+  const [size, setSize] = useState(0);
+  const [quantity, setQuantity] = useState(0);
 
   const { token } = useUserContext();
 
@@ -31,9 +37,7 @@ const AdminCreateProduct = () => {
   });
   const [uploadFiles] = useMutation(UPLOAD_FILES_MUTATION);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const createProduct = async () => {
     try {
       const urls = await uploadFiles({
         variables: {
@@ -50,20 +54,28 @@ const AdminCreateProduct = () => {
           stock: stock,
         },
       });
+
+      history.push("/admin/products");
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleAddToStock = () => {
+    if (color.trim() === "" || size.trim() === "" || quantity.trim() === "") {
+      return;
+    }
+
     for (let i of stock) {
       if (i.color === color && i.size === size) {
-        alert("already have.");
         return;
       }
     }
 
-    setStock((prev) => [...prev, { size, color, quantity }]);
+    setStock((prev) => [
+      ...prev,
+      { size: Number(size), color, quantity: Number(quantity) },
+    ]);
     setColor("");
     setQuantity("");
     setSize("");
@@ -76,160 +88,62 @@ const AdminCreateProduct = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="bg-white rounded-lg p-6 m-5 mt-7">
-        <div className="flex flex-col">
-          <div className="my-2">
-            <Input
-              name="title"
-              label="Title"
-              type="text"
-              value={title}
+    <div className="bg-white rounded-lg p-6 m-5 mt-7">
+      <div className="flex flex-col">
+        <h1 className="text-lg uppercase">Information</h1>
+        <div className="flex items-center m-5">
+          <div className="w-3/4 mr-20">
+            <ProductInformationForm
+              title={title}
+              description={description}
+              price={price}
               onChange={(e) => {
-                setTitle(e.target.value);
+                if (e.target.name === "title") {
+                  setTitle(e.target.value);
+                } else if (e.target.name === "description") {
+                  setDescription(e.target.value);
+                } else if (e.target.name === "price") {
+                  setPrice(e.target.value);
+                } else if (e.target.name === "images") {
+                  setImages(e.target.files);
+                }
               }}
             />
           </div>
 
-          <div className="my-2">
-            <Input
-              name="description"
-              label="Description"
-              type="textarea"
-              rows="3"
-              value={description}
-              onChange={(e) => {
-                setDescription(e.target.value);
-              }}
-            />
-          </div>
-
-          <div className="my-2">
-            <Input
-              name="price"
-              label="Price"
-              type="number"
-              value={price}
-              onChange={(e) => {
-                setPrice(e.target.value);
-              }}
-            />
-          </div>
-
-          <div className="my-2">
-            <input
-              className=""
-              type="file"
-              multiple
-              onChange={(e) => setImages(e.target.files)}
-            />
-          </div>
-
-          <h1>Stock!!!</h1>
-
-          <div className="my-2">
-            <Input
-              name="color"
-              label="Color"
-              type="text"
-              value={color}
-              onChange={(e) => {
-                setColor(e.target.value);
-              }}
-            />
-          </div>
-
-          <div className="my-2">
-            <Input
-              name="size"
-              label="Size"
-              type="number"
-              value={size}
-              onChange={(e) => {
-                setSize(+e.target.value);
-              }}
-            />
-          </div>
-
-          <div className="my-2">
-            <Input
-              name="quantity"
-              label="Quantity"
-              type="number"
-              value={quantity}
-              onChange={(e) => {
-                setQuantity(+e.target.value);
-              }}
-            />
-          </div>
-
-          <div className="w-28">
-            <Button onClick={handleAddToStock}> Add DATA</Button>
-          </div>
-
-          <div className="overflow-x-auto">
-            <div className="min-w-screen flex items-center justify-center overflow-hidden">
-              <div className="w-full">
-                <div className="bg-white shadow-md rounded my-6">
-                  <table className="min-w-max w-full table-auto">
-                    <thead>
-                      <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                        <th className="py-3 px-6 text-center">Size</th>
-                        <th className="py-3 px-6 text-center">Color</th>
-                        <th className="py-3 px-6text-center">Quantity</th>
-                        <th className="py-3 px-6text-center"></th>
-                      </tr>
-                    </thead>
-                    <tbody className="text-gray-600 text-sm font-light">
-                      {stock?.map((st) => {
-                        return (
-                          <tr
-                            className="border-b border-gray-200 hover:bg-gray-100"
-                            key={uuidv4()}
-                          >
-                            <td className="py-3 px-6 text-left whitespace-nowrap">
-                              <div className="flex items-center">
-                                <div className="mr-2 ">
-                                  <span>{st.size}</span>
-                                </div>
-                              </div>
-                            </td>
-                            <td className="py-3 px-6 text-left">
-                              <div className="flex items-center">
-                                <div className="mr-2">
-                                  <span>{st.color}</span>
-                                </div>
-                              </div>
-                            </td>
-                            <td className="py-3 px-6 text-center">
-                              <div className="flex items-center justify-center">
-                                <span>{st.quantity}</span>
-                              </div>
-                            </td>
-                            <td className="py-3 px-6 text-center">
-                              <div className="flex items-center justify-center">
-                                <Button
-                                  onClick={() => handleRemoveFromStock(st)}
-                                >
-                                  remove
-                                </Button>
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Card
+            title={title}
+            price={price}
+            imageUrl={images.length !== 0 ? URL.createObjectURL(images[0]) : ""}
+          />
         </div>
-        <div className="flex justify-center mt-8">
-          <Button onClick={handleSubmit}>Create Product</Button>
+
+        <h1 className="text-lg uppercase">Stock</h1>
+
+        <div className="m-5">
+          <ProductStockForm
+            color={color}
+            quantity={quantity}
+            size={size}
+            onChange={(e) => {
+              if (e.target.name === "color") {
+                setColor(e.target.value);
+              } else if (e.target.name === "size") {
+                setSize(e.target.value);
+              } else if (e.target.name === "quantity") {
+                setQuantity(e.target.value);
+              }
+            }}
+            stock={stock}
+            addToStock={handleAddToStock}
+            removeFromStock={handleRemoveFromStock}
+          />
         </div>
       </div>
-    </form>
+      <div className="flex justify-center my-4">
+        <Button onClick={createProduct}>Create Product</Button>
+      </div>
+    </div>
   );
 };
 

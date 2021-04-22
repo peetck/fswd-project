@@ -1,5 +1,5 @@
 import { useState, createContext, useContext, useEffect } from "react";
-import { useMutation, useQuery, gql } from "@apollo/client";
+import { useMutation, useLazyQuery, gql } from "@apollo/client";
 import { useCookies } from "react-cookie";
 import jwt_decode from "jwt-decode";
 
@@ -11,7 +11,7 @@ const UserContext = createContext();
 
 export const UserContextProvider = (props) => {
   const [user, setUser] = useState(null);
-  const { data: cart, refetch: refetchCart } = useQuery(
+  const [fetchCart, { data: cart, refetch: refetchCart }] = useLazyQuery(
     gql`
       query($_id: MongoID!) {
         customerUser(_id: $_id) {
@@ -38,6 +38,12 @@ export const UserContextProvider = (props) => {
       },
     }
   );
+
+  useEffect(() => {
+    if (user) {
+      fetchCart();
+    }
+  }, [user]);
 
   const [cookies, setCookie, removeCookie] = useCookies(["fswd-token"]);
 

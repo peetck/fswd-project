@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import { useUserContext } from "../contexts/UserContext";
 import Button from "../components/Button";
 import Input from "../components/Input";
 
 const LoginPage = (props) => {
+  const history = useHistory();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -14,7 +16,7 @@ const LoginPage = (props) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     await login(username, password);
-    props.history.push("/");
+    history.push("/");
   };
 
   return (

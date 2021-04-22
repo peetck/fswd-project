@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import { useUserContext } from "../contexts/UserContext";
 
@@ -7,9 +7,9 @@ const AdminSidebar = (props) => {
   const { logout } = useUserContext();
 
   return (
-    <div class="md:flex flex-col md:flex-row md:min-h-screen md:w-64 w-full shadow-xl">
-      <div class="flex flex-col w-full md:w-64 text-gray-700 bg-white dark-mode:text-gray-200 dark-mode:bg-gray-800 flex-shrink-0">
-        <div class="flex-shrink-0 px-8 py-4 flex flex-col">
+    <div className="md:flex flex-col md:flex-row md:min-h-screen md:w-64 w-full shadow-xl">
+      <div className="flex flex-col w-full md:w-64 text-gray-700 bg-white dark-mode:text-gray-200 dark-mode:bg-gray-800 flex-shrink-0">
+        <div className="flex-shrink-0 px-8 py-4 flex flex-col">
           <div className="flex items-center justify-between">
             <span className="md:block text-left md:pb-6 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0">
               Picnic shop admin
@@ -34,15 +34,17 @@ const AdminSidebar = (props) => {
 
           <ul className="md:flex-col md:min-w-full flex flex-col list-none">
             <li className="items-center">
-              <Link
+              <NavLink
                 className="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
+                activeClassName="nav-link-active"
+                exact
                 to="/admin"
               >
                 <div className="flex items-center">
                   <span className="material-icons mr-1">dashboard</span>
                   Dashboard
                 </div>
-              </Link>
+              </NavLink>
             </li>
           </ul>
 
@@ -54,26 +56,30 @@ const AdminSidebar = (props) => {
 
           <ul className="md:flex-col md:min-w-full flex flex-col list-none">
             <li className="items-center">
-              <Link
+              <NavLink
                 className="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
+                activeClassName="nav-link-active"
+                exact
                 to="/admin/products"
               >
                 <div className="flex items-center">
                   <span className="material-icons mr-1">inventory_2</span>
                   Products
                 </div>
-              </Link>
+              </NavLink>
             </li>
             <li className="items-center">
-              <Link
+              <NavLink
                 className="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
+                activeClassName="nav-link-active"
+                exact
                 to="/admin/product/create"
               >
                 <div className="flex items-center">
                   <span className="material-icons mr-1">inventory_2</span>
                   Create Product
                 </div>
-              </Link>
+              </NavLink>
             </li>
           </ul>
 
@@ -85,26 +91,30 @@ const AdminSidebar = (props) => {
 
           <ul className="md:flex-col md:min-w-full flex flex-col list-none">
             <li className="items-center">
-              <Link
+              <NavLink
                 className="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
+                activeClassName="nav-link-active"
+                exact
                 to="/admin/promotions"
               >
                 <div className="flex items-center">
                   <span className="material-icons mr-1">inventory_2</span>
                   Promotions
                 </div>
-              </Link>
+              </NavLink>
             </li>
             <li className="items-center">
-              <Link
+              <NavLink
                 className="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
+                activeClassName="nav-link-active"
+                exact
                 to="/admin/promotion/create"
               >
                 <div className="flex items-center">
                   <span className="material-icons mr-1">inventory_2</span>
                   Create Promotion
                 </div>
-              </Link>
+              </NavLink>
             </li>
           </ul>
 
@@ -116,15 +126,17 @@ const AdminSidebar = (props) => {
 
           <ul className="md:flex-col md:min-w-full flex flex-col list-none">
             <li className="items-center">
-              <Link
+              <NavLink
                 className="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
+                activeClassName="nav-link-active"
+                exact
                 to="/admin/orders"
               >
                 <div className="flex items-center">
                   <span className="material-icons mr-1">inventory_2</span>
                   Orders
                 </div>
-              </Link>
+              </NavLink>
             </li>
           </ul>
 
