@@ -79,9 +79,9 @@ const App = () => {
     );
   }
 
-  if (!user) {
-    return <h1>Loading...</h1>;
-  }
+  // if (!user) {
+  //   return <h1>Loading...</h1>;
+  // }
 
   return <Router basename={process.env.PUBLIC_URL}>{routes}</Router>;
 };
