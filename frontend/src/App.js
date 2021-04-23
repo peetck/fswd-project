@@ -68,14 +68,19 @@ const App = () => {
       <Fragment>
         <div className="flex flex-col md:flex-row">
           <AdminSidebar />
-
-          <Route path="/admin" component={AdminRoute} />
-          <Route>
-            <Redirect to="/admin" />
-          </Route>
+          <Switch>
+            <Route path="/admin" component={AdminRoute} />
+            <Route>
+              <Redirect to="/admin" />
+            </Route>
+          </Switch>
         </div>
       </Fragment>
     );
+  }
+
+  if (!user) {
+    return <h1>Loading...</h1>;
   }
 
   return <Router basename={process.env.PUBLIC_URL}>{routes}</Router>;
