@@ -16,6 +16,8 @@ export const createNormalProduct = NormalProductTC.getResolver(
   return next(req);
 });
 
+export const updateNormalProduct = NormalProductTC.getResolver("updateById");
+
 const CreatePromotionProductInput = schemaComposer.createInputTC({
   name: "CreatePromotionProductInput",
   fields: {

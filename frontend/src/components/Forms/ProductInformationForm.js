@@ -47,7 +47,6 @@ const ProductInformationForm = ({ title, description, price, onChange }) => {
           name="images"
           label="Images"
           type="file"
-          multiple
           onChange={(e) => {
             onChange(e);
           }}

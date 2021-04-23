@@ -9,7 +9,7 @@ const Card = ({ title, price, imageUrl }) => {
         <div className=" text-grey-darker text-justify flex flex-col">
           <img
             src={imageUrl}
-            alt="Some image"
+            alt="can't load img"
             className="w-44 h-44 flex self-center shadow-lg object-cover"
           />
           <div className="flex items-center justify-between mt-2">
