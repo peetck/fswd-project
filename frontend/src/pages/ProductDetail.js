@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 
-import { PRODUCT_BY_TITLE_QUERY } from "../graphql/queries/productByTitle";
+import { PRODUCT_QUERY } from "../graphql/queries/product";
 import { NORMAL_PRODUCTS_PAGINATION_QUERY } from "../graphql/queries/normalProductsPagination";
 import { useUserContext } from "../contexts/UserContext";
 
@@ -23,18 +23,20 @@ const ProductDetail = () => {
   // ลบทีหลัง
   const [index, setIndex] = useState(0);
 
-  const { data: product, loading, error } = useQuery(PRODUCT_BY_TITLE_QUERY, {
+  const { data: product, loading, error } = useQuery(PRODUCT_QUERY, {
     variables: {
       title: productSlug,
     },
   });
+
+  console.log(product);
 
   useEffect(() => {
     if (product) {
       const colorArr = [];
       const sizeArr = [];
 
-      for (let prod of product.productByTitle.stock) {
+      for (let prod of product.product.stock) {
         if (!colorArr.includes(prod.color)) {
           colorArr.push(prod.color);
         }
@@ -49,12 +51,12 @@ const ProductDetail = () => {
   }, [product]);
 
   const handleQuantity = (n) => {
-    if (quantity + n <= 0 || quantity + n > product.productByTitle.quantity) {
+    if (quantity + n <= 0 || quantity + n > product.product.quantity) {
       return;
     }
 
     if (selectedColor && selectedSize) {
-      const prod = product.productByTitle.stock.find(
+      const prod = product.product.stock.find(
         (p) => p.color === selectedColor && p.size === selectedSize
       );
       if (quantity + n > prod.quantity) {
@@ -70,7 +72,7 @@ const ProductDetail = () => {
       cart.find((c) => c.color === selectedColor && c.size === selectedSize)
         ?.quantity ?? 0;
 
-    const prod = product.productByTitle.stock.find(
+    const prod = product.product.stock.find(
       (p) => p.color === selectedColor && p.size === selectedSize
     );
 
@@ -81,7 +83,7 @@ const ProductDetail = () => {
     }
 
     await updateCart(
-      product.productByTitle._id,
+      product.product._id,
       quantity,
       false,
       selectedColor,
@@ -91,7 +93,7 @@ const ProductDetail = () => {
 
   useEffect(() => {
     if (selectedColor && selectedSize) {
-      const prod = product.productByTitle.stock.find(
+      const prod = product.product.stock.find(
         (p) => p.color === selectedColor && p.size === selectedSize
       );
       const quantityInCart =
@@ -115,7 +117,7 @@ const ProductDetail = () => {
 
   // // Increase of quantity
   // const increaseQuantity = () => {
-  //   if (quantity < product.productByTitle.quantity) setQuantity(quantity + 1);
+  //   if (quantity < product.product.quantity) setQuantity(quantity + 1);
   // };
 
   // // Reduce of quantity
@@ -126,7 +128,7 @@ const ProductDetail = () => {
   // // Change image
   // const changeImage = (e) => {
   //   let id = Number(e.target.id);
-  //   if (id < product?.productByTitle.images.length) setIndex(id);
+  //   if (id < product?.product.images.length) setIndex(id);
   // };
 
   return (
@@ -137,16 +139,21 @@ const ProductDetail = () => {
             <div className="w-full h-64 md:w-1/2 lg:h-96">
               <img
                 className="h-full w-full rounded-md object-cover max-w-lg mx-auto"
-                src={`${product?.productByTitle.images[index]}`}
+                src={`${product?.product.images[index]}`}
                 alt="Nike Air"
               />
             </div>
             <div className="w-full max-w-lg mx-auto mt-5 md:ml-8 md:mt-0 md:w-1/2">
               <h3 className="text-gray-700 uppercase text-lg">
-                {product?.productByTitle.title}
+                {product?.product.title}
               </h3>
               <span className="text-gray-500 mt-3">
-                {product?.productByTitle.price} THB
+                $
+                {product?.product?.type === "NormalProduct"
+                  ? product?.product?.price
+                  : product?.product?.priceAfterPromotion +
+                    " from $" +
+                    product?.product?.price}
               </span>
               <hr className="my-3" />
 
@@ -156,7 +163,7 @@ const ProductDetail = () => {
                 </label>
                 <div className="flex items-center mt-1">
                   {colors?.map((color) => {
-                    for (let prod of product.productByTitle.stock) {
+                    for (let prod of product.product.stock) {
                       if (
                         (selectedSize ? prod.size === selectedSize : true) &&
                         prod.color === color &&
@@ -164,6 +171,7 @@ const ProductDetail = () => {
                       ) {
                         return (
                           <button
+                            key={color}
                             className={`${
                               color === selectedColor
                                 ? "border-indigo-600"
@@ -203,6 +211,7 @@ const ProductDetail = () => {
                     }
                     return (
                       <button
+                        key={color}
                         disabled
                         className="bg-white text-sm text-gray-400 font-semibold py-2 px-5 rounded shadow border border-gray-200 mr-1"
                       >
@@ -218,7 +227,7 @@ const ProductDetail = () => {
                 </label>
                 <div className="flex items-center mt-1">
                   {sizes?.map((size) => {
-                    for (let prod of product.productByTitle.stock) {
+                    for (let prod of product.product.stock) {
                       if (
                         (selectedColor ? prod.color === selectedColor : true) &&
                         prod.size === size &&
@@ -226,6 +235,7 @@ const ProductDetail = () => {
                       ) {
                         return (
                           <button
+                            key={size}
                             className={`${
                               size === selectedSize
                                 ? "border border-indigo-600"
@@ -265,6 +275,7 @@ const ProductDetail = () => {
                     }
                     return (
                       <button
+                        key={size}
                         disabled
                         className="bg-white text-sm text-gray-400 font-semibold py-2 px-5 rounded shadow border border-gray-200 mr-1"
                       >

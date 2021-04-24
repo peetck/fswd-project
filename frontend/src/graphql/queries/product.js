@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
-export const PRODUCT_BY_TITLE_QUERY = gql`
+export const PRODUCT_QUERY = gql`
   query($title: String!) {
-    productByTitle(filter: { title: $title }) {
+    product(filter: { title: $title }) {
       _id
       title
       description
@@ -15,7 +15,10 @@ export const PRODUCT_BY_TITLE_QUERY = gql`
       }
       quantity
       createdAt
-      type
+      ... on PromotionProduct {
+        percent
+        priceAfterPromotion
+      }
     }
   }
 `;

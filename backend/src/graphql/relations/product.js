@@ -1,4 +1,4 @@
-import { ProductTC } from "../../models";
+import { ProductTC, PromotionProductTC } from "../../models";
 
 ProductTC.addFields({
   quantity: {
@@ -12,5 +12,16 @@ ProductTC.addFields({
       return quantity;
     },
     projection: { stock: true },
+  },
+});
+
+PromotionProductTC.addFields({
+  priceAfterPromotion: {
+    type: "Float",
+    resolve: (source) => {
+      const { price, percent } = source;
+      return price - (price * percent) / 100;
+    },
+    projection: { percent: true, price: true },
   },
 });

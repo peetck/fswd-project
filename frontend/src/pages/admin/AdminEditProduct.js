@@ -3,7 +3,6 @@ import { useQuery, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
 
 import ProductForm from "../../components/Forms/ProductForm";
-import { PRODUCT_BY_TITLE_QUERY } from "../../graphql/queries/productByTitle";
 
 const AdminEditProduct = () => {
   const { productId } = useParams();

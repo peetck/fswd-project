@@ -26,7 +26,7 @@ export const UserContextProvider = (props) => {
               images
               type
               percent
-              finalPrice
+              priceAfterPromotion
             }
           }
         }

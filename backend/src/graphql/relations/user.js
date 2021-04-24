@@ -10,7 +10,7 @@ import {
   PromotionProductModel,
 } from "../../models";
 
-UserTC.addRelation("orders", {
+CustomerUserTC.addRelation("orders", {
   resolver: () => OrderTC.getResolver("findMany"),
   prepareArgs: {
     filter: (source) => ({ userId: source._id }),
@@ -33,7 +33,7 @@ CustomerUserTC.getFieldOTC("cart").addRelation("product", {
           images: "[String!]!",
           type: "String!",
           percent: "Float!",
-          finalPrice: "Float!",
+          priceAfterPromotion: "Float!",
         },
       }),
       resolve: async ({ args }) => {
@@ -41,7 +41,7 @@ CustomerUserTC.getFieldOTC("cart").addRelation("product", {
 
         const product = await ProductModel.findById(_id);
 
-        let finalPrice = product.price;
+        let priceAfterPromotion = product.price;
         let percent;
 
         if (product.type === "PromotionProduct") {
@@ -49,7 +49,7 @@ CustomerUserTC.getFieldOTC("cart").addRelation("product", {
 
           percent = promotionProduct.percent;
 
-          finalPrice -= finalPrice * (percent / 100);
+          priceAfterPromotion -= priceAfterPromotion * (percent / 100);
         }
 
         return {
@@ -58,7 +58,7 @@ CustomerUserTC.getFieldOTC("cart").addRelation("product", {
           images: product.images,
           type: product.type,
           percent: percent || 0,
-          finalPrice: finalPrice,
+          priceAfterPromotion: priceAfterPromotion,
         };
       },
     }),
