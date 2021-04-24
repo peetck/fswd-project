@@ -1,2 +1,4 @@
 import "./user";
-import './product'
+import "./product";
+import "./cart";
+import "./order";

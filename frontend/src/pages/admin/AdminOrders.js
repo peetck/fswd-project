@@ -10,17 +10,20 @@ const AdminOrders = () => {
         orders {
           _id
           products {
-            product {
-              title
-              type
-              price
-            }
+            title
+            type
+            priceAfterDiscount
+            percent
+            price
+            quantity
+            color
+            size
           }
           totalPrice
-          userId
           deliveryAddress
           status
           createdAt
+          userId
         }
       }
     `

@@ -58,7 +58,7 @@ const AdminProducts = () => {
                     </td>
                     <td className="py-3 px-6 text-center">
                       <span className="bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs">
-                        x{product.quantity}
+                        x{product.totalStock}
                       </span>
                     </td>
                     <td className="py-3 px-6 text-center">

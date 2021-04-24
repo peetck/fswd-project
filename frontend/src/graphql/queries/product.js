@@ -13,11 +13,12 @@ export const PRODUCT_QUERY = gql`
         color
         size
       }
-      quantity
+      totalStock
       createdAt
+      type
       ... on PromotionProduct {
         percent
-        priceAfterPromotion
+        priceAfterDiscount
       }
     }
   }

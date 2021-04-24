@@ -5,28 +5,33 @@ import jwt_decode from "jwt-decode";
 
 import { LOGIN_MUTATION } from "../graphql/mutations/login";
 import { REGISTER_MUTATION } from "../graphql/mutations/register";
-import { UPDATE_PRODUCT_IN_CART_MUTATION } from "../graphql/mutations/updateProductInCart";
 
 const UserContext = createContext();
 
 export const UserContextProvider = (props) => {
   const [user, setUser] = useState(null);
+  // กลับมาเปลี่ยน วิธีการ query
   const [fetchCart, { data: cart, refetch: refetchCart }] = useLazyQuery(
     gql`
       query($_id: MongoID!) {
         customerUser(_id: $_id) {
           cart {
-            productId
-            quantity
-            color
-            size
-            product {
-              title
-              price
-              images
-              type
-              percent
-              priceAfterPromotion
+            _id
+            products {
+              productId
+              quantity
+              color
+              size
+              product {
+                title
+                price
+                images
+                type
+                ... on PromotionProduct {
+                  percent
+                  priceAfterDiscount
+                }
+              }
             }
           }
         }
@@ -45,11 +50,19 @@ export const UserContextProvider = (props) => {
     }
   }, [user]);
 
+  console.log(cart);
+
   const [cookies, setCookie, removeCookie] = useCookies(["fswd-token"]);
 
   const [login] = useMutation(LOGIN_MUTATION);
   const [register] = useMutation(REGISTER_MUTATION);
-  const [updateProductInCart] = useMutation(UPDATE_PRODUCT_IN_CART_MUTATION);
+  const [updateCart] = useMutation(gql`
+    mutation($_id: MongoID!, $products: [UpdateByIdCartProductsInput!]!) {
+      updateCart(_id: $_id, record: { products: $products }) {
+        recordId
+      }
+    }
+  `);
 
   useEffect(() => {
     const token = cookies["fswd-token"];
@@ -99,19 +112,47 @@ export const UserContextProvider = (props) => {
   const handleUpdateCart = async (
     productId,
     quantity,
-    replace,
     color,
-    size
+    size,
+    replace
   ) => {
     try {
-      await updateProductInCart({
-        variables: {
-          userId: user._id,
+      const products = cart?.customerUser?.cart?.products.map((prod) => ({
+        productId: prod.productId,
+        color: prod.color,
+        size: prod.size,
+        quantity: prod.quantity,
+      }));
+
+      const productIndex = products.findIndex(
+        (prod) =>
+          prod.productId === productId &&
+          prod.color === color &&
+          prod.size === size
+      );
+
+      if (productIndex !== -1) {
+        if (quantity > 0) {
+          products[productIndex] = {
+            ...products[productIndex],
+            quantity: products[productIndex].quantity + (!replace && quantity),
+          };
+        } else {
+          products.splice(productIndex, 1);
+        }
+      } else {
+        products.push({
           productId: productId,
-          quantity: +quantity,
-          replace: replace,
           color: color,
-          size: +size,
+          size: size,
+          quantity: quantity,
+        });
+      }
+
+      await updateCart({
+        variables: {
+          _id: cart?.customerUser?.cart?._id,
+          products: products,
         },
       });
       await refetchCart();
@@ -125,7 +166,7 @@ export const UserContextProvider = (props) => {
       value={{
         user: user,
         token: cookies["fswd-token"],
-        cart: cart?.customerUser?.cart ?? [],
+        cart: cart?.customerUser?.cart?.products ?? [],
         login: handleLogin,
         register: handleRegister,
         logout: handleLogout,

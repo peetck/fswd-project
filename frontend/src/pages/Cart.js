@@ -34,7 +34,6 @@ const Cart = () => {
             </div>
             {cart.map((product, index) => (
               <>
-
                 <div className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
                   <div className="flex w-2/5">
                     <div className="w-20">
@@ -57,9 +56,9 @@ const Cart = () => {
                           updateCart(
                             product.productId,
                             0,
-                            true,
                             product.color,
-                            product.size
+                            product.size,
+                            true
                           )
                         }
                       >
@@ -89,10 +88,16 @@ const Cart = () => {
                     </svg>
                   </div>
                   <span className="text-center w-1/5 font-semibold text-sm">
-                    THB{product.product.price}
+                    $
+                    {product.product.type === "NormalProduct"
+                      ? product.product.price
+                      : product.product.priceAfterDiscount}
                   </span>
                   <span className="text-center w-1/5 font-semibold text-sm">
-                    THB{product.product.price * product.quantity}
+                    $
+                    {product.product.type === "NormalProduct"
+                      ? product.product.price * product.quantity
+                      : product.product.priceAfterDiscount * product.quantity}
                   </span>
                 </div>
               </>
@@ -114,22 +119,48 @@ const Cart = () => {
               Order Summary
             </h1>
             <div className="flex justify-between mt-10 mb-5">
-              <span className="font-semibold text-sm uppercase">Items 3</span>
-              <span className="font-semibold text-sm">THB9999</span>
+              <span className="font-semibold text-sm uppercase">
+                Items {cart.length}
+              </span>
+              <span className="font-semibold text-sm">
+                $
+                {cart.reduce((prev, product) => {
+                  if (product.product.type === "PromotionProduct") {
+                    return (
+                      prev +
+                      product.product.priceAfterDiscount * product.quantity
+                    );
+                  } else {
+                    return prev + product.product.price * product.quantity;
+                  }
+                }, 0)}
+              </span>
             </div>
             <div>
               <label className="font-medium inline-block mb-3 text-sm uppercase">
                 Shipping
               </label>
               <select className="block p-2 text-gray-600 w-full text-sm">
-                <option>Standard shipping - THB40</option>
+                <option>Free Delivery</option>
               </select>
             </div>
 
             <div className="border-t mt-8">
               <div className="flex font-semibold justify-between py-6 text-sm uppercase mt-20">
                 <span>Total cost</span>
-                <span>THB9999</span>
+                <span>
+                  $
+                  {cart.reduce((prev, product) => {
+                    if (product.product.type === "PromotionProduct") {
+                      return (
+                        prev +
+                        product.product.priceAfterDiscount * product.quantity
+                      );
+                    } else {
+                      return prev + product.product.price * product.quantity;
+                    }
+                  }, 0)}
+                </span>
               </div>
               <Link to="/checkout">
                 <button className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">

@@ -13,12 +13,14 @@ const CustomerOrders = () => {
         orders(filter: { userId: $userId }) {
           _id
           products {
-            product {
-              title
-              type
-              price
-            }
+            title
+            type
+            priceAfterDiscount
+            percent
+            price
             quantity
+            color
+            size
           }
           totalPrice
           deliveryAddress
@@ -38,7 +40,7 @@ const CustomerOrders = () => {
     return <h1>Loading...</h1>;
   }
 
-  console.log(data.orders);
+  console.log(data);
 
   return (
     <div>

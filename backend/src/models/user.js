@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "mongoose-bcrypt";
+import { CartModel } from "./cart";
 import { composeWithMongooseDiscriminators } from "graphql-compose-mongoose";
 
 const { Schema } = mongoose;
@@ -34,29 +35,6 @@ const UserSchema = new Schema({
 UserSchema.plugin(bcrypt);
 UserSchema.set("discriminatorKey", DKey);
 
-export const CartSchema = new Schema(
-  {
-    productId: {
-      type: ObjectId,
-      required: true,
-      ref: "Product",
-    },
-    color: {
-      type: String,
-      required: true,
-    },
-    size: {
-      type: Number,
-      required: true,
-    },
-    quantity: {
-      type: Number,
-      required: true,
-    },
-  },
-  { _id: false }
-);
-
 const CustomerUserSchema = new Schema({
   email: {
     type: String,
@@ -79,7 +57,12 @@ const CustomerUserSchema = new Schema({
   avatar: {
     type: String,
   },
-  cart: [CartSchema],
+});
+
+CustomerUserSchema.pre("save", async function (next) {
+  const cart = new CartModel({ userId: this._id, products: [] });
+  await cart.save();
+  next();
 });
 
 const AdminUserSchema = new Schema({});

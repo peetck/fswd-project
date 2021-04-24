@@ -3,7 +3,7 @@ import { composeWithMongooseDiscriminators } from "graphql-compose-mongoose";
 
 const { Schema } = mongoose;
 
-const enumProductType = {
+export const enumProductType = {
   NORMAL: "NormalProduct",
   PROMOTION: "PromotionProduct",
 };

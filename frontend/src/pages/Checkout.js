@@ -1,23 +1,39 @@
 import React from "react";
-import { useMutation } from "@apollo/client";
+import { useMutation, gql } from "@apollo/client";
 
-import { CREATE_ORDER_MUTATION } from "../graphql/mutations/createOrder";
 import { useUserContext } from "../contexts/UserContext";
 
 const Checkout = () => {
-  const { user, cart, refetchCart } = useUserContext();
+  const { user, cart, refetchCart, token } = useUserContext();
 
-  const [createOrder] = useMutation(CREATE_ORDER_MUTATION);
+  const [createOrder] = useMutation(
+    gql`
+      mutation($userId: MongoID!, $deliveryAddress: String!) {
+        createOrder(
+          record: { userId: $userId, deliveryAddress: $deliveryAddress }
+        ) {
+          recordId
+        }
+      }
+    `
+  );
 
   const handleConfirm = async () => {
     await createOrder({
       variables: {
-        deliveryAddress: "DUMMY ADDRESS",
         userId: user._id,
+        deliveryAddress: "DUMMY ADDRESS",
+      },
+      context: {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
     });
     await refetchCart();
   };
+
+  console.log(cart);
 
   return (
     <div>

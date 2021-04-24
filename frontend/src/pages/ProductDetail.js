@@ -51,7 +51,7 @@ const ProductDetail = () => {
   }, [product]);
 
   const handleQuantity = (n) => {
-    if (quantity + n <= 0 || quantity + n > product.product.quantity) {
+    if (quantity + n <= 0 || quantity + n > product.product.totalStock) {
       return;
     }
 
@@ -85,9 +85,9 @@ const ProductDetail = () => {
     await updateCart(
       product.product._id,
       quantity,
-      false,
       selectedColor,
-      selectedSize
+      selectedSize,
+      false
     );
   };
 
@@ -117,7 +117,7 @@ const ProductDetail = () => {
 
   // // Increase of quantity
   // const increaseQuantity = () => {
-  //   if (quantity < product.product.quantity) setQuantity(quantity + 1);
+  //   if (quantity < product.product.totalStock) setQuantity(quantity + 1);
   // };
 
   // // Reduce of quantity
@@ -151,7 +151,7 @@ const ProductDetail = () => {
                 $
                 {product?.product?.type === "NormalProduct"
                   ? product?.product?.price
-                  : product?.product?.priceAfterPromotion +
+                  : product?.product?.priceAfterDiscount +
                     " from $" +
                     product?.product?.price}
               </span>

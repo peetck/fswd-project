@@ -1,7 +1,7 @@
 import { ProductTC, PromotionProductTC } from "../../models";
 
 ProductTC.addFields({
-  quantity: {
+  totalStock: {
     type: "Int",
     resolve: (source) => {
       const { stock } = source;
@@ -16,7 +16,7 @@ ProductTC.addFields({
 });
 
 PromotionProductTC.addFields({
-  priceAfterPromotion: {
+  priceAfterDiscount: {
     type: "Float",
     resolve: (source) => {
       const { price, percent } = source;

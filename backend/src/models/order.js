@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { composeWithMongoose } from "graphql-compose-mongoose";
+import { enumProductType } from "./product";
 
 const { Schema } = mongoose;
 
@@ -7,31 +8,36 @@ const ObjectId = Schema.Types.ObjectId;
 
 export const ProductInOrderSchema = new Schema(
   {
-    product: {
-      title: {
-        type: String,
-        required: true,
-      },
-      type: {
-        type: String,
-        required: true,
-      },
-      price: {
-        type: Number,
-        required: true,
-      },
-      color: {
-        type: String,
-        required: true,
-      },
-      size: {
-        type: Number,
-        required: true,
-      },
+    title: {
+      type: String,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    priceAfterDiscount: {
+      type: Number,
+    },
+    percent: {
+      type: Number,
+    },
+    color: {
+      type: String,
+      required: true,
+    },
+    size: {
+      type: Number,
+      required: true,
     },
     quantity: {
       type: Number,
       required: true,
+    },
+    type: {
+      type: String,
+      required: true,
+      enum: Object.values(enumProductType),
     },
   },
   { _id: false }
@@ -45,9 +51,6 @@ const OrderSchema = new Schema(
         required: true,
       },
     ],
-    totalPrice: {
-      type: Number,
-    },
     deliveryAddress: {
       type: String,
       required: true,

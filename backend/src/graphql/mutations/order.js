@@ -6,77 +6,36 @@ import {
   OrderModel,
   ProductModel,
   PromotionProductModel,
+  CartModel,
 } from "../../models";
 
-// export const createOrder = OrderTC.getResolver("createOne").wrapResolve(
-//   (next) => (req) => {
-//     console.log(req);
-//     return next(req);
-//   }
-// );
+export const createOrder = OrderTC.getResolver("createOne").wrapResolve(
+  (next) => async (req) => {
+    if (!req?.context?.user) {
+      throw new Error("Unauthorized.");
+    }
 
-const CreateOrderInput = schemaComposer.createInputTC({
-  name: "CreateOrderInput",
-  fields: {
-    userId: "MongoID!",
-    deliveryAddress: "String!",
-  },
-});
+    const userId = req?.args?.record?.userId;
 
-const CreateOrderPayload = schemaComposer.createObjectTC({
-  name: "CreateOrderPayload",
-  fields: {
-    success: "Boolean!",
-  },
-});
+    const cart = await CartModel.findOne({ userId: userId });
 
-export const createOrder = schemaComposer.createResolver({
-  name: "createOrder",
-  args: {
-    record: CreateOrderInput,
-  },
-  type: CreateOrderPayload,
-  resolve: async ({ args }) => {
-    const { record } = args;
-
-    const { userId, deliveryAddress } = record;
-
-    const user = await CustomerUserModel.findById(userId);
-
-    if (!user) {
-      throw new UserInputError(`UserId ${userId} not found`);
+    if (cart.products.length === 0) {
+      throw new Error("Cart is empty.");
     }
 
     const products = [];
-    const cart = [...user.cart];
 
-    if (cart.length === 0) {
-      throw new Error("cart is empty.");
-    }
-
-    let totalPrice = 0;
-
-    for (let cartItem of cart) {
-      const product = await ProductModel.findById(cartItem.productId);
-      let price = product.price;
-
-      if (product.type === "PromotionProduct") {
-        const promotionProduct = await PromotionProductModel.findById(
-          cartItem.productId
-        );
-        price *= promotionProduct.percent / 100;
-      }
-
-      totalPrice += price * cartItem.quantity;
+    for (let cartProduct of cart.products) {
+      const product = await ProductModel.findById(cartProduct.productId);
 
       const stock = [...product.stock];
 
       for (let i in stock) {
         if (
-          stock[i].color === cartItem.color &&
-          stock[i].size === cartItem.size
+          stock[i].color === cartProduct.color &&
+          stock[i].size === cartProduct.size
         ) {
-          stock[i].quantity -= cartItem.quantity;
+          stock[i].quantity -= cartProduct.quantity;
           break;
         }
       }
@@ -85,33 +44,52 @@ export const createOrder = schemaComposer.createResolver({
 
       await product.save();
 
-      products.push({
-        product: {
+      const price = product.price;
+
+      if (product.type === "PromotionProduct") {
+        const promotionProduct = await PromotionProductModel.findById(
+          cartProduct.productId
+        );
+        const percent = promotionProduct.percent;
+        const priceAfterDiscount = price * (promotionProduct.percent / 100);
+
+        products.push({
           title: product.title,
           type: product.type,
           price: price,
-          color: cartItem.color,
-          size: cartItem.size,
-        },
-        quantity: cartItem.quantity,
-      });
+          priceAfterDiscount: priceAfterDiscount,
+          percent: percent,
+          color: cartProduct.color,
+          size: cartProduct.size,
+          quantity: cartProduct.quantity,
+        });
+      } else {
+        products.push({
+          title: product.title,
+          type: product.type,
+          price: price,
+          color: cartProduct.color,
+          size: cartProduct.size,
+          quantity: cartProduct.quantity,
+        });
+      }
     }
 
-    const order = new OrderModel({
-      userId,
-      status: false,
-      deliveryAddress,
-      totalPrice: totalPrice,
-      products: products,
+    const deliveryAddress = req?.args?.record?.deliveryAddress;
+
+    cart.products = [];
+
+    await cart.save();
+
+    return next({
+      ...req,
+      args: {
+        record: {
+          userId: userId,
+          products: products,
+          deliveryAddress: deliveryAddress,
+        },
+      },
     });
-
-    await order.save();
-
-    user.cart = [];
-    await user.save();
-
-    return {
-      success: true,
-    };
-  },
-});
+  }
+);
