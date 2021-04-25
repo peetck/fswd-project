@@ -21,7 +21,7 @@ const AdminOrders = () => {
           }
           totalPrice
           deliveryAddress
-          status
+          deliveryStatus
           createdAt
           userId
         }
@@ -48,7 +48,7 @@ const AdminOrders = () => {
                       <th className="py-3 px-6 text-left">OrderId</th>
                       <th className="py-3 px-6 text-left">UserId</th>
                       <th className="py-3 px-6 text-center">Total price</th>
-                      <th className="py-3 px-6 text-center">Status</th>
+                      <th className="py-3 px-6 text-center">Delivery Status</th>
                       <th className="py-3 px-6 text-center">Detail</th>
                     </tr>
                   </thead>
@@ -80,13 +80,13 @@ const AdminOrders = () => {
                         </td>
                         <td className="py-3 px-6 text-center">
                           <div className="flex items-center justify-center">
-                            {String(order.status) === "false" ? (
+                            {String(order.deliveryStatus) === "false" ? (
                               <span className="bg-red-200 text-red-600 py-1 px-3 rounded-full text-xs">
-                                {String(order.status)}
+                                {String(order.deliveryStatus)}
                               </span>
                             ) : (
                               <span className="bg-green-200 text-green-600 py-1 px-4 rounded-full text-xs">
-                                {String(order.status)}
+                                {String(order.deliveryStatus)}
                               </span>
                             )}
                           </div>

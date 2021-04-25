@@ -52,7 +52,6 @@ const CustomerUserSchema = new Schema({
       FEMALE: "Female",
       OTHER: "Other",
     },
-    required: true,
   },
   avatar: {
     type: String,

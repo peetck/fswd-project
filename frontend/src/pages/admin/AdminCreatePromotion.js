@@ -65,9 +65,16 @@ const AdminCreatePromotion = () => {
               name="percentageDiscount"
               placeholder="Percentage discount"
               label="Percentage discount"
-              type="number"
+              type="text"
               value={percent}
-              onChange={(e) => setPercent(e.target.value)}
+              onChange={(e) => {
+                if (
+                  !e.target.value ||
+                  e.target.value.match(/^\d{1,}(\.\d{0,2})?$/)
+                ) {
+                  setPercent(e.target.value.replace(/^0+/, ""));
+                }
+              }}
             />
           </div>
         </div>
