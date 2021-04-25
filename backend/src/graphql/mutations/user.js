@@ -3,3 +3,5 @@ import { schemaComposer } from "graphql-compose";
 
 export const createCustomerUser = CustomerUserTC.getResolver("createOne");
 export const createAdminUser = AdminUserTC.getResolver("createOne");
+
+export const updateCustomerUser = CustomerUserTC.getResolver("updateById");

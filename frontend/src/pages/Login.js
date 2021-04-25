@@ -15,8 +15,12 @@ const LoginPage = (props) => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    await login(username, password);
-    history.push("/");
+    try {
+      await login(username, password);
+      history.push("/");
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (
