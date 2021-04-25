@@ -70,13 +70,13 @@ const CustomerOrders = () => {
                 <div className="font-semibold">Order ID : {order._id}</div>
                 <div className="flex flex-row-reverse ">
                   <p className="border-l ml-5 pl-5">{order.createdAt}</p>
-                  <p>[Shiping] Free Delivery</p>
+                  <p className="">[Shiping] Free Delivery</p>
                 </div>
               </div>
 
-              <div className="flex justify-between mb-10">
-                <div className="pl-20 flex-1">
-                  <h1 className="text-4xl">Order Total : {order.totalPrice}</h1>
+              <div className=" flex justify-between mb-10">
+                <div className="md:pl-20 flex-1">
+                  <h1 className="text-4xl">Order Total : THB {order.totalPrice}</h1>
                   {order.paymentMethod === "CashOnDelivery"? 
                   <h1>Payment Method : Cash on delivery</h1>
                   :

@@ -136,14 +136,23 @@ const ProductDetail = () => {
       <div className="lg:ml-28 lg:mr-28  mb-10  justify-between sm:flex sm:items-center md:flex md:items-center">
         <div>
           <div className="flex ">
-            <div className="text-6xl">{product && product.product.title}</div>
+            <div className="md:text-6xl">{product && product.product.title}</div>
           </div>
           <div className="flex mt-5">
             <div className="text-gray-500">{product && product.product.description}</div>
           </div>
           <div className="flex mt-24">
             <h1 className="text-gray-500">Price :</h1>
+            {product && product.product.type === "PromotionProduct"?
+            <div className="flex">
+              <h1 className="text-xl ml-5 ">THB {product && product.product.priceAfterDiscount}</h1>
+              <h1 className="text-xl ml-5 text-gray-500 line-through">THB {product && product.product.price}</h1>
+            
+            </div>
+            :
             <h1 className="text-xl ml-5">THB {product && product.product.price}</h1>
+          }
+            
           </div>
           <div className="flex mt-5">
           <h1 className="text-gray-500 mt-2">Color :</h1>
