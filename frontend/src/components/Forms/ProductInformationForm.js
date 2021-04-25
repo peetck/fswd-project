@@ -34,7 +34,7 @@ const ProductInformationForm = ({ title, description, price, onChange }) => {
         <Input
           name="price"
           label="Price"
-          type="number"
+          type="text"
           value={price}
           onChange={(e) => {
             onChange(e);

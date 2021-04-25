@@ -8,34 +8,33 @@ const CustomerOrderDetail = () => {
   // TODO: fetch order
   const { data, loading } = useQuery(
     gql`
-    query($order_Id: MongoID!){
-      order( _id:$order_Id){
-        products {
-          title,
-          price,
-          priceAfterDiscount,
-          percent,
-          color,
-          size,
-          quantity,
-          type
-        },
-        deliveryAddress,
-        status,
-        userId,
-        updatedAt,
-        createdAt,
-        totalPrice
-
+      query($order_Id: MongoID!) {
+        order(_id: $order_Id) {
+          products {
+            title
+            price
+            priceAfterDiscount
+            percent
+            color
+            size
+            quantity
+            type
+          }
+          deliveryAddress
+          deliveryStatus
+          userId
+          updatedAt
+          createdAt
+          totalPrice
+        }
       }
-    }
     `,
     {
       variables: {
-        order_Id: orderId
-      }
+        order_Id: orderId,
+      },
     }
-  )
+  );
   console.log(data)
 
   return (
@@ -54,7 +53,7 @@ const CustomerOrderDetail = () => {
                 Create order at : {data && data.order.createdAt}
                 </div>
             </div>
-            <div className="flex pl-20 pr-20 uppercase  text-gray-600 text-xs m-10"> 
+            <div className="flex pl-20 pr-20 uppercase  text-gray-600 text-xs m-10">
             <div className="w-3/12 ">
               Title
               </div>
@@ -80,10 +79,10 @@ const CustomerOrderDetail = () => {
               Discount?
               </div>
               </div>
-          
+
                 {data && data.order.products.map((product, index) => (
                   <>
-                    <div className="flex pl-20 pr-20 m-10 p-5 border-b shadow"> 
+                    <div className="flex pl-20 pr-20 m-10 p-5 border-b shadow">
                       <div className="w-3/12">
                         {product.title}
                       </div >
@@ -96,7 +95,7 @@ const CustomerOrderDetail = () => {
                       <div className="w-1/12 pl-5">
                         {product.quantity}
                       </div>
-                      
+
 
                       {product.type === 'PromotionProduct' ?
                         <>
@@ -140,9 +139,9 @@ const CustomerOrderDetail = () => {
                       {data && data.order.updatedAt ? <h1>Update Status At : {data.order.updatedAt}</h1>:<></>}
 
                     </div>
-                    
+
                   </div>
-           
+
           </div>
         </div>
       </div>

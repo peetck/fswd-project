@@ -76,6 +76,7 @@ export const createOrder = OrderTC.getResolver("createOne").wrapResolve(
     }
 
     const deliveryAddress = req?.args?.record?.deliveryAddress;
+    const paymentMethod = req?.args?.record?.paymentMethod;
 
     cart.products = [];
 
@@ -88,6 +89,7 @@ export const createOrder = OrderTC.getResolver("createOne").wrapResolve(
           userId: userId,
           products: products,
           deliveryAddress: deliveryAddress,
+          paymentMethod: paymentMethod,
         },
       },
     });

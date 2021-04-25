@@ -55,9 +55,14 @@ const OrderSchema = new Schema(
       type: String,
       required: true,
     },
-    status: {
+    deliveryStatus: {
       type: Boolean,
       default: false,
+    },
+    paymentMethod: {
+      type: String,
+      required: true,
+      enum: ["CreditCard", "CashOnDelivery"],
     },
     userId: {
       type: ObjectId,

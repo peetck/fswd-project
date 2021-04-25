@@ -48,7 +48,7 @@ const Navbar = (props) => {
                   >
                     <span className="material-icons mr-1">shopping_cart</span>{" "}
                     cart(
-                    {cart.length})
+                    {cart?.products?.length})
                   </Link>
                 </li>
 

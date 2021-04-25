@@ -17,6 +17,7 @@ export const UserContextProvider = (props) => {
         customerUser(_id: $_id) {
           cart {
             _id
+            totalPrice
             products {
               productId
               quantity
@@ -166,7 +167,7 @@ export const UserContextProvider = (props) => {
       value={{
         user: user,
         token: cookies["fswd-token"],
-        cart: cart?.customerUser?.cart?.products ?? [],
+        cart: cart?.customerUser?.cart,
         login: handleLogin,
         register: handleRegister,
         logout: handleLogout,

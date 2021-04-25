@@ -69,7 +69,7 @@ const ProductDetail = () => {
 
   const addToCart = async () => {
     const quantityInCart =
-      cart.find((c) => c.color === selectedColor && c.size === selectedSize)
+      cart?.products.find((c) => c.color === selectedColor && c.size === selectedSize)
         ?.quantity ?? 0;
 
     const prod = product.product.stock.find(
@@ -97,7 +97,7 @@ const ProductDetail = () => {
         (p) => p.color === selectedColor && p.size === selectedSize
       );
       const quantityInCart =
-        cart.find((c) => c.color === selectedColor && c.size === selectedSize)
+        cart?.products.find((c) => c.color === selectedColor && c.size === selectedSize)
           ?.quantity ?? 0;
 
       if (quantity + quantityInCart > prod.quantity) {

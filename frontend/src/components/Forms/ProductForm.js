@@ -28,8 +28,8 @@ const ProductForm = ({ product }) => {
       : []
   );
   const [color, setColor] = useState("");
-  const [size, setSize] = useState(0);
-  const [quantity, setQuantity] = useState(0);
+  const [size, setSize] = useState("");
+  const [quantity, setQuantity] = useState("");
 
   const { token } = useUserContext();
 
@@ -119,18 +119,15 @@ const ProductForm = ({ product }) => {
   };
 
   const handleAddToStock = () => {
-    if (color.trim() === "" || size.trim() === "" || quantity.trim() === "") {
+    if (color.trim() === "") {
       return;
     }
     for (let i of stock) {
-      if (i.color === color && i.size === size) {
+      if (i.color === color && i.size === +size) {
         return;
       }
     }
-    setStock((prev) => [
-      ...prev,
-      { size: Number(size), color, quantity: Number(quantity) },
-    ]);
+    setStock((prev) => [...prev, { size: +size, color, quantity: +quantity }]);
     setColor("");
     setQuantity("");
     setSize("");
@@ -160,7 +157,7 @@ const ProductForm = ({ product }) => {
                 } else if (e.target.name === "description") {
                   setDescription(e.target.value);
                 } else if (e.target.name === "price") {
-                  setPrice(e.target.value);
+                  setPrice(e.target.value.replace(/\D/, "").replace(/^0+/, ""));
                 } else if (e.target.name === "images") {
                   setImages((prev) => [...prev, e.target.files[0]]);
                 }
@@ -205,9 +202,16 @@ const ProductForm = ({ product }) => {
               if (e.target.name === "color") {
                 setColor(e.target.value);
               } else if (e.target.name === "size") {
-                setSize(e.target.value);
+                if (
+                  !e.target.value ||
+                  e.target.value.match(/^\d{1,}(\.\d{0,1})?$/)
+                ) {
+                  setSize(e.target.value.replace(/^0+/, ""));
+                }
               } else if (e.target.name === "quantity") {
-                setQuantity(e.target.value);
+                setQuantity(
+                  e.target.value.replace(/\D/, "").replace(/^0+/, "")
+                );
               }
             }}
             stock={stock}

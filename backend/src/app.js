@@ -4,6 +4,7 @@ import { ApolloServer } from "apollo-server-express";
 import mongoose from "mongoose";
 import jwt from "express-jwt";
 import { graphqlUploadExpress } from "graphql-upload";
+import omise from "omise";
 
 import schema from "./graphql/index.js";
 
@@ -18,6 +19,11 @@ const server = new ApolloServer({
   context: ({ req }) => ({
     user: req.user,
     serverUrl: req.protocol + "://" + req.get("host"),
+    omise: omise({
+      publicKey: process.env.OMISE_PUBLIC_KEY,
+      secretKey: process.env.OMISE_PRIVATE_KEY,
+      omiseVersion: "2019-05-29",
+    }),
   }),
   uploads: false,
 });

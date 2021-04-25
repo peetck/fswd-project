@@ -16,7 +16,6 @@ import ProductDetail from "./pages/ProductDetail";
 import Promotions from "./pages/Promotions";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
-import Payment from "./pages/Payment";
 
 import AdminRoute from "./pages/admin/AdminRoute";
 import CustomerRoute from "./pages/customer/CustomerRoute";
@@ -38,9 +37,9 @@ const App = () => {
           <Route path="/products" component={Products} exact />
           <Route path="/product/:productSlug" component={ProductDetail} exact />
           <Route path="/promotions" component={Promotions} exact />
-          <Route>
+          {/* <Route>
             <Redirect to="/" />
-          </Route>
+          </Route> */}
         </Switch>
       </Fragment>
     );
@@ -55,11 +54,10 @@ const App = () => {
           <Route path="/promotions" component={Promotions} exact />
           <Route path="/cart" component={Cart} exact />
           <Route path="/checkout" component={Checkout} exact />
-          <Route path="/payment" component={Payment} exact />
           <Route path="/customer" component={CustomerRoute} />
-          <Route>
+          {/* <Route>
             <Redirect to="/" />
-          </Route>
+          </Route> */}
         </Switch>
       </Fragment>
     );

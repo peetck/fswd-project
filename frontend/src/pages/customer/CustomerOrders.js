@@ -24,7 +24,7 @@ const CustomerOrders = () => {
           }
           totalPrice
           deliveryAddress
-          status
+          deliveryStatus
           createdAt
         }
       }
@@ -49,15 +49,11 @@ const CustomerOrders = () => {
           <div className="flex shadow-md">
             <div className="w-full">
               <div className="border-b mb-10 pb-3 flex justify-between m-5">
-
-                <div className="font-semibold">
-                  Order ID : {order._id}
-                </div>
+                <div className="font-semibold">Order ID : {order._id}</div>
                 <div className="flex flex-row-reverse ">
                   <p className="border-l ml-5 pl-5">{order.createdAt}</p>
                   <p>[Shiping] Free Delivery</p>
                 </div>
-
               </div>
 
               <div className="flex justify-between mb-10">
@@ -65,23 +61,17 @@ const CustomerOrders = () => {
                   <h1 className="text-5xl">Total : {order.totalPrice}</h1>
                 </div>
                 <div className="pr-32">
-                <h1 className="text-4xl text-green-700">Complete</h1>
-                <h1>{order.deliveryAddress}</h1>
-                  </div>
-                  <div className="pr-16 mt-5">
-                  <Link to={`/customer/order/${order._id}`}><h1 className="text-blue-500">OrderDetail </h1></Link>
-                  
-                  </div>
-                  
-
-                
-            
-
+                  <h1 className="text-4xl text-green-700">Complete</h1>
+                  <h1>{order.deliveryAddress}</h1>
+                </div>
+                <div className="pr-16 mt-5">
+                  <Link to={`/customer/order/${order._id}`}>
+                    <h1 className="text-blue-500">OrderDetail </h1>
+                  </Link>
+                </div>
               </div>
-
             </div>
           </div>
-
         </div>
         // <h1 key={order._id}>
         //   {order._id} - {order.totalPrice} -{" "}

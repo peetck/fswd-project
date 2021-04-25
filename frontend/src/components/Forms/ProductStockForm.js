@@ -9,7 +9,6 @@ const ProductStockForm = ({
   size,
   quantity,
   onChange,
-
   stock,
   addToStock,
   removeFromStock,
@@ -32,7 +31,7 @@ const ProductStockForm = ({
         <Input
           name="size"
           label="Size"
-          type="number"
+          type="text"
           value={size}
           onChange={(e) => {
             onChange(e);
@@ -44,7 +43,7 @@ const ProductStockForm = ({
         <Input
           name="quantity"
           label="Quantity"
-          type="number"
+          type="text"
           value={quantity}
           onChange={(e) => {
             onChange(e);
