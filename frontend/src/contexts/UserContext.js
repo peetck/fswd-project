@@ -85,7 +85,7 @@ export const UserContextProvider = (props) => {
 
       setCookie("fswd-token", response?.data?.login?.token, { path: "/" });
     } catch (error) {
-      console.log(error.message);
+      throw error;
     }
   };
 
@@ -106,7 +106,7 @@ export const UserContextProvider = (props) => {
         variables: { username, password, email, addresses, gender },
       });
     } catch (error) {
-      console.log(error.message);
+      throw error;
     }
   };
 

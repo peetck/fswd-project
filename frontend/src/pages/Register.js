@@ -17,8 +17,12 @@ const RegisterPage = (props) => {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    await register(username, password, email, [address], gender);
-    alert("Register Success!!");
+    try {
+      await register(username, password, email, [address], gender);
+      alert("Register Success!!");
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (
