@@ -26,6 +26,7 @@ const CustomerOrders = () => {
           deliveryAddress
           deliveryStatus
           createdAt
+          paymentMethod
         }
       }
     `,
@@ -44,6 +45,23 @@ const CustomerOrders = () => {
 
   return (
     <div>
+      <div className="container mx-auto">
+        <div className="flex">
+          <div className="w-1/2">
+            <button className="w-full focus:outline-none hover:border-b-2 border-red-500 focus:border-b-2 focus:border-red-500 ">
+            <h1>On Delivery</h1>
+            </button>
+          
+            </div>
+            <div className="w-1/2 ">
+            <button className="w-full focus:outline-none focus:outline-none hover:border-b-2 border-red-500 focus:border-b-2 focus:border-red-500">
+            <h1>Completed</h1>
+            </button>
+            </div>
+          
+       
+          </div>
+        </div>
       {data.orders.map((order) => (
         <div className="container mx-auto mt-10 mb-10 ">
           <div className="flex shadow-md">
@@ -58,10 +76,21 @@ const CustomerOrders = () => {
 
               <div className="flex justify-between mb-10">
                 <div className="pl-20 flex-1">
-                  <h1 className="text-5xl">Total : {order.totalPrice}</h1>
+                  <h1 className="text-4xl">Order Total : {order.totalPrice}</h1>
+                  {order.paymentMethod === "CashOnDelivery"? 
+                  <h1>Payment Method : Cash on delivery</h1>
+                  :
+                  <h1>Payment Method : Credit card</h1>
+                  }
                 </div>
-                <div className="pr-32">
-                  <h1 className="text-4xl text-green-700">Complete</h1>
+                <div className="">
+                  
+                  {String(order.deliveryStatus) === 'false'? 
+                  <h1 className="text-4xl text-orange-500 pr-24">On Delivery</h1>
+                  :
+                  <h1 className="text-4xl text-green-700 pr-24">Completed</h1>
+                }
+          
                   <h1>{order.deliveryAddress}</h1>
                 </div>
                 <div className="pr-16 mt-5">
