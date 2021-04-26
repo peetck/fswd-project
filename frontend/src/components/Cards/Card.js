@@ -5,7 +5,7 @@ import Truncate from "react-truncate";
 const Card = ({ title, price, imageUrl, productType, percent, description }) => {
   return (
     <Link to={`/product/${title}`}>
-      <div className="max-w-xs rounded  shadow-md my-2 shadow h-full border m-1">
+      <div className="max-w-xs rounded  hover:shadow-xl  my-2  h-full  m-1">
         <div className="flex justify-center mt-10 ml-10 mr-10">
           <img class="w-56 h-56 object-cover shadow-md" src={imageUrl} />
         </div>
@@ -24,7 +24,7 @@ const Card = ({ title, price, imageUrl, productType, percent, description }) => 
             <div className="flex">
             <p class="text-gray-500 text-sm">From</p>
             <p class="text-gray-500 ml-2 line-through text-sm">THB {price}</p>
-            <p class="text-red-500 ml-2 text-red-600 text-sm ml-5"> save - THB{price - (price * (percent/100))}</p>
+            <p class="text-red-500 ml-2 text-red-600 text-sm ml-3"> save - THB{price - (price * (percent/100))}</p>
                </div>
                </>
             :

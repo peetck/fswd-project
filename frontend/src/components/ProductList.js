@@ -12,6 +12,8 @@ const ProductList = ({ products }) => {
               title={product.title}
               imageUrl={product.images[0]}
               price={product.price}
+              productType="normalProduct"
+              description={product.description}
             />
           ))
         : "ไม่มีไอควาย"}

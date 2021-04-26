@@ -27,7 +27,7 @@ const Home = (props) => {
   
 
   return (
-    <div className="container mx-auto mb-10">
+    <div className="container mx-auto mb-24">
       <div className="w-full ">
         <div className="container flex flex-wrap flex-col px-5 mx-auto md:flex-row">
           <div className="flex flex-col w-full justify-center text-center md:text-left md:w-2/5">
