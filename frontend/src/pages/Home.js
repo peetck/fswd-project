@@ -22,10 +22,13 @@ const Home = (props) => {
   useEffect(() => {
     console.log("TRIGGER");
   }, []);
+  
+  
+  
 
   return (
-    <div>
-      <div className="w-full">
+    <div className="container mx-auto mb-10">
+      <div className="w-full ">
         <div className="container flex flex-wrap flex-col px-5 mx-auto md:flex-row">
           <div className="flex flex-col w-full justify-center text-center md:text-left md:w-2/5">
             <h1 className="my-4 text-5xl font-bold leading-tight">
@@ -56,18 +59,25 @@ const Home = (props) => {
             title={product.title}
             imageUrl={product.images[0]}
             price={product.price}
+            productType="normalProduct"
+            description={product.description}
+
           />
         ))}
       </div>
 
       <h1>Promotions List</h1>
       <div className="flex">
+        
         {promotions?.promotionProducts.map((product) => (
           <Card
             key={product._id}
             title={product.title}
             imageUrl={product.images[0]}
             price={product.price}
+            productType="promotionProduct"
+            percent={product.percent}
+            description={product.description}
           />
         ))}
       </div>
