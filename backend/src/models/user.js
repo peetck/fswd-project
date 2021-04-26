@@ -88,8 +88,8 @@ export const UserTC = composeWithMongooseDiscriminators(UserModel).removeField(
 export const CustomerUserTC = UserTC.discriminator(CustomerUserModel, {
   name: enumUserType.CUSTOMER,
   ...discriminatorOptions,
-});
+}).removeField("password");
 export const AdminUserTC = UserTC.discriminator(AdminUserModel, {
   name: enumUserType.ADMIN,
   ...discriminatorOptions,
-});
+}).removeField("password");

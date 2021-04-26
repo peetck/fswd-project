@@ -11,7 +11,9 @@ import { UserContextProvider } from "./contexts/UserContext";
 
 const client = new ApolloClient({
   uri: "http://localhost:3001/graphql",
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    addTypename: false,
+  }),
   link: from([
     new ApolloLink((op, fw) => {
       const customHeaders = op.getContext().hasOwnProperty("headers")

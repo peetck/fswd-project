@@ -4,12 +4,14 @@ import { Link, useHistory } from "react-router-dom";
 import { useUserContext } from "../contexts/UserContext";
 import Button from "../components/Button";
 import Input from "../components/Input";
+import Error from "../components/Error";
 
 const LoginPage = (props) => {
   const history = useHistory();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState();
 
   const { login } = useUserContext();
 
@@ -19,7 +21,7 @@ const LoginPage = (props) => {
       await login(username, password);
       history.push("/");
     } catch (error) {
-      alert(error.message);
+      setError(error.message);
     }
   };
 
@@ -40,6 +42,7 @@ const LoginPage = (props) => {
                     name="username"
                     placeholder="Username"
                     value={username}
+                    required
                     onChange={(e) => setUsername(e.target.value)}
                   />
                 </div>
@@ -50,11 +53,13 @@ const LoginPage = (props) => {
                     name="password"
                     placeholder="Password"
                     value={password}
+                    required
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
+                {error && <Error message={error} />}
                 <div className="text-center mt-10">
-                  <Button onClick={handleLogin}>Login</Button>
+                  <Button type="submit">Login</Button>
                 </div>
               </form>
             </div>

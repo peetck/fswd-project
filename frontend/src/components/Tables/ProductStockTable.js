@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import Button from "../Button";
 
-const ProductStockTable = ({ stock, removeFromStock }) => {
+const ProductStockTable = ({ stock, removeFromStock, handleEditButton }) => {
   return (
     <div className="overflow-x-auto">
       <div className="min-w-screen flex items-center justify-center overflow-hidden">
@@ -47,6 +47,9 @@ const ProductStockTable = ({ stock, removeFromStock }) => {
                         </td>
                         <td className="py-3 px-6 text-center">
                           <div className="flex items-center justify-center">
+                            <Button onClick={() => handleEditButton(st)}>
+                              edit
+                            </Button>
                             <Button onClick={() => removeFromStock(st)}>
                               remove
                             </Button>

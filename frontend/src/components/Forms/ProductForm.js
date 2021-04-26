@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useMutation, gql } from "@apollo/client";
 import { useHistory } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
 
 import { useUserContext } from "../../contexts/UserContext";
 import ProductInformationForm from "./ProductInformationForm";
@@ -27,9 +26,6 @@ const ProductForm = ({ product }) => {
         }))
       : []
   );
-  const [color, setColor] = useState("");
-  const [size, setSize] = useState("");
-  const [quantity, setQuantity] = useState("");
 
   const { token } = useUserContext();
 
@@ -118,7 +114,8 @@ const ProductForm = ({ product }) => {
     }
   };
 
-  const handleAddToStock = () => {
+  const handleAddToStock = (color, size, quantity) => {
+    console.log(color, size, quantity);
     if (color.trim() === "") {
       return;
     }
@@ -128,9 +125,17 @@ const ProductForm = ({ product }) => {
       }
     }
     setStock((prev) => [...prev, { size: +size, color, quantity: +quantity }]);
-    setColor("");
-    setQuantity("");
-    setSize("");
+  };
+
+  const handleEditStock = (st) => {
+    setStock((prev) =>
+      prev.map((i) => {
+        if (i.color === st.color && i.size === +st.size) {
+          return { ...i, quantity: st.quantity };
+        }
+        return i;
+      })
+    );
   };
 
   const handleRemoveFromStock = (st) => {
@@ -139,86 +144,40 @@ const ProductForm = ({ product }) => {
     );
   };
 
-  console.log(images);
+  const handleRemoveImage = (image) => {
+    setImages((prev) => prev.filter((i) => i !== image));
+  };
 
   return (
-    <div className="bg-white p-6 m-5 mt-7">
-      <div className="flex flex-col">
-        <h1 className="text-lg uppercase">Information</h1>
-        <div className="flex items-center m-5">
-          <div className="w-3/4 mr-20">
-            <ProductInformationForm
-              title={title}
-              description={description}
-              price={price}
-              onChange={(e) => {
-                if (e.target.name === "title") {
-                  setTitle(e.target.value);
-                } else if (e.target.name === "description") {
-                  setDescription(e.target.value);
-                } else if (e.target.name === "price") {
-                  setPrice(e.target.value.replace(/\D/, "").replace(/^0+/, ""));
-                } else if (e.target.name === "images") {
-                  setImages((prev) => [...prev, e.target.files[0]]);
-                }
-              }}
-            />
-          </div>
+    <div className="p-6 m-5 mt-7">
+      <ProductInformationForm
+        title={title}
+        description={description}
+        price={price}
+        images={images}
+        onChange={(e) => {
+          if (e.target.name === "title") {
+            setTitle(e.target.value);
+          } else if (e.target.name === "description") {
+            setDescription(e.target.value);
+          } else if (e.target.name === "price") {
+            setPrice(e.target.value.replace(/\D/, "").replace(/^0+/, ""));
+          } else if (e.target.name === "images") {
+            setImages((prev) => [...prev, e.target.files[0]]);
+          }
+        }}
+        removeImage={handleRemoveImage}
+      />
 
-          <Card title={title} price={price} imageUrl={""} />
-        </div>
+      <h1 className="text-lg uppercase">Stock</h1>
 
-        <div className="flex flex-wrap mb-5">
-          {images.map((image) => (
-            <div className="relative m-5 w-44 h-44" key={uuidv4()}>
-              <img
-                src={
-                  typeof image === "string" ? image : URL.createObjectURL(image)
-                }
-                alt=""
-                className="w-44 h-44 border "
-              />
-
-              <span
-                className="material-icons absolute top-0 right-0 cursor-pointer hover:text-red-500"
-                onClick={() =>
-                  setImages((prev) => prev.filter((i) => i !== image))
-                }
-              >
-                delete
-              </span>
-            </div>
-          ))}
-        </div>
-
-        <h1 className="text-lg uppercase">Stock</h1>
-
-        <div className="m-5">
-          <ProductStockForm
-            color={color}
-            quantity={quantity}
-            size={size}
-            onChange={(e) => {
-              if (e.target.name === "color") {
-                setColor(e.target.value);
-              } else if (e.target.name === "size") {
-                if (
-                  !e.target.value ||
-                  e.target.value.match(/^\d{1,}(\.\d{0,1})?$/)
-                ) {
-                  setSize(e.target.value.replace(/^0+/, ""));
-                }
-              } else if (e.target.name === "quantity") {
-                setQuantity(
-                  e.target.value.replace(/\D/, "").replace(/^0+/, "")
-                );
-              }
-            }}
-            stock={stock}
-            addToStock={handleAddToStock}
-            removeFromStock={handleRemoveFromStock}
-          />
-        </div>
+      <div className="m-5">
+        <ProductStockForm
+          stock={stock}
+          addToStock={handleAddToStock}
+          editStock={handleEditStock}
+          removeFromStock={handleRemoveFromStock}
+        />
       </div>
 
       <div className="flex justify-center my-4">

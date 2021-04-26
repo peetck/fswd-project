@@ -5,13 +5,14 @@ const Input = ({
   type,
   name,
   placeholder,
-  defaultValue,
   value,
   onChange,
   multiple,
   rows,
   cols,
   children,
+  disabled,
+  required,
 }) => {
   return (
     <>
@@ -30,6 +31,8 @@ const Input = ({
           onChange={onChange}
           rows={rows}
           cols={cols}
+          disabled={disabled}
+          required={required}
         />
       ) : type === "select" ? (
         <select
@@ -38,8 +41,11 @@ const Input = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          defaultValue={defaultValue}
+          disabled={disabled}
+          defaultValue="null"
+          required={required}
         >
+          <option value="">--------</option>
           {children}
         </select>
       ) : type === "file" ? (
@@ -53,6 +59,8 @@ const Input = ({
             multiple={multiple}
             value={value}
             onChange={onChange}
+            disabled={disabled}
+            required={required}
           />
         </label>
       ) : (
@@ -63,6 +71,8 @@ const Input = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          disabled={disabled}
+          required={required}
         />
       )}
     </>
