@@ -14,7 +14,7 @@ const ProductTable = ({ products }) => {
               <thead>
                 <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                   <th className="py-3 px-6 text-left">Title</th>
-                  <th className="py-3 px-6 text-left">Description</th>
+                  <th className="py-3 px-6 text-left" >Description</th>
                   <th className="py-3 px-6 text-center">Price</th>
                   <th className="py-3 px-6 text-center">Quantity</th>
                   <th className="py-3 px-6 text-center"></th>

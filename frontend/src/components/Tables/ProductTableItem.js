@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import Truncate from "react-truncate";
+import moment from "moment";
 
 const ProductTableItem = ({ product }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +20,7 @@ const ProductTableItem = ({ product }) => {
             <div className="mr-2 ">{product.title}</div>
           </div>
         </td>
-        <td className="py-3 px-6 text-left">
+        <td className="py-3 px-6 text-center">
           <div className="flex items-center">
             <Truncate lines={3}>{product.description}</Truncate>
           </div>
@@ -44,7 +45,6 @@ const ProductTableItem = ({ product }) => {
                 {isOpen ? "expand_less" : "expand_more"}
               </span>
             </div>
-
             <Link
               to={`/admin/product/${product._id}`}
               className="w-4 m-2 transform hover:text-purple-500 hover:scale-110"
@@ -63,19 +63,70 @@ const ProductTableItem = ({ product }) => {
       </tr>
       {isOpen && (
         <tr className="border-b border-gray-200">
-          <td className="py-3 px-6 text-left whitespace-nowrap" colSpan="5">
-            <div className="flex flex-col">
-              <b>INFORMATION</b>
-              <p> Product ID : {product._id}</p>
-              <p>Created At: {product.createdAt}</p>
-              <p> Updated At: {product.updatedAt}</p>
-              <b>STOCK</b>
-              {product.stock.map((st) => (
-                <p>
-                  Color: {st.color}, Size: {st.size} - {st.quantity}
-                </p>
-              ))}
-            </div>
+          <td className="text-left whitespace-nowrap align-top">
+            <tr className="text-gray-600 uppercase text-sm align-top">
+              <th className="px-6 pt-3 text-left">STOCK</th>
+            </tr>
+            <tr>
+              <td className="px-6 pt-3 pb-3 text-left whitespace-nowrap align-top">
+                <div className="flex flex-col ">
+                  {product.stock.map((st) => (
+                    <p>
+                      Color: {st.color}, Size: {st.size} - {st.quantity}
+                    </p>
+                  ))}
+                </div>
+              </td>
+            </tr>
+          </td>
+          <td
+            className="text-left whitespace-nowrap align-top"
+            colSpan="5"
+          >
+            <tr className="text-gray-600 uppercase text-sm align-top">
+              {/* <th className="px-6 pt-3 text-left">Product ID</th> */}
+              <th className="px-6 pt-3 text-left">Created At</th>
+              <th className="px-6 pt-3 text-left">Last Updated At</th>
+            </tr>
+            <tr>
+              {/* <td className="px-6 pt-3 text-left whitespace-nowrap align-top">
+                <div className="flex flex-col ">
+                  <p>{product._id}</p>
+                </div>
+              </td> */}
+              <td className="px-6 pt-3 pb-3 text-left whitespace-nowrap align-top">
+                <div className="flex flex-col ">
+                <div className="overflow-hidden">
+                    <p className="font-semibold float-left">Date :</p>
+                    <p className="float-right">{moment(product.createdAt).format(
+                      "DD/MM/YYYY"
+                    )}</p>
+                  </div>
+                  <div className="overflow-hidden">
+                    <p className="font-semibold float-left mr-1">Time : </p>
+                    <p className="float-right">{moment(product.createdAt).format(
+                      "hh:mm:ss A"
+                    )}</p>
+                  </div>
+                </div>
+              </td>
+              <td className="px-6 pt-3 pb-3 text-left whitespace-nowrap align-top">
+                <div className="flex flex-col">
+                  <div className="overflow-hidden">
+                    <p className="font-semibold float-left">Date :</p>
+                    <p className="float-right">{moment(product.updatedAt).format(
+                      "DD/MM/YYYY"
+                    )}</p>
+                  </div>
+                  <div className="overflow-hidden">
+                    <p className="font-semibold float-left mr-1">Time : </p>
+                    <p className="float-right">{moment(product.updatedAt).format(
+                      "hh:mm:ss A"
+                    )}</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
           </td>
         </tr>
       )}
