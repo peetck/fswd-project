@@ -29,7 +29,7 @@ const ProductDetail = () => {
     },
   });
 
-  console.log(product);
+console.log(product);
 
   useEffect(() => {
     if (product) {
@@ -130,7 +130,6 @@ const ProductDetail = () => {
   //   let id = Number(e.target.id);
   //   if (id < product?.product.images.length) setIndex(id);
   // };
-
   return (
     <div className="container m-10">
       <div className="lg:ml-28 lg:mr-28  mb-10  justify-between sm:flex sm:items-center md:flex md:items-center">

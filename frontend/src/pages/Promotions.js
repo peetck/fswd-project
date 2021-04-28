@@ -14,7 +14,7 @@ const Promotions = () => {
   if (loading) {
     return <h1>Loading ...</h1>;
   }
-
+console.log(promotions);
   return (
     <div>
       <div className="flex w-8/12 justify-center items-center flex-wrap mx-auto">
