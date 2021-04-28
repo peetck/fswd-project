@@ -190,7 +190,7 @@ const Checkout = () => {
                     </span>
                   </label>
                   {/* icon payment */}
-                  {/* <span className="text-gray-600 text-sm">$18</span> */}
+                  <span class="material-icons">credit_card</span>
                 </button>
                 <button className="mt-6 flex items-center justify-between w-full bg-white rounded-md border p-4 focus:outline-none">
                   <label className="flex items-center">
@@ -206,7 +206,7 @@ const Checkout = () => {
                     </span>
                   </label>
                   {/* icon payment */}
-                  {/* <span class="text-gray-600 text-sm">$26</span> */}
+                  <span class="material-icons">local_shipping</span>
                 </button>
               </div>
             </div>
@@ -217,8 +217,10 @@ const Checkout = () => {
                 <span>${cart?.totalPrice}</span>
               </div>
               {radioChecked != "" ? (
-                <button className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full"
-                onClick={selectionPayment}>
+                <button
+                  className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full"
+                  onClick={selectionPayment}
+                >
                   place order
                 </button>
               ) : (
