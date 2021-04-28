@@ -5,7 +5,7 @@ import { useUserContext } from "../contexts/UserContext";
 
 const OmiseCard = window.OmiseCard;
 
-const Checkout = () => {
+const Checkout = (props) => {
   const { user, cart, refetchCart, token } = useUserContext();
   const [radioChecked, setRadioChecked] = useState("");
 
@@ -62,6 +62,7 @@ const Checkout = () => {
       },
     });
     await refetchCart();
+    props.history.push("/customer/orders");
   };
 
   const handleCreditCard = async () => {
