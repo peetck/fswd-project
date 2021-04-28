@@ -7,7 +7,7 @@ import Input from "../../components/Input";
 const CustomerInfo = () => {
   const { user } = useUserContext();
   const [selected, setSelected] = useState(false);
-  const [address, setAddress] = useState(null);
+  const [address, setAddress] = useState("");
 
   const { data, loading, error } = useQuery(
     gql`
@@ -34,7 +34,7 @@ const CustomerInfo = () => {
   };
 
   // render tag when user click edit
-  const renderTag = (address) => {
+  const renderTag = (e) => {
     if (selected) {
       return (
         <form>
@@ -51,7 +51,7 @@ const CustomerInfo = () => {
         </form>
       );
     } else {
-      return <p className="pl-4">{address}</p>;
+      return <p className="pl-4">{e}</p>;
     }
   };
 
