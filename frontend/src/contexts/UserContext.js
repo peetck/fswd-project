@@ -51,7 +51,7 @@ export const UserContextProvider = (props) => {
     }
   }, [user]);
 
-  console.log(cart);
+  // console.log(cart);
 
   const [cookies, setCookie, removeCookie] = useCookies(["fswd-token"]);
 

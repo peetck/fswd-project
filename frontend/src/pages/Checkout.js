@@ -96,7 +96,7 @@ const Checkout = (props) => {
     <div>
       <div className="container mx-auto mt-10">
         <div className="flex shadow-md my-10 justify-center mx-44">
-          <div className="w-2/3 bg-white px-10 py-10">
+          <div className="w-2/3 bg-white px-10 py-10 ">
             <div className="flex justify-between border-b pb-8">
               <h1 className="font-semibold text-2xl">Confirm Checkout</h1>
             </div>
