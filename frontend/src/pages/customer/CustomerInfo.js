@@ -5,11 +5,9 @@ import { useUserContext } from "../../contexts/UserContext";
 import Input from "../../components/Input";
 
 const CustomerInfo = () => {
-  const [address, setAddress] = useState(
-    "something like home asdasd asd asd asd asd asd asd asd asd asd asd asd "
-  );
   const { user } = useUserContext();
   const [selected, setSelected] = useState(false);
+  const [address, setAddress] = useState(null);
 
   const { data, loading, error } = useQuery(
     gql`
@@ -30,11 +28,13 @@ const CustomerInfo = () => {
     }
   );
 
+
   const handleAddress = (e) => {
     setAddress(e.target.value);
   };
 
-  const renderTag = () => {
+  // render tag when user click edit
+  const renderTag = (address) => {
     if (selected) {
       return (
         <form>
@@ -59,7 +59,6 @@ const CustomerInfo = () => {
     return <h1>Loading...</h1>;
   }
 
-  console.log(data);
 
   return (
     <>
@@ -92,7 +91,7 @@ const CustomerInfo = () => {
                         <span className="material-icons">mode_edit</span>
                       </button>
                     </div>
-                    <div>{renderTag()}</div>
+                    <div>{renderTag(data?.customerUser?.addresses[0])}</div>
                   </div>
                 </div>
               </div>
