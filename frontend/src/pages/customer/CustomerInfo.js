@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useMutation, useQuery, gql } from "@apollo/client";
-
 import { useUserContext } from "../../contexts/UserContext";
 import Input from "../../components/Input";
 
-const CustomerInfo = () => {
+const CustomerInfo = (props) => {
   const { user } = useUserContext();
   const [selected, setSelected] = useState(false);
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState(null);
 
-  const { data, loading, error } = useQuery(
+  const { data, loading, error, refetch } = useQuery(
     gql`
       query($_id: MongoID!) {
         customerUser(_id: $_id) {
@@ -29,6 +28,36 @@ const CustomerInfo = () => {
   );
 
 
+  const [updateCustomerUser] = useMutation(
+    gql`
+      mutation updateCustomerUser($_id: MongoID!, $addresses: [String!]){
+        updateCustomerUser(_id: $_id, record: {addresses: $addresses}){
+          recordId
+        }
+      }
+    `
+  )
+
+  const handdleSubmit = async (e) => {
+    e.preventDefault();
+    try{
+      await updateCustomerUser({
+        variables: {
+          _id: user._id,
+          addresses: address
+        }
+      })
+
+      setSelected(false)
+      refetch()
+
+    }catch{
+      console.log("Error")
+    }
+
+
+  }
+
   const handleAddress = (e) => {
     setAddress(e.target.value);
   };
@@ -37,7 +66,7 @@ const CustomerInfo = () => {
   const renderTag = (e) => {
     if (selected) {
       return (
-        <form>
+        <form onSubmit={handdleSubmit}>
           <Input
             type="textarea"
             name="address"
@@ -45,7 +74,7 @@ const CustomerInfo = () => {
             rows={4}
             onChange={handleAddress}
           />
-          <button className="px-3 mt-1 py-2 bg-indigo-600 text-white text-sm font-medium rounded hover:bg-indigo-500 focus:outline-none focus:bg-indigo-500">
+          <button className="px-3 mt-1 py-2 bg-indigo-600 text-white text-sm font-medium rounded hover:bg-indigo-500 focus:outline-none focus:bg-indigo-500" onClick={handdleSubmit}>
             Submit
           </button>
         </form>
@@ -91,6 +120,7 @@ const CustomerInfo = () => {
                         <span className="material-icons">mode_edit</span>
                       </button>
                     </div>
+                    {console.log(data?.customerUser?.addresses[0])}
                     <div>{renderTag(data?.customerUser?.addresses[0])}</div>
                   </div>
                 </div>
