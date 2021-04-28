@@ -133,7 +133,7 @@ export const UserContextProvider = (props) => {
       );
 
       if (productIndex !== -1) {
-        if (quantity > 0) {
+        if (products[productIndex].quantity + (!replace && quantity) > 0) {
           products[productIndex] = {
             ...products[productIndex],
             quantity: products[productIndex].quantity + (!replace && quantity),
