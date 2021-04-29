@@ -4,10 +4,8 @@ import { useUserContext } from "../../contexts/UserContext";
 import Input from "../../components/Input";
 
 const CustomerInfo = (props) => {
-  const { user } = useUserContext();
-  const [selected, setSelected] = useState(false);
-  const [address, setAddress] = useState(null);
 
+  const { user } = useUserContext();
   const { data, loading, error, refetch } = useQuery(
     gql`
       query($_id: MongoID!) {
@@ -26,6 +24,9 @@ const CustomerInfo = (props) => {
       },
     }
   );
+
+  const [selected, setSelected] = useState(false);
+  const [address, setAddress] = useState(null);
 
 
   const [updateCustomerUser] = useMutation(
@@ -70,7 +71,7 @@ const CustomerInfo = (props) => {
           <Input
             type="textarea"
             name="address"
-            value={address}
+            value={address ?? e}
             rows={4}
             onChange={handleAddress}
           />
