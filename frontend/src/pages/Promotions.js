@@ -1,10 +1,30 @@
 import React from "react";
-import { useQuery } from "@apollo/client";
+import { useQuery, gql } from "@apollo/client";
 import { Link } from "react-router-dom";
 
-import { PROMOTION_PRODUCTS_QUERY } from "../graphql/queries/promotionProducts";
 import Truncate from "react-truncate";
 import ProductList from "../components/ProductList";
+
+const PROMOTION_PRODUCTS_QUERY = gql`
+  query {
+    promotionProducts {
+      _id
+      title
+      description
+      price
+      images
+      totalStock
+      stock {
+        quantity
+        color
+        size
+      }
+      type
+      priceAfterDiscount
+      percent
+    }
+  }
+`;
 
 const Promotions = () => {
   const { data: promotions, loading, error } = useQuery(

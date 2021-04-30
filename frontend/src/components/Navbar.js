@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./Navbar.css";
 
 import { useUserContext } from "../contexts/UserContext";
@@ -11,30 +11,36 @@ const Navbar = (props) => {
     <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg bg-white border-coolGray-400 border-b lg:border-0">
       <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
         <div className="w-full relative flex justify-between lg:w-auto  px-4 lg:static lg:block lg:justify-start">
-          <Link
+          <NavLink
             className="text-lg font-bold leading-relaxed inline-block mr-4 py-2 whitespace-no-wrap uppercase"
             to="/"
+            activeClassName="text-royal-blue"
+            exact
           >
             Picnic shop
-          </Link>
+          </NavLink>
         </div>
         <div className="lg:flex flex-grow items-center">
           <ul className="flex flex-1 flex-col lg:flex-row list-none ml-auto">
             <li className="nav-item">
-              <Link
+              <NavLink
                 className="px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug hover:opacity-75"
                 to="/products"
+                activeClassName="text-royal-blue"
+                exact
               >
                 Products
-              </Link>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <Link
+              <NavLink
                 className="px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug hover:opacity-75"
                 to="/promotions"
+                activeClassName="text-royal-blue"
+                exact
               >
                 Promotions
-              </Link>
+              </NavLink>
             </li>
           </ul>
 
@@ -42,32 +48,38 @@ const Navbar = (props) => {
             {user ? (
               <Fragment>
                 <li className="nav-item">
-                  <Link
+                  <NavLink
                     className="px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug hover:opacity-75 cursor-pointer"
                     to="/cart"
+                    activeClassName="text-royal-blue"
+                    exact
                   >
                     <span className="material-icons mr-1">shopping_cart</span>{" "}
                     cart(
                     {cart?.products?.length})
-                  </Link>
+                  </NavLink>
                 </li>
 
                 <li className="user-dropdown nav-item">
-                  <Link
+                  <NavLink
                     className="px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug cursor-pointer hover:opacity-75"
                     to="/customer"
+                    activeClassName="text-royal-blue"
+                    exact
                   >
                     <span className="material-icons mr-1">person</span>
                     {user.username}
-                  </Link>
+                  </NavLink>
                   <div className="user-dropdown-content absolute hidden w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    <Link
+                    <NavLink
                       className="flex items-center px-4 py-2 text-sm uppercase leading-snug cursor-pointer hover:opacity-75"
                       to="/customer/orders"
+                      activeClassName="text-royal-blue"
+                      exact
                     >
                       <span className="material-icons mr-1">list_alt</span>
                       my orders
-                    </Link>
+                    </NavLink>
 
                     <div
                       className="flex items-center px-4 py-2 text-sm uppercase leading-snug cursor-pointer hover:opacity-75"
@@ -81,20 +93,24 @@ const Navbar = (props) => {
             ) : (
               <Fragment>
                 <li className="nav-item">
-                  <Link
+                  <NavLink
                     className="px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug hover:opacity-75"
                     to="/login"
+                    activeClassName="text-royal-blue"
+                    exact
                   >
                     Login
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <Link
+                  <NavLink
                     className="px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug hover:opacity-75"
                     to="/register"
+                    activeClassName="text-royal-blue"
+                    exact
                   >
                     Register
-                  </Link>
+                  </NavLink>
                 </li>
               </Fragment>
             )}

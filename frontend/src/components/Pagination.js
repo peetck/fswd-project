@@ -41,7 +41,7 @@ const Pagination = (props) => {
 
   const paginationBar = arr.map((value, index) => (
     <div
-      className={`w-12 justify-center items-center hidden leading-5 transition duration-150 ease-in rounded-full md:flex ${
+      className={`w-12 justify-center items-center hidden leading-5 transition duration-150 ease-in rounded-full sm:flex ${
         value === currentPage ? "bg-royal-blue text-white" : ""
       } ${value !== "..." ? "cursor-pointer" : ""}`}
       onClick={() => pageChangeHandler(value)}

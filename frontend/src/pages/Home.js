@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import { useLazyQuery, gql } from "@apollo/client";
 import { Link } from "react-router-dom";
+import Loader from "react-loader-spinner";
 
-import { useUserContext } from "../contexts/UserContext";
-import Card from "../components/Cards/Card";
 import Button from "../components/Button";
 import ProductList from "../components/ProductList";
 
@@ -48,7 +47,7 @@ const PROMOTION_PRODUCTS_QUERY = gql`
   }
 `;
 
-const Home = (props) => {
+const Home = () => {
   const [
     fetchProducts,
     { data: products, loading: loadingProducts, error: errorProducts },
@@ -72,10 +71,9 @@ const Home = (props) => {
             Running with the Mind of Meditation
           </h1>
           <p className="leading-normal text-xl mb-8">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Natus amet
-            fugit ipsam qui at, fuga suscipit officiis odio voluptatum
-            praesentium harum? Distinctio aut animi excepturi, hic facilis
-            molestias totam quod?
+            Unlock your potential and take your shoes to the next level with
+            special designs that allow you to do things you have never been able
+            to do before.
           </p>
           <div className="w-1/2 mx-auto lg:mx-0">
             <Button>shop collection</Button>
@@ -101,7 +99,13 @@ const Home = (props) => {
         </div>
 
         <div className="flex my-6 flex-wrap justify-center">
-          <ProductList products={products?.normalProducts} />
+          {loadingProducts ? (
+            <div className="my-8">
+              <Loader type="Grid" color="#525fe1" height="20rem" width="80" />
+            </div>
+          ) : (
+            <ProductList products={products?.normalProducts} />
+          )}
         </div>
 
         <div className="flex justify-between mt-14">
@@ -115,7 +119,13 @@ const Home = (props) => {
         </div>
 
         <div className="flex my-6 flex-wrap justify-center">
-          <ProductList products={promotions?.promotionProducts} />
+          {loadingPromotions ? (
+            <div className="my-8">
+              <Loader type="Grid" color="#525fe1" height="20rem" width="80" />
+            </div>
+          ) : (
+            <ProductList products={promotions?.promotionProducts} />
+          )}
         </div>
       </div>
     </div>

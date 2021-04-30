@@ -20,6 +20,7 @@ import Checkout from "./pages/Checkout";
 import AdminRoute from "./pages/admin/AdminRoute";
 import CustomerRoute from "./pages/customer/CustomerRoute";
 import { useUserContext } from "./contexts/UserContext";
+import NotFound from "./pages/NotFound";
 
 const App = () => {
   const { user } = useUserContext();
@@ -55,6 +56,7 @@ const App = () => {
           <Route path="/cart" component={Cart} exact />
           <Route path="/checkout" component={Checkout} exact />
           <Route path="/customer" component={CustomerRoute} />
+          <Route path="/404" component={NotFound} />
           {/* <Route>
             <Redirect to="/" />
           </Route> */}

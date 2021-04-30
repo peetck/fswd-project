@@ -1,8 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, gql } from "@apollo/client";
 
-import { NORMAL_PRODUCTS_PAGINATION_QUERY } from "../graphql/queries/normalProductsPagination";
 import Card from "../components/Cards/Card";
 import ProductList from "../components/ProductList";
 import { useQuery } from "../hooks/query";
@@ -11,6 +10,31 @@ import Button from "../components/Button";
 
 const FIRST_PAGE = 1;
 const PER_PAGE = 5;
+
+const NORMAL_PRODUCTS_PAGINATION_QUERY = gql`
+  query(
+    $page: Int!
+    $perPage: Int!
+    $filter: FilterFindManyNormalProductInput!
+  ) {
+    normalProductsPagination(page: $page, perPage: $perPage, filter: $filter) {
+      items {
+        _id
+        title
+        description
+        price
+        images
+        stock {
+          quantity
+          color
+          size
+        }
+        createdAt
+      }
+      count
+    }
+  }
+`;
 
 const Products = () => {
   const history = useHistory();
