@@ -41,20 +41,9 @@ const CustomerUserSchema = new Schema({
     required: true,
     unique: true,
   },
-  addresses: {
-    type: [String],
+  address: {
+    type: String,
     required: true,
-  },
-  gender: {
-    type: String,
-    enum: {
-      MALE: "Male",
-      FEMALE: "Female",
-      OTHER: "Other",
-    },
-  },
-  avatar: {
-    type: String,
   },
 });
 

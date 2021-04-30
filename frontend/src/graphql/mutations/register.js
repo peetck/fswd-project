@@ -5,16 +5,14 @@ export const REGISTER_MUTATION = gql`
     $username: String!
     $password: String!
     $email: String!
-    $addresses: [String!]!
-    $gender: EnumCustomerUserGender!
+    $address: String!
   ) {
     createCustomerUser(
       record: {
         username: $username
         password: $password
         email: $email
-        addresses: $addresses
-        gender: $gender
+        address: $address
       }
     ) {
       recordId

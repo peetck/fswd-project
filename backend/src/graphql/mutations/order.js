@@ -95,3 +95,46 @@ export const createOrder = OrderTC.getResolver("createOne").wrapResolve(
     });
   }
 );
+
+export const removeOrder = OrderTC.getResolver("removeById").wrapResolve(
+  (next) => async (req) => {
+    const orderId = req?.args?._id;
+
+    const order = await OrderModel.findById(orderId);
+
+    const productsInOrder = order.products;
+
+    for (let productInOrder of productsInOrder) {
+      const product = await ProductModel.findOne({
+        title: productInOrder.title,
+      });
+
+      const stock = [...product.stock];
+
+      const index = stock.findIndex(
+        (st) =>
+          st.color === productInOrder.color && st.size === productInOrder.size
+      );
+
+      if (index >= 0) {
+        stock[index] = {
+          color: stock[index].color,
+          size: stock[index].size,
+          quantity: stock[index].quantity + productInOrder.quantity,
+        };
+      } else {
+        stock[index] = {
+          color: stock[index].color,
+          size: stock[index].size,
+          quantity: productInOrder.quantity,
+        };
+      }
+
+      product.stock = stock;
+
+      await product.save();
+    }
+
+    return next(req);
+  }
+);

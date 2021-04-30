@@ -16,7 +16,7 @@ const AdminRoute = () => {
 
   return (
     <div className="w-full">
-      <AdminHeader />
+      {/* <AdminHeader /> */}
       <Switch>
         <Route path={path} component={AdminDashboard} exact />
         <Route path={`${path}/products`} component={AdminProducts} exact />

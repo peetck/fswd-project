@@ -102,7 +102,7 @@ const ProductStockForm = ({
               onChange={(e) => {
                 setSelectedColor(e.target.value);
                 setSelectedSize("");
-                setQuantity("");
+                setUpdatedQuantity("");
               }}
             >
               {stock

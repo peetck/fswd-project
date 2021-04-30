@@ -42,7 +42,7 @@ const Pagination = (props) => {
   const paginationBar = arr.map((value, index) => (
     <div
       className={`w-12 justify-center items-center hidden leading-5 transition duration-150 ease-in rounded-full md:flex ${
-        value === currentPage ? "bg-indigo-600 text-white" : ""
+        value === currentPage ? "bg-royal-blue text-white" : ""
       } ${value !== "..." ? "cursor-pointer" : ""}`}
       onClick={() => pageChangeHandler(value)}
       key={index}
@@ -52,7 +52,7 @@ const Pagination = (props) => {
   ));
 
   return (
-    <div className="flex flex-col items-center mt-20">
+    <div className="flex flex-col items-center mt-14">
       <div className="flex text-gray-700">
         <div
           className={`h-12 w-12 mx-5 flex justify-center items-center rounded-full bg-gray-200 cursor-pointer ${

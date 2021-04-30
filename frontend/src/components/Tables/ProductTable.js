@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-
 import ProductTableItem from "./ProductTableItem";
 
 const ProductTable = ({ products }) => {
@@ -14,7 +13,7 @@ const ProductTable = ({ products }) => {
               <thead>
                 <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                   <th className="py-3 px-6 text-left">Title</th>
-                  <th className="py-3 px-6 text-left" >Description</th>
+                  <th className="py-3 px-6 text-left">Description</th>
                   <th className="py-3 px-6 text-center">Price</th>
                   <th className="py-3 px-6 text-center">Quantity</th>
                   <th className="py-3 px-6 text-center"></th>
@@ -22,7 +21,7 @@ const ProductTable = ({ products }) => {
               </thead>
               <tbody className="text-gray-600 text-sm font-light">
                 {products.map((product) => (
-                  <ProductTableItem key={product._id} product={product} />
+                  <ProductTableItem product={product} key={product._id} />
                 ))}
               </tbody>
             </table>

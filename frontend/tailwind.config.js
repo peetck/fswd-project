@@ -7,6 +7,8 @@ module.exports = {
     extend: {},
     colors: {
       ...colors,
+      "chilean-fire": "#f67001",
+      "royal-blue": "#525fe1",
     },
   },
   variants: {

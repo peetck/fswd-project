@@ -94,16 +94,10 @@ export const UserContextProvider = (props) => {
     removeCookie("fswd-token", { path: "/" });
   };
 
-  const handleRegister = async (
-    username,
-    password,
-    email,
-    addresses,
-    gender
-  ) => {
+  const handleRegister = async (username, password, email, address) => {
     try {
       await register({
-        variables: { username, password, email, addresses, gender },
+        variables: { username, password, email, address },
       });
     } catch (error) {
       throw error;
@@ -118,6 +112,7 @@ export const UserContextProvider = (props) => {
     replace
   ) => {
     try {
+      console.log(productId, quantity, color, size, replace);
       const products = cart?.customerUser?.cart?.products.map((prod) => ({
         productId: prod.productId,
         color: prod.color,
@@ -133,10 +128,15 @@ export const UserContextProvider = (props) => {
       );
 
       if (productIndex !== -1) {
-        if (products[productIndex].quantity + (!replace && quantity) > 0) {
+        if (replace && quantity > 0) {
           products[productIndex] = {
             ...products[productIndex],
-            quantity: products[productIndex].quantity + (!replace && quantity),
+            quantity: quantity,
+          };
+        } else if (!replace && products[productIndex].quantity + quantity > 0) {
+          products[productIndex] = {
+            ...products[productIndex],
+            quantity: products[productIndex].quantity + quantity,
           };
         } else {
           products.splice(productIndex, 1);

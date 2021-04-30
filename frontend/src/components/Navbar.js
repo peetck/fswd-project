@@ -8,11 +8,11 @@ const Navbar = (props) => {
   const { user, logout, cart } = useUserContext();
 
   return (
-    <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg bg-white mb-3 border-b border-coolGray-400">
+    <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg bg-white border-coolGray-400 border-b lg:border-0">
       <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
         <div className="w-full relative flex justify-between lg:w-auto  px-4 lg:static lg:block lg:justify-start">
           <Link
-            className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-no-wrap uppercase"
+            className="text-lg font-bold leading-relaxed inline-block mr-4 py-2 whitespace-no-wrap uppercase"
             to="/"
           >
             Picnic shop
@@ -22,7 +22,7 @@ const Navbar = (props) => {
           <ul className="flex flex-1 flex-col lg:flex-row list-none ml-auto">
             <li className="nav-item">
               <Link
-                className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug hover:opacity-75"
+                className="px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug hover:opacity-75"
                 to="/products"
               >
                 Products
@@ -30,7 +30,7 @@ const Navbar = (props) => {
             </li>
             <li className="nav-item">
               <Link
-                className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug hover:opacity-75"
+                className="px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug hover:opacity-75"
                 to="/promotions"
               >
                 Promotions
@@ -43,7 +43,7 @@ const Navbar = (props) => {
               <Fragment>
                 <li className="nav-item">
                   <Link
-                    className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug hover:opacity-75 cursor-pointer"
+                    className="px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug hover:opacity-75 cursor-pointer"
                     to="/cart"
                   >
                     <span className="material-icons mr-1">shopping_cart</span>{" "}
@@ -54,7 +54,7 @@ const Navbar = (props) => {
 
                 <li className="user-dropdown nav-item">
                   <Link
-                    className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug cursor-pointer hover:opacity-75"
+                    className="px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug cursor-pointer hover:opacity-75"
                     to="/customer"
                   >
                     <span className="material-icons mr-1">person</span>
@@ -62,7 +62,7 @@ const Navbar = (props) => {
                   </Link>
                   <div className="user-dropdown-content absolute hidden w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <Link
-                      className="flex items-center px-4 py-2 text-xs uppercase leading-snug cursor-pointer hover:opacity-75"
+                      className="flex items-center px-4 py-2 text-sm uppercase leading-snug cursor-pointer hover:opacity-75"
                       to="/customer/orders"
                     >
                       <span className="material-icons mr-1">list_alt</span>
@@ -70,7 +70,7 @@ const Navbar = (props) => {
                     </Link>
 
                     <div
-                      className="flex items-center px-4 py-2 text-xs uppercase leading-snug cursor-pointer hover:opacity-75"
+                      className="flex items-center px-4 py-2 text-sm uppercase leading-snug cursor-pointer hover:opacity-75"
                       onClick={logout}
                     >
                       <span className="material-icons mr-1">logout</span>Logout
@@ -82,7 +82,7 @@ const Navbar = (props) => {
               <Fragment>
                 <li className="nav-item">
                   <Link
-                    className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug hover:opacity-75"
+                    className="px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug hover:opacity-75"
                     to="/login"
                   >
                     Login
@@ -90,7 +90,7 @@ const Navbar = (props) => {
                 </li>
                 <li className="nav-item">
                   <Link
-                    className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug hover:opacity-75"
+                    className="px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug hover:opacity-75"
                     to="/register"
                   >
                     Register

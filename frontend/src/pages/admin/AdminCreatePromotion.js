@@ -51,7 +51,6 @@ const AdminCreatePromotion = () => {
                 setProduct(e.target.value);
               }}
             >
-              <option value="default">--select--</option>
               {products?.normalProducts.map((product) => (
                 <option value={product._id} key={product._id}>
                   {product.title}

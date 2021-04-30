@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery, gql, useMutation } from "@apollo/client";
 import Truncate from "react-truncate";
 
 const AdminOrders = () => {
@@ -28,6 +28,14 @@ const AdminOrders = () => {
       }
     `
   );
+
+  const [removeOrder] = useMutation(gql`
+    mutation($_id: MongoID!) {
+      removeOrder(_id: $_id) {
+        recordId
+      }
+    }
+  `);
 
   if (loading) {
     return <h1>Loading...</h1>;
@@ -117,7 +125,12 @@ const AdminOrders = () => {
                                 </svg>
                               </Link>
                             </div>
-                            <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                            <div
+                              className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"
+                              onClick={() =>
+                                removeOrder({ variables: { _id: order._id } })
+                              }
+                            >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"

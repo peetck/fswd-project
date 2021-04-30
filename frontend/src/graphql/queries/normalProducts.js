@@ -14,6 +14,7 @@ export const NORMAL_PRODUCTS_QUERY = gql`
         color
         size
       }
+      type
       createdAt
       updatedAt
     }

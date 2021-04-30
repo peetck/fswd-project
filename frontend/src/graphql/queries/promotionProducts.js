@@ -8,11 +8,14 @@ export const PROMOTION_PRODUCTS_QUERY = gql`
       description
       price
       images
+      totalStock
       stock {
         quantity
         color
         size
       }
+      type
+      priceAfterDiscount
       percent
     }
   }

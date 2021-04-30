@@ -1,13 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { useMutation, gql } from "@apollo/client";
+import { useMutation, gql, useLazyQuery, useQuery } from "@apollo/client";
 import { Link, Redirect } from "react-router-dom";
 import { useUserContext } from "../contexts/UserContext";
+
+import Input from "../components/Input";
 
 const OmiseCard = window.OmiseCard;
 
 const Checkout = (props) => {
   const { user, cart, refetchCart, token } = useUserContext();
-  const [radioChecked, setRadioChecked] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("");
+  const [address, setAddress] = useState("");
+  const { data, loading, error } = useQuery(
+    gql`
+      query($_id: MongoID!) {
+        customerUser(_id: $_id) {
+          address
+        }
+      }
+    `,
+    {
+      variables: {
+        _id: user._id,
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (data?.customerUser?.address) {
+      setAddress(data.customerUser.address);
+    }
+  }, [data]);
 
   useEffect(() => {
     OmiseCard.configure({
@@ -47,12 +70,11 @@ const Checkout = (props) => {
     }
   `);
 
-  const makeOrder = async (paymentMethod) => {
-    console.log(paymentMethod);
+  const makeOrder = async () => {
     await createOrder({
       variables: {
         userId: user._id,
-        deliveryAddress: "DUMMY ADDRESS",
+        deliveryAddress: address,
         paymentMethod: paymentMethod,
       },
       context: {
@@ -78,7 +100,7 @@ const Checkout = (props) => {
         });
 
         if (response.data.makePayment.status === "successful") {
-          await makeOrder("CreditCard");
+          await makeOrder();
         }
       },
       onFormClosed: () => {},
@@ -86,8 +108,8 @@ const Checkout = (props) => {
   };
 
   const selectionPayment = () => {
-    if (radioChecked == "credit") handleCreditCard();
-    else makeOrder("CashOnDelivery");
+    if (paymentMethod === "CreditCard") handleCreditCard();
+    else makeOrder();
   };
 
   console.log(cart);
@@ -177,14 +199,17 @@ const Checkout = (props) => {
                 Payment Option
               </label>
               <div className="mt-6">
-                <button className="flex items-center justify-between w-full bg-white rounded-md border-2 border-blue-500 p-4 focus:outline-none">
+                <div
+                  className="flex items-center justify-between w-full bg-white rounded-md border p-4 focus:outline-none cursor-pointer"
+                  onClick={() => setPaymentMethod("CreditCard")}
+                >
                   <label className="flex items-center">
                     <input
                       type="radio"
-                      name="options"
-                      value="credit"
-                      className="form-radio h-5 w-5 text-blue-600"
-                      onClick={(e) => setRadioChecked(e.target.value)}
+                      name="paymentMethod"
+                      value="CreditCard"
+                      checked={paymentMethod === "CreditCard"}
+                      className="h-5 w-5 text-blue-600"
                     />
                     <span className="ml-2 text-sm text-gray-700">
                       Credit Card
@@ -192,15 +217,18 @@ const Checkout = (props) => {
                   </label>
                   {/* icon payment */}
                   <span class="material-icons">credit_card</span>
-                </button>
-                <button className="mt-6 flex items-center justify-between w-full bg-white rounded-md border p-4 focus:outline-none">
+                </div>
+                <div
+                  className="mt-6 flex items-center justify-between w-full bg-white rounded-md border p-4 focus:outline-none cursor-pointer"
+                  onClick={() => setPaymentMethod("CashOnDelivery")}
+                >
                   <label className="flex items-center">
                     <input
                       type="radio"
-                      name="options"
-                      value="cash"
+                      name="paymentMethod"
+                      value="CashOnDelivery"
+                      checked={paymentMethod === "CashOnDelivery"}
                       className="form-radio h-5 w-5 text-blue-600"
-                      onClick={(e) => setRadioChecked(e.target.value)}
                     />
                     <span className="ml-2 text-sm text-gray-700">
                       Cash on Delivery
@@ -208,8 +236,19 @@ const Checkout = (props) => {
                   </label>
                   {/* icon payment */}
                   <span class="material-icons">local_shipping</span>
-                </button>
+                </div>
               </div>
+            </div>
+
+            <div className="mt-6">
+              <Input
+                name="address"
+                label="Delivery Address"
+                value={address}
+                rows={3}
+                type="textarea"
+                onChange={(e) => setAddress(e.target.value)}
+              />
             </div>
 
             <div className="border-t mt-8">
@@ -217,7 +256,7 @@ const Checkout = (props) => {
                 <span>Total Payment</span>
                 <span>${cart?.totalPrice}</span>
               </div>
-              {radioChecked != "" ? (
+              {paymentMethod != "" ? (
                 <button
                   className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full"
                   onClick={selectionPayment}

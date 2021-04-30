@@ -4,17 +4,18 @@ import { useUserContext } from "../../contexts/UserContext";
 import Input from "../../components/Input";
 
 const CustomerInfo = (props) => {
-
   const { user } = useUserContext();
+
+  const [selected, setSelected] = useState(false);
+  const [address, setAddress] = useState(null);
+
   const { data, loading, error, refetch } = useQuery(
     gql`
       query($_id: MongoID!) {
         customerUser(_id: $_id) {
           username
           email
-          addresses
-          gender
-          avatar
+          address
         }
       }
     `,
@@ -25,39 +26,32 @@ const CustomerInfo = (props) => {
     }
   );
 
-  const [selected, setSelected] = useState(false);
-  const [address, setAddress] = useState(null);
-
-
   const [updateCustomerUser] = useMutation(
     gql`
-      mutation updateCustomerUser($_id: MongoID!, $addresses: [String!]){
-        updateCustomerUser(_id: $_id, record: {addresses: $addresses}){
+      mutation updateCustomerUser($_id: MongoID!, $address: String!) {
+        updateCustomerUser(_id: $_id, record: { address: $address }) {
           recordId
         }
       }
     `
-  )
+  );
 
   const handdleSubmit = async (e) => {
     e.preventDefault();
-    try{
+    try {
       await updateCustomerUser({
         variables: {
           _id: user._id,
-          addresses: address
-        }
-      })
+          address: address,
+        },
+      });
 
-      setSelected(false)
-      refetch()
-
-    }catch{
-      console.log("Error")
+      setSelected(false);
+      refetch();
+    } catch {
+      console.log("Error");
     }
-
-
-  }
+  };
 
   const handleAddress = (e) => {
     setAddress(e.target.value);
@@ -75,7 +69,10 @@ const CustomerInfo = (props) => {
             rows={4}
             onChange={handleAddress}
           />
-          <button className="px-3 mt-1 py-2 bg-indigo-600 text-white text-sm font-medium rounded hover:bg-indigo-500 focus:outline-none focus:bg-indigo-500" onClick={handdleSubmit}>
+          <button
+            className="px-3 mt-1 py-2 bg-indigo-600 text-white text-sm font-medium rounded hover:bg-indigo-500 focus:outline-none focus:bg-indigo-500"
+            onClick={handdleSubmit}
+          >
             Submit
           </button>
         </form>
@@ -88,7 +85,6 @@ const CustomerInfo = (props) => {
   if (loading) {
     return <h1>Loading...</h1>;
   }
-
 
   return (
     <>
@@ -121,8 +117,8 @@ const CustomerInfo = (props) => {
                         <span className="material-icons">mode_edit</span>
                       </button>
                     </div>
-                    {console.log(data?.customerUser?.addresses[0])}
-                    <div>{renderTag(data?.customerUser?.addresses[0])}</div>
+
+                    <div>{renderTag(data?.customerUser?.address)}</div>
                   </div>
                 </div>
               </div>

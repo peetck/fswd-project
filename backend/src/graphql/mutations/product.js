@@ -17,6 +17,7 @@ export const createNormalProduct = NormalProductTC.getResolver(
 });
 
 export const updateNormalProduct = NormalProductTC.getResolver("updateById");
+export const removeNormalProduct = NormalProductTC.getResolver("removeById");
 
 const CreatePromotionProductInput = schemaComposer.createInputTC({
   name: "CreatePromotionProductInput",
@@ -57,6 +58,47 @@ export const createPromotionProduct = schemaComposer.createResolver({
     return {
       _id,
       percent,
+    };
+  },
+});
+
+const RemovePromotionProductInput = schemaComposer.createInputTC({
+  name: "RemovePromotionProductInput",
+  fields: {
+    _id: "MongoID!",
+  },
+});
+
+const RemovePromotionProductPayload = schemaComposer.createObjectTC({
+  name: "RemovePromotionProductPayload",
+  fields: {
+    status: "Boolean",
+  },
+});
+
+export const removePromotionProduct = schemaComposer.createResolver({
+  name: "removePromotionProduct",
+  args: {
+    record: RemovePromotionProductInput,
+  },
+  type: RemovePromotionProductPayload,
+  resolve: async ({ args }) => {
+    const { record } = args;
+
+    const { _id } = record;
+
+    const product = await ProductModel.findById(_id);
+
+    delete product["percent"];
+
+    const normalProduct = NormalProductModel.hydrate(product.toObject());
+
+    normalProduct.type = "NormalProduct";
+
+    await normalProduct.save();
+
+    return {
+      status: true,
     };
   },
 });

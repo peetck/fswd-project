@@ -10,7 +10,6 @@ const RegisterPage = (props) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
-  const [gender, setGender] = useState("Male");
 
   const { register } = useUserContext();
 
@@ -18,7 +17,7 @@ const RegisterPage = (props) => {
     e.preventDefault();
 
     try {
-      await register(username, password, email, [address], gender);
+      await register(username, password, email, address);
       alert("Register Success!!");
     } catch (error) {
       alert(error.message);
@@ -89,21 +88,6 @@ const RegisterPage = (props) => {
                     onChange={(e) => setAddress(e.target.value)}
                     rows={4}
                   />
-                </div>
-
-                <div className="relative w-full mb-7">
-                  <Input
-                    label="Gender"
-                    type="select"
-                    name="gender"
-                    placeholder="Gender"
-                    value={gender}
-                    onChange={(e) => setGender(e.target.value)}
-                  >
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                  </Input>
                 </div>
 
                 <div className="text-center mt-10">
