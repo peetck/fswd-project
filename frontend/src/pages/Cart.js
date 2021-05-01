@@ -1,24 +1,50 @@
-import React, { useState } from "react";
-import { useQuery, gql } from "@apollo/client";
+import React, { Fragment } from "react";
+import { useLazyQuery, gql } from "@apollo/client";
 import { Link, useHistory } from "react-router-dom";
 import Truncate from "react-truncate";
 
 import { useUserContext } from "../contexts/UserContext";
 import Button from "../components/Button";
+import ProductQuantity from "../components/ProductQuantity";
+
+const PRODUCT_BY_ID_MUTATION = gql`
+  query($_id: MongoID!) {
+    productById(_id: $_id) {
+      stock {
+        color
+        size
+        quantity
+      }
+    }
+  }
+`;
 
 const Cart = () => {
   const history = useHistory();
 
   const { user, cart, updateCart } = useUserContext();
 
-  console.log(cart);
-  const handleQuantity = (number, index) => {
-    if (cart.products[index].quantity + number <= 0) {
+  const [productById, { data, loading, error }] = useLazyQuery(
+    PRODUCT_BY_ID_MUTATION
+  );
+
+  const handleQuantity = async (n, index) => {
+    productById();
+
+    if (
+      cart.products[index].quantity + n <= 0 ||
+      cart.products[index].quantity + n >
+        cart.products[index].product.stock.find(
+          (st) =>
+            st.color === cart.products[index].color &&
+            st.size === cart.products[index].size
+        ).quantity
+    ) {
       return;
     }
     updateCart(
       cart.products[index].productId,
-      number,
+      n,
       cart.products[index].color,
       cart.products[index].size,
       false
@@ -51,12 +77,14 @@ const Cart = () => {
               </h3>
             </div>
             {cart?.products.map((product, index) => (
-              <>
+              <Fragment>
                 <div className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
                   <div className="flex w-2/5 h-24">
                     <img
-                      className="hidden lg:inline-block h-24"
+                      className="hidden lg:inline-block h-24 object-contain bg-solitude"
                       src={product.product.images[0]}
+                      width="100"
+                      height="100"
                       alt=""
                     />
                     <div className="flex flex-col justify-between ml-4 flex-grow">
@@ -102,28 +130,11 @@ const Cart = () => {
                   </span>
 
                   <div className="flex justify-center w-2/5 lg:w-1/5">
-                    <button onClick={() => handleQuantity(-1, index)}>
-                      <svg
-                        className="fill-current text-gray-600 w-3"
-                        viewBox="0 0 448 512"
-                      >
-                        <path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
-                      </svg>
-                    </button>
-                    <input
-                      className="mx-2 border text-center w-8"
-                      type="text"
-                      value={product.quantity}
-                      disabled
+                    <ProductQuantity
+                      quantity={product.quantity}
+                      onAdd={() => handleQuantity(1, index)}
+                      onRemove={() => handleQuantity(-1, index)}
                     />
-                    <button onClick={() => handleQuantity(1, index)}>
-                      <svg
-                        className="fill-current text-gray-600 w-3"
-                        viewBox="0 0 448 512"
-                      >
-                        <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
-                      </svg>
-                    </button>
                   </div>
 
                   <span className="flex justify-center w-1/5 text-sm">
@@ -133,7 +144,7 @@ const Cart = () => {
                       : product.product.priceAfterDiscount * product.quantity}
                   </span>
                 </div>
-              </>
+              </Fragment>
             ))}
 
             <div className="flex mt-10">

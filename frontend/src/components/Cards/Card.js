@@ -10,6 +10,7 @@ const Card = ({
   productType,
   percent,
   priceAfterDiscount,
+  sold
 }) => {
   return (
     <Link to={`/product/${title}`}>
@@ -18,7 +19,7 @@ const Card = ({
           <img
             src={imageUrl}
             alt={imageUrl}
-            className="w-full h-56 flex self-center shadow-md object-cover"
+            className="w-full h-56 flex self-center shadow-md object-contain bg-solitude"
           />
           <div className="flex items-center justify-between mt-2">
             <Truncate lines={2} width={120} className="text-sm uppercase px-2">
@@ -34,17 +35,20 @@ const Card = ({
             )}
           </div>
         </div>
-        <div className="py-1 px-2 text-justify flex flex-row justify-start border-t text-royal-blue font-bold text-lg">
-          {productType === "PromotionProduct" ? (
-            <p>
-              <del className="text-coolGray-400 font-normal text-base">
-                ฿{price}
-              </del>{" "}
-              ฿{priceAfterDiscount}
-            </p>
-          ) : (
-            `฿${price}`
-          )}
+        <div className="py-1 px-2 flex flex-row justify-between items-center border-t">
+          <div className="text-royal-blue font-bold text-lg">
+            {productType === "PromotionProduct" ? (
+              <p>
+                <del className="text-coolGray-400 font-normal text-base">
+                  ฿{price}
+                </del>{" "}
+                ฿{priceAfterDiscount}
+              </p>
+            ) : (
+              `฿${price}`
+            )}
+          </div>
+          <div className="text-sm text-coolGray-400">{sold} sold</div>
         </div>
       </div>
     </Link>

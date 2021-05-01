@@ -38,6 +38,5 @@ CartTC.addFields({
 
       return totalPrice;
     },
-    projection: { products: true },
   },
 });

@@ -11,7 +11,7 @@ const UserContext = createContext();
 export const UserContextProvider = (props) => {
   const [user, setUser] = useState(null);
   // กลับมาเปลี่ยน วิธีการ query
-  const [fetchCart, { data: cart, refetch: refetchCart }] = useLazyQuery(
+  const [fetchCart, { data: cart, refetch: refetchCart, error }] = useLazyQuery(
     gql`
       query($_id: MongoID!) {
         customerUser(_id: $_id) {
@@ -27,6 +27,11 @@ export const UserContextProvider = (props) => {
                 title
                 price
                 images
+                stock {
+                  quantity
+                  color
+                  size
+                }
                 type
                 ... on PromotionProduct {
                   percent
@@ -112,7 +117,6 @@ export const UserContextProvider = (props) => {
     replace
   ) => {
     try {
-      console.log(productId, quantity, color, size, replace);
       const products = cart?.customerUser?.cart?.products.map((prod) => ({
         productId: prod.productId,
         color: prod.color,

@@ -38,9 +38,7 @@ const App = () => {
           <Route path="/products" component={Products} exact />
           <Route path="/product/:productSlug" component={ProductDetail} exact />
           <Route path="/promotions" component={Promotions} exact />
-          {/* <Route>
-            <Redirect to="/" />
-          </Route> */}
+          <Route path="/404" component={NotFound} />
         </Switch>
       </Fragment>
     );
@@ -56,7 +54,7 @@ const App = () => {
           <Route path="/cart" component={Cart} exact />
           <Route path="/checkout" component={Checkout} exact />
           <Route path="/customer" component={CustomerRoute} />
-          <Route path="/404" component={NotFound} />
+
           {/* <Route>
             <Redirect to="/" />
           </Route> */}
@@ -78,10 +76,6 @@ const App = () => {
       </Fragment>
     );
   }
-
-  // if (!user) {
-  //   return <h1>Loading...</h1>;
-  // }
 
   return <Router basename={process.env.PUBLIC_URL}>{routes}</Router>;
 };

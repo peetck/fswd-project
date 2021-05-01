@@ -1,8 +1,7 @@
 import React from "react";
 import { useQuery, gql } from "@apollo/client";
-import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
-import Truncate from "react-truncate";
 import ProductList from "../components/ProductList";
 
 const PROMOTION_PRODUCTS_QUERY = gql`
@@ -14,6 +13,7 @@ const PROMOTION_PRODUCTS_QUERY = gql`
       price
       images
       totalStock
+      sold
       stock {
         quantity
         color
@@ -31,10 +31,10 @@ const Promotions = () => {
     PROMOTION_PRODUCTS_QUERY
   );
 
-  if (loading) {
-    return <h1>Loading ...</h1>;
+  if (error) {
+    toast.error(error.message);
   }
-  console.log(promotions);
+
   return (
     <div className="flex flex-col">
       <div className="container flex flex-col mx-auto mt-14">
@@ -43,7 +43,10 @@ const Promotions = () => {
         </div>
 
         <div className="flex flex-wrap justify-center mt-14">
-          <ProductList products={promotions.promotionProducts} />
+          <ProductList
+            products={promotions?.promotionProducts}
+            loading={loading}
+          />
         </div>
       </div>
     </div>

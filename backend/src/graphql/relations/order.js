@@ -14,6 +14,5 @@ OrderTC.addFields({
       }, 0);
       return totalPrice;
     },
-    projection: { products: true },
   },
 });

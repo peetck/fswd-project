@@ -49,9 +49,9 @@ const Input = ({
           {children}
         </select>
       ) : type === "file" ? (
-        <label class="w-52 flex flex-col items-center px-4 py-3 bg-white text-blue rounded tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-indigo-600">
-          <span class="material-icons">file_upload</span>
-          <span class="mt-2 text-sm leading-normal">Select a file</span>
+        <label className="w-52 flex flex-col items-center px-4 py-3 bg-white text-blue rounded tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-indigo-600">
+          <span className="material-icons">file_upload</span>
+          <span className="mt-2 text-sm leading-normal">Select a file</span>
           <input
             type={type}
             name={name}

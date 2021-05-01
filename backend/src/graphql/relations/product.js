@@ -11,7 +11,6 @@ ProductTC.addFields({
       );
       return quantity;
     },
-    projection: { stock: true },
   },
 });
 
@@ -22,6 +21,5 @@ PromotionProductTC.addFields({
       const { price, percent } = source;
       return price - (price * percent) / 100;
     },
-    projection: { percent: true, price: true },
   },
 });

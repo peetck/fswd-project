@@ -6,8 +6,19 @@ import reportWebVitals from "./reportWebVitals";
 import { ApolloClient, InMemoryCache, ApolloLink, from } from "@apollo/client";
 import { createUploadLink } from "apollo-upload-client";
 import { ApolloProvider } from "@apollo/client/react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
 import { UserContextProvider } from "./contexts/UserContext";
+
+const defaultOptions = {
+  query: {
+    fetchPolicy: "network-only",
+  },
+  watchQuery: {
+    fetchPolicy: "network-only",
+  },
+};
 
 const client = new ApolloClient({
   uri: "http://localhost:3001/graphql",
@@ -24,11 +35,7 @@ const client = new ApolloClient({
       uri: "http://localhost:3001/graphql",
     }),
   ]),
-  defaultOptions: {
-    query: {
-      fetchPolicy: "network-only",
-    },
-  },
+  defaultOptions: defaultOptions,
 });
 
 ReactDOM.render(
@@ -36,6 +43,20 @@ ReactDOM.render(
     <ApolloProvider client={client}>
       <UserContextProvider>
         <App />
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          pauseOnHover={false}
+          draggable={false}
+          style={{
+            marginTop: "50px",
+          }}
+        />
       </UserContextProvider>
     </ApolloProvider>
   </React.StrictMode>,

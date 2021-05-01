@@ -5,6 +5,7 @@ import {
   ProductModel,
   NormalProductModel,
   PromotionProductModel,
+  CartModel,
 } from "../../models";
 
 export const createNormalProduct = NormalProductTC.getResolver(

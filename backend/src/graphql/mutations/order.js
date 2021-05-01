@@ -12,7 +12,7 @@ import {
 export const createOrder = OrderTC.getResolver("createOne").wrapResolve(
   (next) => async (req) => {
     if (!req?.context?.user) {
-      throw new Error("Unauthorized.");
+      throw new Error("Unauthorized. order");
     }
 
     const userId = req?.args?.record?.userId;
@@ -35,48 +35,65 @@ export const createOrder = OrderTC.getResolver("createOne").wrapResolve(
           stock[i].color === cartProduct.color &&
           stock[i].size === cartProduct.size
         ) {
+          if (stock[i].quantity - cartProduct.quantity < 0) {
+            throw new Error("Something went wrong");
+          }
           stock[i].quantity -= cartProduct.quantity;
+          product.sold = product.sold + cartProduct.quantity;
           break;
         }
       }
 
       product.stock = stock;
 
-      await product.save();
+      products.push({
+        product: product,
+        color: cartProduct.color,
+        size: cartProduct.size,
+        quantity: cartProduct.quantity,
+      });
+    }
+
+    const deliveryAddress = req?.args?.record?.deliveryAddress;
+    const paymentMethod = req?.args?.record?.paymentMethod;
+
+    const validatedProducts = [];
+
+    for (let obj of products) {
+      const { product, color, size, quantity } = obj;
 
       const price = product.price;
 
       if (product.type === "PromotionProduct") {
         const promotionProduct = await PromotionProductModel.findById(
-          cartProduct.productId
+          product._id
         );
         const percent = promotionProduct.percent;
         const priceAfterDiscount = price * (promotionProduct.percent / 100);
 
-        products.push({
+        validatedProducts.push({
           title: product.title,
           type: product.type,
           price: price,
           priceAfterDiscount: priceAfterDiscount,
           percent: percent,
-          color: cartProduct.color,
-          size: cartProduct.size,
-          quantity: cartProduct.quantity,
+          color: color,
+          size: size,
+          quantity: quantity,
         });
       } else {
-        products.push({
+        validatedProducts.push({
           title: product.title,
           type: product.type,
           price: price,
-          color: cartProduct.color,
-          size: cartProduct.size,
-          quantity: cartProduct.quantity,
+          color: color,
+          size: size,
+          quantity: quantity,
         });
       }
-    }
 
-    const deliveryAddress = req?.args?.record?.deliveryAddress;
-    const paymentMethod = req?.args?.record?.paymentMethod;
+      await product.save();
+    }
 
     cart.products = [];
 
@@ -87,7 +104,7 @@ export const createOrder = OrderTC.getResolver("createOne").wrapResolve(
       args: {
         record: {
           userId: userId,
-          products: products,
+          products: validatedProducts,
           deliveryAddress: deliveryAddress,
           paymentMethod: paymentMethod,
         },

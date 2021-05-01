@@ -7,7 +7,7 @@ module.exports = {
     extend: {},
     colors: {
       ...colors,
-      "chilean-fire": "#f67001",
+      solitude: "#eceef0",
       "royal-blue": "#525fe1",
     },
   },

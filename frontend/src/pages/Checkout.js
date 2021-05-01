@@ -2,20 +2,24 @@ import React, { useEffect, useState } from "react";
 import { useMutation, gql, useLazyQuery, useQuery } from "@apollo/client";
 import { Link, Redirect } from "react-router-dom";
 import { useUserContext } from "../contexts/UserContext";
+import { toast } from "react-toastify";
+import moment from "moment";
 
 import Input from "../components/Input";
 
 const OmiseCard = window.OmiseCard;
 
 const Checkout = (props) => {
-  const { user, cart, refetchCart, token } = useUserContext();
+  const { user, cart, refetchCart, token, updateCart } = useUserContext();
   const [paymentMethod, setPaymentMethod] = useState("");
   const [address, setAddress] = useState("");
+
   const { data, loading, error } = useQuery(
     gql`
       query($_id: MongoID!) {
         customerUser(_id: $_id) {
           address
+          email
         }
       }
     `,
@@ -25,6 +29,14 @@ const Checkout = (props) => {
       },
     }
   );
+
+  const [removeOrder] = useMutation(gql`
+    mutation($_id: MongoID!) {
+      removeOrder(_id: $_id) {
+        recordId
+      }
+    }
+  `);
 
   useEffect(() => {
     if (data?.customerUser?.address) {
@@ -63,56 +75,80 @@ const Checkout = (props) => {
   );
 
   const [makePayment] = useMutation(gql`
-    mutation($amount: Float!, $token: String!) {
-      makePayment(record: { amount: $amount, token: $token }) {
+    mutation(
+      $amount: Float!
+      $token: String!
+      $email: String!
+      $userId: MongoID!
+      $deliveryAddress: String!
+    ) {
+      makePayment(
+        record: {
+          amount: $amount
+          token: $token
+          email: $email
+          userId: $userId
+          deliveryAddress: $deliveryAddress
+        }
+      ) {
         status
       }
     }
   `);
 
   const makeOrder = async () => {
-    await createOrder({
-      variables: {
-        userId: user._id,
-        deliveryAddress: address,
-        paymentMethod: paymentMethod,
-      },
-      context: {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    });
-    await refetchCart();
-    props.history.push("/customer/orders");
+    try {
+      if (paymentMethod === "CreditCard") {
+        await chargeCreditCard();
+      } else {
+        await createOrder({
+          variables: {
+            userId: user._id,
+            deliveryAddress: address,
+            paymentMethod: paymentMethod,
+          },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        });
+        await refetchCart();
+        props.history.push("/customer/orders");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
-  const handleCreditCard = async () => {
+  const chargeCreditCard = async () => {
     OmiseCard.open({
-      frameDescription: "Invoice #3847",
+      frameDescription: `Invoice Date: ${moment(new Date()).format("L")}`,
       amount: cart?.totalPrice * 100,
-      onCreateTokenSuccess: async (token) => {
+      onCreateTokenSuccess: async (omiseToken) => {
         const response = await makePayment({
           variables: {
             amount: cart?.totalPrice * 100,
-            token: token,
+            token: omiseToken,
+            email: data?.customerUser?.email,
+            userId: user._id,
+            deliveryAddress: address,
+          },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
         });
 
         if (response.data.makePayment.status === "successful") {
-          await makeOrder();
+          await refetchCart();
+          props.history.push("/customer/orders");
         }
       },
       onFormClosed: () => {},
     });
   };
-
-  const selectionPayment = () => {
-    if (paymentMethod === "CreditCard") handleCreditCard();
-    else makeOrder();
-  };
-
-  console.log(cart);
 
   return (
     <div>
@@ -216,7 +252,7 @@ const Checkout = (props) => {
                     </span>
                   </label>
                   {/* icon payment */}
-                  <span class="material-icons">credit_card</span>
+                  <span className="material-icons">credit_card</span>
                 </div>
                 <div
                   className="mt-6 flex items-center justify-between w-full bg-white rounded-md border p-4 focus:outline-none cursor-pointer"
@@ -235,7 +271,7 @@ const Checkout = (props) => {
                     </span>
                   </label>
                   {/* icon payment */}
-                  <span class="material-icons">local_shipping</span>
+                  <span className="material-icons">local_shipping</span>
                 </div>
               </div>
             </div>
@@ -259,7 +295,7 @@ const Checkout = (props) => {
               {paymentMethod != "" ? (
                 <button
                   className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full"
-                  onClick={selectionPayment}
+                  onClick={makeOrder}
                 >
                   place order
                 </button>

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { useLazyQuery, gql } from "@apollo/client";
+import { useQuery, gql } from "@apollo/client";
 import { Link } from "react-router-dom";
-import Loader from "react-loader-spinner";
+import { toast } from "react-toastify";
 
 import Button from "../components/Button";
 import ProductList from "../components/ProductList";
@@ -14,6 +14,7 @@ const NORMAL_PRODUCTS_QUERY = gql`
       description
       price
       images
+      sold
       totalStock
       stock {
         quantity
@@ -34,6 +35,7 @@ const PROMOTION_PRODUCTS_QUERY = gql`
       description
       price
       images
+      sold
       totalStock
       stock {
         quantity
@@ -48,20 +50,25 @@ const PROMOTION_PRODUCTS_QUERY = gql`
 `;
 
 const Home = () => {
-  const [
-    fetchProducts,
-    { data: products, loading: loadingProducts, error: errorProducts },
-  ] = useLazyQuery(NORMAL_PRODUCTS_QUERY);
+  const {
+    data: products,
+    loading: loadingProducts,
+    error: errorProducts,
+  } = useQuery(NORMAL_PRODUCTS_QUERY);
 
-  const [
-    fetchPromotions,
-    { data: promotions, loading: loadingPromotions, error: errorPromotions },
-  ] = useLazyQuery(PROMOTION_PRODUCTS_QUERY);
+  const {
+    data: promotions,
+    loading: loadingPromotions,
+    error: errorPromotions,
+  } = useQuery(PROMOTION_PRODUCTS_QUERY);
 
-  useEffect(() => {
-    fetchProducts();
-    fetchPromotions();
-  }, []);
+  if (errorProducts) {
+    toast.error(errorProducts.message);
+  }
+
+  if (errorPromotions) {
+    toast.error(errorPromotions.message);
+  }
 
   return (
     <div className="flex flex-col">
@@ -76,7 +83,9 @@ const Home = () => {
             to do before.
           </p>
           <div className="w-1/2 mx-auto lg:mx-0">
-            <Button>shop collection</Button>
+            <Button onClick={() => toast.success("HEllo world")}>
+              shop collection
+            </Button>
           </div>
         </div>
         <div className="hidden w-full justify-center lg:flex">
@@ -99,13 +108,10 @@ const Home = () => {
         </div>
 
         <div className="flex my-6 flex-wrap justify-center">
-          {loadingProducts ? (
-            <div className="my-8">
-              <Loader type="Grid" color="#525fe1" height="20rem" width="80" />
-            </div>
-          ) : (
-            <ProductList products={products?.normalProducts} />
-          )}
+          <ProductList
+            products={products?.normalProducts}
+            loading={loadingProducts}
+          />
         </div>
 
         <div className="flex justify-between mt-14">
@@ -119,13 +125,10 @@ const Home = () => {
         </div>
 
         <div className="flex my-6 flex-wrap justify-center">
-          {loadingPromotions ? (
-            <div className="my-8">
-              <Loader type="Grid" color="#525fe1" height="20rem" width="80" />
-            </div>
-          ) : (
-            <ProductList products={promotions?.promotionProducts} />
-          )}
+          <ProductList
+            products={promotions?.promotionProducts}
+            loading={loadingPromotions}
+          />
         </div>
       </div>
     </div>

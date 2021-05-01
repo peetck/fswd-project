@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import { useUserContext } from "../contexts/UserContext";
 import Button from "../components/Button";
 import Input from "../components/Input";
-import Error from "../components/Error";
 
 const LoginPage = (props) => {
   const history = useHistory();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState();
 
   const { login } = useUserContext();
 
@@ -19,9 +18,10 @@ const LoginPage = (props) => {
     e.preventDefault();
     try {
       await login(username, password);
+      toast.success("You are successfully logged in");
       history.push("/");
     } catch (error) {
-      setError(error.message);
+      toast.error(error.message);
     }
   };
 
@@ -57,7 +57,7 @@ const LoginPage = (props) => {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                {error && <Error message={error} />}
+
                 <div className="text-center mt-10">
                   <Button type="submit">Login</Button>
                 </div>

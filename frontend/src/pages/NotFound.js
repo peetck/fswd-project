@@ -4,7 +4,7 @@ import Button from "../components/Button";
 
 const NotFound = () => {
   return (
-    <div class="flex flex-col">
+    <div className="flex flex-col">
       <div className="container flex flex-col mx-auto md:flex-row mb-20 py-12">
         <div className="flex flex-col w-full justify-center text-center lg:text-left lg:w-2/3">
           <h1 className="mb-4 text-5xl font-bold leading-tight uppercase">
