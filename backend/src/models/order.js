@@ -57,7 +57,8 @@ const OrderSchema = new Schema(
     },
     deliveryStatus: {
       type: Boolean,
-      default: false,
+      default: "Waiting",
+      enum: ["Waiting", "Delivered"],
     },
     paymentMethod: {
       type: String,
