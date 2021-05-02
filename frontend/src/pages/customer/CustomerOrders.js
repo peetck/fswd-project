@@ -60,19 +60,23 @@ const CustomerOrders = () => {
             <Link
               key={order._id}
               to={`/customer/order/${order._id}`}
-              className="flex flex-1 px-5 py-4 my-4 border rounded-xl justify-between items-center select-none cursor-pointer transform transition ease-in hover:-translate-y-1 duration-75"
+              className="flex flex-1 p-5 my-4 border rounded-xl justify-between items-center select-none cursor-pointer transform transition ease-in hover:-translate-y-1 duration-75"
             >
               <div>
                 <h1 className="text-royal-blue text-xl font-bold">
                   ฿{order.totalPrice}
                 </h1>
 
-                <h1 className="text-sm text-coolGray-400 mt-2">
+                <h1 className="text-xs text-coolGray-400 mt-2 uppercase">
                   {moment(order.createdAt).format("LT")}
                 </h1>
 
-                <h1 className="text-sm text-coolGray-400">
+                <h1 className="text-xs text-coolGray-400 uppercase">
                   {moment(order.createdAt).format("ll")}
+                </h1>
+
+                <h1 className="text-xs text-coolGray-400 uppercase">
+                  order no: {order._id}
                 </h1>
               </div>
 
