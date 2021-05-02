@@ -60,7 +60,7 @@ const CustomerOrders = () => {
             <Link
               key={order._id}
               to={`/customer/order/${order._id}`}
-              className="flex flex-1 px-5 py-4 mt-4 border rounded-xl justify-between items-center select-none cursor-pointer hover:opacity-80"
+              className="flex flex-1 px-5 py-4 my-4 border rounded-xl justify-between items-center select-none cursor-pointer transform transition ease-in hover:-translate-y-1 duration-75"
             >
               <div>
                 <h1 className="text-royal-blue text-xl font-bold">
@@ -76,7 +76,15 @@ const CustomerOrders = () => {
                 </h1>
               </div>
 
-              <div className="text-3xl mr-8 text-green-600">{"WAITING"}</div>
+              <div
+                className={`text-3xl mr-8 uppercase ${
+                  order.deliveryStatus === "Waiting"
+                    ? "text-yellow-500"
+                    : "text-green-600"
+                }`}
+              >
+                {order.deliveryStatus}
+              </div>
             </Link>
           ))}
         </div>

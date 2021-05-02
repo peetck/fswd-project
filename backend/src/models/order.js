@@ -56,7 +56,7 @@ const OrderSchema = new Schema(
       required: true,
     },
     deliveryStatus: {
-      type: Boolean,
+      type: String,
       default: "Waiting",
       enum: ["Waiting", "Delivered"],
     },
