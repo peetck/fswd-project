@@ -1,6 +1,10 @@
 import React, { Fragment } from "react";
 
-const ProductQuantity = ({ quantity, onRemove, onAdd }) => {
+const ProductQuantity = ({ quantity, onRemove, onAdd, editable }) => {
+  if (!editable) {
+    return <span className="text-base mx-3 text-center">{quantity}</span>;
+  }
+
   return (
     <Fragment>
       <span

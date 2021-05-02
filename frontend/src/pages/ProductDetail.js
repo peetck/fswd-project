@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useQuery, gql } from "@apollo/client";
 import { toast } from "react-toastify";
 
@@ -57,8 +57,10 @@ const NORMAL_PRODUCTS_QUERY = gql`
 `;
 
 const ProductDetail = () => {
+  const history = useHistory();
+
   const { productSlug } = useParams();
-  const { updateCart, cart } = useUserContext();
+  const { updateCart, cart, user } = useUserContext();
 
   const [quantity, setQuantity] = useState(1);
 
@@ -131,6 +133,10 @@ const ProductDetail = () => {
   const addToCart = async () => {
     if (!selectedColor || !selectedSize) {
       return toast.error("Please select product variation first");
+    }
+
+    if (!user) {
+      return history.push("/login");
     }
 
     const quantityInCart =
@@ -293,6 +299,7 @@ const ProductDetail = () => {
                 quantity={quantity}
                 onAdd={() => handleQuantity(1)}
                 onRemove={() => handleQuantity(-1)}
+                editable
               />
 
               <div className="pl-4 text-sm text-coolGray-400">

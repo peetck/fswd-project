@@ -10,6 +10,26 @@
   padding: 0;
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(13deg, #9ca3af 14%, #9ca3af 64%);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(13deg, #6b7280 14%, #6b7280 64%);
+}
+
+::-webkit-scrollbar-track {
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: inset 7px 10px 12px #f0f0f0;
+}
+
 .nav-link-active {
   color: #0ea5ea;
 }

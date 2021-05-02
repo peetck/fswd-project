@@ -1,42 +1,90 @@
 import React, { useEffect, useState } from "react";
-import { useMutation, gql, useLazyQuery, useQuery } from "@apollo/client";
-import { Link, Redirect } from "react-router-dom";
+import { useMutation, gql, useQuery } from "@apollo/client";
+import { Link, useHistory } from "react-router-dom";
 import { useUserContext } from "../contexts/UserContext";
 import { toast } from "react-toastify";
 import moment from "moment";
 
 import Input from "../components/Input";
+import Button from "../components/Button";
+import CartItemList from "../components/CartItemList";
+import Loader from "../components/Loader";
 
 const OmiseCard = window.OmiseCard;
 
-const Checkout = (props) => {
-  const { user, cart, refetchCart, token, updateCart } = useUserContext();
+OmiseCard.configure({
+  publicKey: process.env.REACT_APP_OMISE_PUBLIC_KEY,
+  currency: "thb",
+  frameLabel: "PICNIC SHOP",
+  submitLabel: "PAY NOW",
+  defaultPaymentMethod: "credit_card",
+});
+
+const CUSTOMER_USER_QUERY = gql`
+  query($_id: MongoID!) {
+    customerUser(_id: $_id) {
+      address
+      email
+    }
+  }
+`;
+
+const CREATE_ORDER_MUTATION = gql`
+  mutation(
+    $userId: MongoID!
+    $deliveryAddress: String!
+    $paymentMethod: EnumOrderPaymentMethod!
+  ) {
+    createOrder(
+      record: {
+        userId: $userId
+        deliveryAddress: $deliveryAddress
+        paymentMethod: $paymentMethod
+      }
+    ) {
+      recordId
+    }
+  }
+`;
+
+const MAKE_PAYMENT_MUTATION = gql`
+  mutation(
+    $amount: Float!
+    $token: String!
+    $email: String!
+    $userId: MongoID!
+    $deliveryAddress: String!
+  ) {
+    makePayment(
+      record: {
+        amount: $amount
+        token: $token
+        email: $email
+        userId: $userId
+        deliveryAddress: $deliveryAddress
+      }
+    ) {
+      status
+    }
+  }
+`;
+
+const Checkout = () => {
+  const history = useHistory();
+
+  const { user, cart, refetchCart, token } = useUserContext();
+
   const [paymentMethod, setPaymentMethod] = useState("");
   const [address, setAddress] = useState("");
 
-  const { data, loading, error } = useQuery(
-    gql`
-      query($_id: MongoID!) {
-        customerUser(_id: $_id) {
-          address
-          email
-        }
-      }
-    `,
-    {
-      variables: {
-        _id: user._id,
-      },
-    }
-  );
+  const [createOrder] = useMutation(CREATE_ORDER_MUTATION);
+  const [makePayment] = useMutation(MAKE_PAYMENT_MUTATION);
 
-  const [removeOrder] = useMutation(gql`
-    mutation($_id: MongoID!) {
-      removeOrder(_id: $_id) {
-        recordId
-      }
-    }
-  `);
+  const { data, loading, error } = useQuery(CUSTOMER_USER_QUERY, {
+    variables: {
+      _id: user._id,
+    },
+  });
 
   useEffect(() => {
     if (data?.customerUser?.address) {
@@ -44,63 +92,11 @@ const Checkout = (props) => {
     }
   }, [data]);
 
-  useEffect(() => {
-    OmiseCard.configure({
-      publicKey: process.env.REACT_APP_OMISE_PUBLIC_KEY,
-      currency: "thb",
-      frameLabel: "PICNIC SHOP",
-      submitLabel: "PAY NOW",
-      defaultPaymentMethod: "credit_card",
-    });
-  }, []);
-
-  const [createOrder] = useMutation(
-    gql`
-      mutation(
-        $userId: MongoID!
-        $deliveryAddress: String!
-        $paymentMethod: EnumOrderPaymentMethod!
-      ) {
-        createOrder(
-          record: {
-            userId: $userId
-            deliveryAddress: $deliveryAddress
-            paymentMethod: $paymentMethod
-          }
-        ) {
-          recordId
-        }
-      }
-    `
-  );
-
-  const [makePayment] = useMutation(gql`
-    mutation(
-      $amount: Float!
-      $token: String!
-      $email: String!
-      $userId: MongoID!
-      $deliveryAddress: String!
-    ) {
-      makePayment(
-        record: {
-          amount: $amount
-          token: $token
-          email: $email
-          userId: $userId
-          deliveryAddress: $deliveryAddress
-        }
-      ) {
-        status
-      }
-    }
-  `);
-
   const makeOrder = async () => {
     try {
       if (paymentMethod === "CreditCard") {
         await chargeCreditCard();
-      } else {
+      } else if (paymentMethod === "CashOnDelivery") {
         await createOrder({
           variables: {
             userId: user._id,
@@ -114,7 +110,9 @@ const Checkout = (props) => {
           },
         });
         await refetchCart();
-        props.history.push("/customer/orders");
+        history.push("/customer/orders");
+      } else {
+        throw new Error("Please select payment method first");
       }
     } catch (error) {
       toast.error(error.message);
@@ -143,115 +141,102 @@ const Checkout = (props) => {
 
         if (response.data.makePayment.status === "successful") {
           await refetchCart();
-          props.history.push("/customer/orders");
+          history.push("/customer/orders");
         }
       },
       onFormClosed: () => {},
     });
   };
 
+  if (error) {
+    toast.error(error.message);
+  }
+
+  if (loading) {
+    return (
+      <div className="flex justify-center mt-32">
+        <Loader />
+      </div>
+    );
+  }
+
   return (
-    <div>
-      <div className="container mx-auto mt-10">
-        <div className="flex shadow-md my-10 justify-center mx-44">
-          <div className="w-2/3 bg-white px-10 py-10 ">
+    <div className="flex flex-col">
+      <div className="container mx-auto my-7 min-w-min">
+        <div className="flex flex-col lg:flex-row ">
+          <div className="w-full lg:w-3/4 bg-white px-10 py-10">
             <div className="flex justify-between border-b pb-8">
-              <h1 className="font-semibold text-2xl">Confirm Checkout</h1>
+              <h1 className="font-bold text-2xl uppercase">Checkout</h1>
+              <h2 className="font-bold text-2xl uppercase hidden sm:inline-block">
+                {cart?.products?.length} Items
+              </h2>
             </div>
-            <div className="flex mt-10 mb-5">
-              <h3 className="font-semibold text-gray-600 text-xs uppercase w-3/5">
-                Product Details
+            <div className="flex justify-center mt-10 mb-5 -mx-8 px-6">
+              <h3 className="font-bold text-gray-600 text-xs uppercase w-2/5">
+                Product
               </h3>
-              <h3 className="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">
-                Price
+              <h3 className="font-bold text-gray-600 text-xs uppercase w-1/5 text-center hidden lg:block">
+                Unit Price
               </h3>
-              <h3 className="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">
-                Total
+              <h3 className="font-bold text-gray-600 text-xs uppercase w-2/5 text-center lg:w-1/5">
+                Amount
+              </h3>
+              <h3 className="font-bold text-gray-600 text-xs uppercase w-1/5 text-center ">
+                Item Subtotal
               </h3>
             </div>
-            {cart?.products.map((product, index) => (
-              <>
-                <div className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
-                  <div className="flex w-3/5">
-                    <div className="w-20">
-                      <img
-                        className="h-24"
-                        src={product.product.images[0]}
-                        alt=""
-                      />
-                    </div>
-                    <div className="flex flex-col justify-center ml-4 flex-grow">
-                      <span className="font-bold text-sm">
-                        {product.product.title}
-                      </span>
-                      <span className="text-gray-600 text-xs">
-                        Color : {product.color}
-                      </span>
-                      <span className="text-gray-600 text-xs">
-                        Size : {product.size}
-                      </span>
-                    </div>
-                  </div>
-                  <span className="text-center w-1/5 font-semibold text-sm">
-                    $
-                    {product.product.type === "NormalProduct"
-                      ? product.product.price
-                      : product.product.priceAfterDiscount}{" "}
-                    x {product.quantity} EA
-                  </span>
-                  <span className="text-center w-1/5 font-semibold text-sm">
-                    $
-                    {product.product.type === "NormalProduct"
-                      ? product.product.price * product.quantity
-                      : product.product.priceAfterDiscount * product.quantity}
-                  </span>
-                </div>
-              </>
-            ))}
-            <Link to="/cart">
-              <a className="flex font-semibold text-indigo-600 text-sm mt-10">
-                <svg
-                  className="fill-current mr-2 text-indigo-600 w-4"
-                  viewBox="0 0 448 512"
-                >
-                  <path d="M134.059 296H436c6.627 0 12-5.373 12-12v-56c0-6.627-5.373-12-12-12H134.059v-46.059c0-21.382-25.851-32.09-40.971-16.971L7.029 239.029c-9.373 9.373-9.373 24.569 0 33.941l86.059 86.059c15.119 15.119 40.971 4.411 40.971-16.971V296z" />
-                </svg>
-                Back to Cart
-              </a>
-            </Link>
+
+            <CartItemList />
+
+            <div className="flex mt-10">
+              <Link
+                className="flex items-center font-bold text-royal-blue text-sm uppercase"
+                to="/cart"
+              >
+                <span className="material-icons">keyboard_backspace</span> back
+                to cart
+              </Link>
+            </div>
           </div>
-          <div id="summary" className="w-1/3 px-8 py-10">
-            <h1 className="font-semibold text-2xl border-b pb-8">
+          <div className="w-full lg:w-1/4 px-8 py-10">
+            <h1 className="font-bold text-2xl border-b pb-8 uppercase">
               Information
             </h1>
             <div className="flex justify-between mt-10 mb-5">
-              <span className="font-semibold text-sm uppercase">
-                Items {cart?.products?.length}
+              <span className="font-bold text-sm uppercase">
+                {cart?.products?.length} Items
               </span>
-              <span className="font-semibold text-sm">${cart?.totalPrice}</span>
+              <span className="text-sm">฿{cart?.totalPrice}</span>
             </div>
-            <div>
-              <label className="font-medium inline-block mb-3 text-sm">
-                Payment Option
-              </label>
+
+            <div className="flex justify-between mb-5">
+              <span className="font-bold text-sm uppercase">Shipping</span>
+              <span className="text-sm uppercase">Free</span>
+            </div>
+
+            <div className="flex flex-col justify-between mb-5 border-t mt-8">
+              <span className="font-bold text-sm uppercase mt-8">
+                Payment Method
+              </span>
               <div className="mt-6">
                 <div
                   className="flex items-center justify-between w-full bg-white rounded-md border p-4 focus:outline-none cursor-pointer"
                   onClick={() => setPaymentMethod("CreditCard")}
                 >
                   <label className="flex items-center">
-                    <input
+                    <Input
                       type="radio"
                       name="paymentMethod"
                       value="CreditCard"
                       checked={paymentMethod === "CreditCard"}
-                      className="h-5 w-5 text-blue-600"
+                      readOnly
                     />
+
                     <span className="ml-2 text-sm text-gray-700">
                       Credit Card
                     </span>
                   </label>
-                  {/* icon payment */}
+
                   <span className="material-icons">credit_card</span>
                 </div>
                 <div
@@ -259,62 +244,50 @@ const Checkout = (props) => {
                   onClick={() => setPaymentMethod("CashOnDelivery")}
                 >
                   <label className="flex items-center">
-                    <input
+                    <Input
                       type="radio"
                       name="paymentMethod"
                       value="CashOnDelivery"
                       checked={paymentMethod === "CashOnDelivery"}
-                      className="form-radio h-5 w-5 text-blue-600"
+                      readOnly
                     />
                     <span className="ml-2 text-sm text-gray-700">
                       Cash on Delivery
                     </span>
                   </label>
-                  {/* icon payment */}
                   <span className="material-icons">local_shipping</span>
                 </div>
               </div>
             </div>
 
-            <div className="mt-6">
-              <Input
-                name="address"
-                label="Delivery Address"
-                value={address}
-                rows={3}
-                type="textarea"
-                onChange={(e) => setAddress(e.target.value)}
-              />
+            <div className="flex flex-col justify-between mb-5 border-t mt-8">
+              <span className="font-bold text-sm uppercase mt-8">
+                Delivery Address
+              </span>
+
+              <div className="mt-6">
+                <Input
+                  name="address"
+                  value={address}
+                  rows={3}
+                  type="textarea"
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </div>
             </div>
 
             <div className="border-t mt-8">
-              <div className="flex font-semibold justify-between py-6 text-sm uppercase mt-20">
+              <div className="flex font-bold justify-between py-6 text-sm uppercase mt-11 items-end">
                 <span>Total Payment</span>
-                <span>${cart?.totalPrice}</span>
+                <span className="text-xl">฿{cart?.totalPrice}</span>
               </div>
-              {paymentMethod != "" ? (
-                <button
-                  className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full"
-                  onClick={makeOrder}
-                >
-                  place order
-                </button>
-              ) : (
-                <button className="bg-indigo-200 font-semibold py-3 text-sm text-white uppercase w-full focus:outline-none">
-                  place order
-                </button>
-              )}
+
+              <Button onClick={makeOrder}>Place Order</Button>
             </div>
           </div>
         </div>
       </div>
     </div>
-    // <div>
-    //   <button onClick={() => makeOrder("CashOnDelivery")}>
-    //     cash on delivery
-    //   </button>
-    //   <button onClick={handleCreditCard}>credit card</button>
-    // </div>
   );
 };
 

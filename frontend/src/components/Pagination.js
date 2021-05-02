@@ -1,6 +1,11 @@
-const Pagination = (props) => {
-  const { pageChangeHandler, lastPage, currentPage, firstPage } = props;
+import React from "react";
 
+const Pagination = ({
+  pageChangeHandler,
+  lastPage,
+  currentPage,
+  firstPage,
+}) => {
   let arr;
 
   if (lastPage <= 7) {

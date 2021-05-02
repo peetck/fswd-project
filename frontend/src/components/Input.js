@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 const Input = ({
   label,
@@ -13,15 +13,19 @@ const Input = ({
   children,
   disabled,
   required,
+  checked,
+  readOnly,
 }) => {
   return (
-    <>
-      <label
-        className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-        htmlFor={name}
-      >
-        {label}
-      </label>
+    <Fragment>
+      {label && (
+        <label
+          className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+          htmlFor={name}
+        >
+          {label}
+        </label>
+      )}
       {type === "textarea" ? (
         <textarea
           name={name}
@@ -63,6 +67,18 @@ const Input = ({
             required={required}
           />
         </label>
+      ) : type === "radio" ? (
+        <input
+          type={type}
+          name={name}
+          className="h-5 w-5 text-royal-blue"
+          checked={checked}
+          value={value}
+          onChange={onChange}
+          disabled={disabled}
+          required={required}
+          readOnly={readOnly}
+        />
       ) : (
         <input
           type={type}
@@ -75,7 +91,7 @@ const Input = ({
           required={required}
         />
       )}
-    </>
+    </Fragment>
   );
 };
 
