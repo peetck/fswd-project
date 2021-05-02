@@ -14,7 +14,7 @@ const Navbar = (props) => {
           <NavLink
             className="text-lg font-bold leading-relaxed inline-block mr-4 py-2 whitespace-no-wrap uppercase"
             to="/"
-            activeClassName="text-royal-blue"
+            activeClassName="text-royal-blue font-bold"
             exact
           >
             Picnic shop
@@ -26,7 +26,7 @@ const Navbar = (props) => {
               <NavLink
                 className="px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug hover:opacity-75"
                 to="/products"
-                activeClassName="text-royal-blue"
+                activeClassName="text-royal-blue font-bold"
                 exact
               >
                 Products
@@ -36,7 +36,7 @@ const Navbar = (props) => {
               <NavLink
                 className="px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug hover:opacity-75"
                 to="/promotions"
-                activeClassName="text-royal-blue"
+                activeClassName="text-royal-blue font-bold"
                 exact
               >
                 Promotions
@@ -51,7 +51,7 @@ const Navbar = (props) => {
                   <NavLink
                     className="px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug hover:opacity-75 cursor-pointer"
                     to="/cart"
-                    activeClassName="text-royal-blue"
+                    activeClassName="text-royal-blue font-bold"
                     exact
                   >
                     <span className="material-icons mr-1">shopping_cart</span>{" "}
@@ -64,7 +64,7 @@ const Navbar = (props) => {
                   {/* <NavLink
                     className="px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug cursor-pointer hover:opacity-75"
                     to="/customer"
-                    activeClassName="text-royal-blue"
+                     activeClassName="text-royal-blue font-bold"
                     exact
                   >
                     <span className="material-icons mr-1">person</span>
@@ -80,7 +80,7 @@ const Navbar = (props) => {
                     <NavLink
                       className="flex items-center px-4 py-2 text-sm uppercase leading-snug cursor-pointer hover:opacity-75"
                       to="/customer"
-                      activeClassName="text-royal-blue"
+                      activeClassName="text-royal-blue font-bold"
                       exact
                     >
                       <span className="material-icons mr-1">badge</span>
@@ -90,7 +90,7 @@ const Navbar = (props) => {
                     <NavLink
                       className="flex items-center px-4 py-2 text-sm uppercase leading-snug cursor-pointer hover:opacity-75"
                       to="/customer/orders"
-                      activeClassName="text-royal-blue"
+                      activeClassName="text-royal-blue font-bold"
                       exact
                     >
                       <span className="material-icons mr-1">list_alt</span>
@@ -112,7 +112,7 @@ const Navbar = (props) => {
                   <NavLink
                     className="px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug hover:opacity-75"
                     to="/login"
-                    activeClassName="text-royal-blue"
+                    activeClassName="text-royal-blue font-bold"
                     exact
                   >
                     Login
@@ -122,7 +122,7 @@ const Navbar = (props) => {
                   <NavLink
                     className="px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug hover:opacity-75"
                     to="/register"
-                    activeClassName="text-royal-blue"
+                    activeClassName="text-royal-blue font-bold"
                     exact
                   >
                     Register

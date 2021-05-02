@@ -34,6 +34,10 @@ export const ProductInOrderSchema = new Schema(
       type: Number,
       required: true,
     },
+    imageUrl: {
+      type: String,
+      required: true,
+    },
     type: {
       type: String,
       required: true,
