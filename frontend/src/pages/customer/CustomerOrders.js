@@ -100,6 +100,7 @@ const CustomerOrders = () => {
             process.env.PUBLIC_URL + "/images/069-shipping-package-colour.svg"
           }
           className="w-full h-full"
+          alt="shipping-package"
         />
       </div>
     </WithCustomerSideBar>

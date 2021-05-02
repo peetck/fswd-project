@@ -73,6 +73,7 @@ const PromotionForm = ({ products, onSubmit, isUpdate, promotionProduct }) => {
               process.env.PUBLIC_URL + "/images/067-travel-tickets-colour.svg"
             }
             className="w-full h-full"
+            alt="travel-tickets"
           />
         </div>
       </div>

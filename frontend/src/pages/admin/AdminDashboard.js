@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useQuery, gql } from '@apollo/client';
+import { useQuery, gql } from "@apollo/client";
 import Truncate from "react-truncate";
 
+import Loader from "../../components/Loader";
 
 const AdminDashboard = () => {
   const { data, loading } = useQuery(
@@ -30,38 +31,36 @@ const AdminDashboard = () => {
   );
   const [allOrders, setAllOrders] = useState(0);
   const [soldAll, setSoldAll] = useState(0);
-  const [profit, setProfit] = useState(0)
+  const [profit, setProfit] = useState(0);
   const capital = 10000;
 
-
   useEffect(() => {
-
     let sumProfit = 0;
     let sumAllProduct = 0;
 
     for (let counter in data?.orders) {
-      sumProfit += Number(data?.orders[counter].totalPrice)
-      for (let x in data?.orders[counter].products){
-        sumAllProduct += Number(data?.orders[counter].products[x].quantity)
+      sumProfit += Number(data?.orders[counter].totalPrice);
+      for (let x in data?.orders[counter].products) {
+        sumAllProduct += Number(data?.orders[counter].products[x].quantity);
       }
     }
 
     setProfit((sumProfit * 0.7) / capital);
     setSoldAll(sumAllProduct);
     setAllOrders(data?.orders.length);
-  }, [data])
+  }, [data]);
 
-  const sumProduct = () => {
-
-  }
-
+  const sumProduct = () => {};
 
   if (loading) {
-    return <h1>Loading...</h1>;
+    return (
+      <div className="flex h-screen justify-center items-center">
+        <Loader />
+      </div>
+    );
   }
 
   //console.log(data)
-
 
   return (
     <>
@@ -75,35 +74,32 @@ const AdminDashboard = () => {
                   <span className="text-5xl">{soldAll}</span>
                   <span className="text-3xl align-top">EA</span>
                 </div>
-                <div className="text-green-light text-sm">
-                  SOLD ALL
-                </div>
+                <div className="text-green-light text-sm">SOLD ALL</div>
               </div>
               <div className="flex-grow flex-no-shrink py-6">
                 <div className="text-grey-darker mb-2">
-                  <span className="text-3xl align-top"><span className="text-green align-top">+</span></span>
+                  <span className="text-3xl align-top">
+                    <span className="text-green align-top">+</span>
+                  </span>
                   <span className="text-5xl">12,998</span>
                   <span className="text-3xl align-top">EA</span>
                 </div>
-                <div className="text-green-light text-sm">
-                  SOLD ALL DAILY
-                </div>
+                <div className="text-green-light text-sm">SOLD ALL DAILY</div>
               </div>
               <div className="flex-grow flex-no-shrink py-6">
                 <div className="text-grey-darker mb-2">
-                  <span className="text-3xl align-top"><span className="text-green align-top">+</span></span>
+                  <span className="text-3xl align-top">
+                    <span className="text-green align-top">+</span>
+                  </span>
                   <span className="text-5xl">154.47</span>
                   <span className="text-3xl align-top">%</span>
                 </div>
-                <div className="text-green-light text-sm">
-                  PROFIT
-                </div>
+                <div className="text-green-light text-sm">PROFIT</div>
               </div>
             </div>
             <div className="hidden lg:flex">
               <div className="w-1/3 text-center py-8">
                 <div className="border-r">
-
                   <div className="text-grey-darker mb-2">
                     <span className="text-3xl align-top">+</span>
                     <span className="text-5xl">{soldAll}</span>
@@ -111,13 +107,15 @@ const AdminDashboard = () => {
                   </div>
                   <div className="text-sm uppercase text-grey tracking-wide">
                     SOLD ALL
-                </div>
+                  </div>
                 </div>
               </div>
               <div className="w-1/3 text-center py-8">
                 <div className="border-r">
                   <div className="text-grey-darker mb-2">
-                    <span className="text-3xl align-top"><span className="text-green align-top">+</span></span>
+                    <span className="text-3xl align-top">
+                      <span className="text-green align-top">+</span>
+                    </span>
                     <span className="text-5xl">12,998</span>
                     <span className="text-3xl align-top">EA</span>
                   </div>
@@ -129,7 +127,9 @@ const AdminDashboard = () => {
               <div className="w-1/3 text-center py-8">
                 <div>
                   <div className="text-grey-darker mb-2">
-                    <span className="text-3xl align-top"><span className="text-green align-top">+</span></span>
+                    <span className="text-3xl align-top">
+                      <span className="text-green align-top">+</span>
+                    </span>
                     <span className="text-5xl">{profit.toFixed(2)}</span>
                     <span className="text-3xl align-top">%</span>
                   </div>
@@ -141,13 +141,14 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-
           <div className="flex flex-wrap -mx-4">
             <div className="w-full mb-6 lg:mb-0 lg:w-1/2 px-4 flex flex-col">
               <div className="flex-grow flex flex-col bg-white border-t border-b sm:rounded sm:border shadow overflow-hidden">
                 <div className="border-b">
                   <div className="flex justify-between px-6 -mb-px">
-                    <h3 className="text-blue-dark py-4 font-normal text-lg">ORDER DAILY</h3>
+                    <h3 className="text-blue-dark py-4 font-normal text-lg">
+                      ORDER DAILY
+                    </h3>
                   </div>
                 </div>
                 <table>
@@ -180,11 +181,13 @@ const AdminDashboard = () => {
                         <td className="py-3 px-6 text-center xl:w-1/3 ">
                           <Truncate width={160}>
                             <span>
-                              {order?.products.length <= 1 ? order?.products?.map((e) => {
-                                return e.quantity
-                            }) : 
-                              console.log('1')
-                            } Piece</span>
+                              {order?.products.length <= 1
+                                ? order?.products?.map((e) => {
+                                    return e.quantity;
+                                  })
+                                : console.log("1")}{" "}
+                              Piece
+                            </span>
                           </Truncate>
                         </td>
                         <td className="py-3 px-6 text-center xl:w-full">
@@ -204,22 +207,33 @@ const AdminDashboard = () => {
               </div>
             </div>
 
-
             <div className="w-full lg:w-1/2 px-4">
               <div className="bg-white border-t border-b sm:rounded sm:border shadow">
                 <div className="border-b">
                   <div className="flex justify-between px-6 -mb-px">
-                    <h3 className="text-blue-dark py-4 font-normal text-lg">CHART</h3>
+                    <h3 className="text-blue-dark py-4 font-normal text-lg">
+                      CHART
+                    </h3>
                   </div>
                 </div>
                 <div>
                   <div className="text-center px-6 py-4">
                     <div className="py-8">
                       <div className="mb-4">
-                        <svg className="inline-block fill-current text-grey h-16 w-16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M11.933 13.069s7.059-5.094 6.276-10.924a.465.465 0 0 0-.112-.268.436.436 0 0 0-.263-.115C12.137.961 7.16 8.184 7.16 8.184c-4.318-.517-4.004.344-5.974 5.076-.377.902.234 1.213.904.959l2.148-.811 2.59 2.648-.793 2.199c-.248.686.055 1.311.938.926 4.624-2.016 5.466-1.694 4.96-6.112zm1.009-5.916a1.594 1.594 0 0 1 0-2.217 1.509 1.509 0 0 1 2.166 0 1.594 1.594 0 0 1 0 2.217 1.509 1.509 0 0 1-2.166 0z" /></svg>
+                        <svg
+                          className="inline-block fill-current text-grey h-16 w-16"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M11.933 13.069s7.059-5.094 6.276-10.924a.465.465 0 0 0-.112-.268.436.436 0 0 0-.263-.115C12.137.961 7.16 8.184 7.16 8.184c-4.318-.517-4.004.344-5.974 5.076-.377.902.234 1.213.904.959l2.148-.811 2.59 2.648-.793 2.199c-.248.686.055 1.311.938.926 4.624-2.016 5.466-1.694 4.96-6.112zm1.009-5.916a1.594 1.594 0 0 1 0-2.217 1.509 1.509 0 0 1 2.166 0 1.594 1.594 0 0 1 0 2.217 1.509 1.509 0 0 1-2.166 0z" />
+                        </svg>
                       </div>
-                      <p className="text-2xl text-grey-darker font-medium mb-4">NO CHART</p>
-                      <p className="text-grey max-w-xs mx-auto mb-6">You've successfully linked transaction</p>
+                      <p className="text-2xl text-grey-darker font-medium mb-4">
+                        NO CHART
+                      </p>
+                      <p className="text-grey max-w-xs mx-auto mb-6">
+                        You've successfully linked transaction
+                      </p>
                     </div>
                   </div>
                 </div>

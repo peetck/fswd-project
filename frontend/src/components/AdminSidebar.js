@@ -76,7 +76,9 @@ const AdminSidebar = (props) => {
                 to="/admin/product/create"
               >
                 <div className="flex items-center">
-                  <span class="material-icons mr-1"> add_circle_outline </span>
+                  <span className="material-icons mr-1">
+                    add_circle_outline
+                  </span>
                   Create Product
                 </div>
               </NavLink>
@@ -98,7 +100,7 @@ const AdminSidebar = (props) => {
                 to="/admin/promotions"
               >
                 <div className="flex items-center">
-                <span class="material-icons mr-1">local_offer</span>
+                  <span className="material-icons mr-1">local_offer</span>
                   Promotions
                 </div>
               </NavLink>
@@ -111,7 +113,9 @@ const AdminSidebar = (props) => {
                 to="/admin/promotion/create"
               >
                 <div className="flex items-center">
-                  <span className="material-icons mr-1">add_circle_outline</span>
+                  <span className="material-icons mr-1">
+                    add_circle_outline
+                  </span>
                   Create Promotion
                 </div>
               </NavLink>
@@ -133,7 +137,7 @@ const AdminSidebar = (props) => {
                 to="/admin/orders"
               >
                 <div className="flex items-center">
-                <span class="material-icons mr-1">receipt</span>
+                  <span className="material-icons mr-1">receipt</span>
                   Orders
                 </div>
               </NavLink>

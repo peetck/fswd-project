@@ -5,8 +5,6 @@ import { composeWithMongooseDiscriminators } from "graphql-compose-mongoose";
 
 const { Schema } = mongoose;
 
-const ObjectId = Schema.Types.ObjectId;
-
 const DKey = "type";
 
 const enumUserType = {

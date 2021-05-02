@@ -21,6 +21,7 @@ const NotFound = () => {
           <img
             src={process.env.PUBLIC_URL + "/images/039-error-404-colour.svg"}
             width="50%"
+            alt="error-404"
           />
         </div>
       </div>

@@ -4,8 +4,6 @@ import { useCookies } from "react-cookie";
 import jwt_decode from "jwt-decode";
 import { toast } from "react-toastify";
 
-import Loader from "../components/Loader";
-
 const LOGIN_MUTATION = gql`
   mutation($username: String!, $password: String!) {
     login(record: { username: $username, password: $password }) {
@@ -107,7 +105,7 @@ export const UserContextProvider = (props) => {
         removeCookie("fswd-token");
       }
     }
-  }, [cookies, removeCookie]);
+  }, [cookies, removeCookie, fetchCart]);
 
   const handleLogin = async (username, password) => {
     try {

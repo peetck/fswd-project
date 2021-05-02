@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 import Input from "../Input";
 import Button from "../Button";
@@ -36,7 +37,7 @@ const ProductStockForm = ({
       setSelectedSize("");
       setUpdatedQuantity("");
     }
-  }, [stock, selectedSize]);
+  }, [stock, selectedSize, selectedColor]);
 
   return (
     <Fragment>
@@ -109,7 +110,9 @@ const ProductStockForm = ({
                     self.findIndex((i) => i.color === st.color) === index
                 )
                 .map((st) => (
-                  <option value={st.color}>{st.color}</option>
+                  <option key={uuidv4()} value={st.color}>
+                    {st.color}
+                  </option>
                 ))}
             </Input>
           </div>
@@ -128,7 +131,9 @@ const ProductStockForm = ({
               {stock
                 .filter((st) => st.color === selectedColor)
                 .map((st) => (
-                  <option value={st.size}>{st.size}</option>
+                  <option key={uuidv4()} value={st.size}>
+                    {st.size}
+                  </option>
                 ))}
             </Input>
           </div>

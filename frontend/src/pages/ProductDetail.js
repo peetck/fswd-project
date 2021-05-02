@@ -171,7 +171,7 @@ const ProductDetail = () => {
         setQuantity(1);
       }
     }
-  }, [selectedColor, selectedSize]);
+  }, [selectedColor, selectedSize, quantity, cart, product]);
 
   if (errorProduct) {
     toast.error(errorProduct.message);
@@ -327,9 +327,8 @@ const ProductDetail = () => {
           className="mt-8 resize-none focus:outline-none"
           rows={product?.product?.description.split("\n").length + 2}
           readOnly
-        >
-          {product?.product?.description}
-        </textarea>
+          value={product?.product?.description}
+        />
 
         <hr className="mt-14" />
 

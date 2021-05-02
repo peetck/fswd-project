@@ -22,7 +22,7 @@ const WithCustomerSideBar = ({ children }) => {
                   activeClassName="text-royal-blue font-bold"
                   exact
                 >
-                  <span class="material-icons mr-2">badge</span>
+                  <span className="material-icons mr-2">badge</span>
                   Profile
                 </NavLink>
 
@@ -32,7 +32,7 @@ const WithCustomerSideBar = ({ children }) => {
                   activeClassName="text-royal-blue font-bold"
                   exact
                 >
-                  <span class="material-icons mr-2">receipt</span>
+                  <span className="material-icons mr-2">receipt</span>
                   my orders
                 </NavLink>
               </div>

@@ -46,7 +46,6 @@ const Input = ({
           value={value}
           onChange={onChange}
           disabled={disabled}
-          defaultValue="null"
           required={required}
         >
           <option value="">--------</option>

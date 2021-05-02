@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useLazyQuery, gql } from "@apollo/client";
 import { toast } from "react-toastify";
@@ -63,7 +63,7 @@ const Products = () => {
         filter: {},
       },
     });
-  }, [currentPage]);
+  }, [currentPage, loadProducts]);
 
   const pageChangeHandler = (page) => {
     if (

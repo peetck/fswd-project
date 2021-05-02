@@ -63,13 +63,12 @@ const ProductCarousel = ({ images, width, height, removeImage, autoPlay }) => {
         <Carousel
           showStatus={false}
           dynamicHeight
-          showArrows={false}
+          showArrows
           swipeable={false}
           renderIndicator={renderIndicator}
           autoPlay={autoPlay}
           infiniteLoop
           showThumbs={false}
-          showArrows
           renderArrowPrev={renderArrowPrev}
           renderArrowNext={renderArrowNext}
         >
@@ -84,7 +83,7 @@ const ProductCarousel = ({ images, width, height, removeImage, autoPlay }) => {
                   className="absolute right-3 top-2 cursor-pointer"
                   onClick={() => removeImage(index)}
                 >
-                  <span class="material-icons">cancel</span>
+                  <span className="material-icons">cancel</span>
                 </div>
               )}
 
@@ -102,13 +101,12 @@ const ProductCarousel = ({ images, width, height, removeImage, autoPlay }) => {
         <Carousel
           showStatus={false}
           dynamicHeight
-          showArrows={false}
+          showArrows
           swipeable={false}
           renderIndicator={renderIndicator}
           autoPlay
           infiniteLoop
           showThumbs={false}
-          showArrows
           renderArrowPrev={renderArrowPrev}
           renderArrowNext={renderArrowNext}
         >
@@ -121,7 +119,7 @@ const ProductCarousel = ({ images, width, height, removeImage, autoPlay }) => {
                   className="absolute right-3 top-2 cursor-pointer"
                   onClick={() => removeImage(index)}
                 >
-                  <span class="material-icons">cancel</span>
+                  <span className="material-icons">cancel</span>
                 </div>
               )}
             </div>

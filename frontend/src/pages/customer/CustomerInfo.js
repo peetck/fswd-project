@@ -117,6 +117,7 @@ const CustomerInfo = () => {
         <img
           src={process.env.PUBLIC_URL + "/images/103-social-feed-colour.svg"}
           className="w-full h-full"
+          alt="social-feed-colour"
         />
       </div>
     </WithCustomerSideBar>

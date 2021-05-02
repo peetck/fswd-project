@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 import { composeWithMongooseDiscriminators } from "graphql-compose-mongoose";
 
-import { CartModel } from "./cart";
-
 const { Schema } = mongoose;
 
 export const enumProductType = {

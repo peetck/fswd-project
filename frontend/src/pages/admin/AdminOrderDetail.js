@@ -3,12 +3,11 @@ import { useParams } from "react-router-dom";
 import { useQuery, gql } from "@apollo/client";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
-
+import { toast } from "react-toastify";
 
 import Loader from "../../components/Loader";
 import CartItem from "../../components/CartItem";
 import Input from "../../components/Input";
-
 
 const ORDER_QUERY = gql`
   query($order_Id: MongoID!) {
@@ -33,8 +32,6 @@ const ORDER_QUERY = gql`
   }
 `;
 
-
-
 const AdminOrderDetail = () => {
   const { orderId } = useParams();
   const { data, loading, error } = useQuery(ORDER_QUERY, {
@@ -42,6 +39,10 @@ const AdminOrderDetail = () => {
       order_Id: orderId,
     },
   });
+
+  if (error) {
+    toast.error(error.message);
+  }
 
   if (loading) {
     return (
@@ -51,7 +52,6 @@ const AdminOrderDetail = () => {
     );
   }
 
-  console.log(data)
   return (
     <div className="flex flex-col mx-8">
       <div className="container mx-auto my-7 min-w-min">
@@ -104,10 +104,11 @@ const AdminOrderDetail = () => {
             </div>
 
             <div
-              className={`text-center text-4xl my-8 uppercase ${data.order.deliveryStatus === "Waiting"
-                ? "text-yellow-500"
-                : "text-green-600"
-                }`}
+              className={`text-center text-4xl my-8 uppercase ${
+                data.order.deliveryStatus === "Waiting"
+                  ? "text-yellow-500"
+                  : "text-green-600"
+              }`}
             >
               {data.order.deliveryStatus}
             </div>

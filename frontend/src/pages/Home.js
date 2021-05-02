@@ -3,7 +3,6 @@ import { useQuery, gql } from "@apollo/client";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import Button from "../components/Button";
 import ProductList from "../components/ProductList";
 
 const NORMAL_PRODUCTS_QUERY = gql`
@@ -87,6 +86,7 @@ const Home = () => {
           <img
             src={process.env.PUBLIC_URL + "/images/113-sprinter-colour.svg"}
             width="50%"
+            alt="sprinter-colour"
           />
         </div>
       </div>

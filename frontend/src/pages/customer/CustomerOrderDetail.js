@@ -3,10 +3,10 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
+import { toast } from "react-toastify";
 
 import CartItem from "../../components/CartItem";
 import Input from "../../components/Input";
-import Button from "../../components/Button";
 import Loader from "../../components/Loader";
 
 const ORDER_QUERY = gql`
@@ -40,6 +40,10 @@ const CustomerOrderDetail = () => {
       order_Id: orderId,
     },
   });
+
+  if (error) {
+    toast.error(error.message);
+  }
 
   if (loading) {
     return (

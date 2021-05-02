@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import { useHistory } from "react-router-dom";
-import { gql, useMutation } from "@apollo/client";
 import Truncate from "react-truncate";
 import moment from "moment";
 
