@@ -30,19 +30,27 @@ const AdminDashboard = () => {
   );
   const [allOrders, setAllOrders] = useState(0);
   const [soldAll, setSoldAll] = useState(0);
+  const [profit, setProfit] = useState(0)
+  const capital = 10000;
 
   useEffect(() => {
 
     let sumAllProduct = 0;
+    let sumProfit = 0;
 
-    for (let counter in data?.orders){
+    for (let counter in data?.orders) {
       sumAllProduct += data?.orders[counter]?.products.length
+      
+      sumProfit += Number(data?.orders[counter].products.map((value) => {
+        return value.price
+      }))
     }
-    
+
+    setProfit((sumProfit * 0.7) / capital);
     setSoldAll(sumAllProduct);
     setAllOrders(data?.orders.length);
   }, [data])
-  
+
 
   if (loading) {
     return <h1>Loading...</h1>;
@@ -116,7 +124,7 @@ const AdminDashboard = () => {
                 <div>
                   <div className="text-grey-darker mb-2">
                     <span className="text-3xl align-top"><span className="text-green align-top">+</span></span>
-                    <span className="text-5xl">154.47</span>
+                    <span className="text-5xl">{profit.toFixed(2)}</span>
                     <span className="text-3xl align-top">%</span>
                   </div>
                   <div className="text-sm uppercase text-grey tracking-wide">
@@ -136,7 +144,7 @@ const AdminDashboard = () => {
                     <h3 className="text-blue-dark py-4 font-normal text-lg">ORDER DAILY</h3>
                   </div>
                 </div>
-                <tbody className="text-gray-600 text-sm font-light ">
+                <tbody className="text-gray-600 text-sm font-light">
                   {data.orders.map((order) => (
                     <tr
                       className="border-b border-gray-200 hover:bg-gray-100"
@@ -162,12 +170,12 @@ const AdminDashboard = () => {
                           )}
                         </div>
                       </td>
-                      <td className="py-3 px-6 text-center w-1/3">
+                      <td className="py-3 px-6 text-center xl:w-1/3 ">
                         <Truncate width={160}>
                           <span>{order.products.length} Piece</span>
                         </Truncate>
                       </td>
-                      <td className="py-3 px-6 text-center w-full">
+                      <td className="py-3 px-6 text-center xl:w-full">
                         <Truncate width={160}>
                           <span>{order.totalPrice} Baht</span>
                         </Truncate>
