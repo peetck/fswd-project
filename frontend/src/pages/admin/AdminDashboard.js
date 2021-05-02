@@ -1,8 +1,54 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useQuery, gql } from '@apollo/client';
+import Truncate from "react-truncate";
 
-import Admin from "../../components/Cards/CardStat";
 
 const AdminDashboard = () => {
+  const { data, loading } = useQuery(
+    gql`
+      query {
+        orders {
+          _id
+          products {
+            title
+            type
+            priceAfterDiscount
+            percent
+            price
+            quantity
+            color
+            size
+          }
+          totalPrice
+          deliveryAddress
+          deliveryStatus
+          createdAt
+          userId
+        }
+      }
+    `
+  );
+  const [allOrders, setAllOrders] = useState(0);
+  const [soldAll, setSoldAll] = useState(0);
+
+  useEffect(() => {
+
+    let sumAllProduct = 0;
+
+    for (let counter in data?.orders){
+      sumAllProduct += data?.orders[counter]?.products.length
+    }
+    
+    setSoldAll(sumAllProduct);
+    setAllOrders(data?.orders.length);
+  }, [data])
+  
+
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
+
+
   return (
     <>
       <div className="font-sans bg-grey-lighter flex flex-col min-h-screen w-full">
@@ -12,7 +58,7 @@ const AdminDashboard = () => {
               <div className="flex-grow flex-no-shrink py-6">
                 <div className="text-grey-darker mb-2">
                   <span className="text-3xl align-top">+</span>
-                  <span className="text-5xl">21,404</span>
+                  <span className="text-5xl">{soldAll}</span>
                   <span className="text-3xl align-top">EA</span>
                 </div>
                 <div className="text-green-light text-sm">
@@ -46,7 +92,7 @@ const AdminDashboard = () => {
 
                   <div className="text-grey-darker mb-2">
                     <span className="text-3xl align-top">+</span>
-                    <span className="text-5xl">21,404</span>
+                    <span className="text-5xl">{soldAll}</span>
                     <span className="text-3xl align-top">EA</span>
                   </div>
                   <div className="text-sm uppercase text-grey tracking-wide">
@@ -80,6 +126,8 @@ const AdminDashboard = () => {
               </div>
             </div>
           </div>
+
+
           <div className="flex flex-wrap -mx-4">
             <div className="w-full mb-6 lg:mb-0 lg:w-1/2 px-4 flex flex-col">
               <div className="flex-grow flex flex-col bg-white border-t border-b sm:rounded sm:border shadow overflow-hidden">
@@ -88,36 +136,54 @@ const AdminDashboard = () => {
                     <h3 className="text-blue-dark py-4 font-normal text-lg">ORDER DAILY</h3>
                   </div>
                 </div>
-                <div className="flex-grow flex px-6 py-6 text-grey-darker items-center border-b -mx-4">
-                  <div className="w-2/5 xl:w-1/4 px-4 flex items-center">
-                    <div className="rounded-full bg-orange inline-flex mr-3">
-                      <svg className="fill-current text-white h-8 w-8 block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><g fillRule="evenodd"><path d="M21.78 15.37c.51-.61.83-1.4.83-2.26 0-2.74-1.6-4.38-4.24-4.38V5.45c0-.12-.1-.22-.22-.22h-1.27c-.11 0-.2.1-.2.21v3.3h-1.7V5.44c0-.12-.1-.22-.22-.22H13.5c-.12 0-.2.1-.21.21v3.3H9.67c-.12 0-.21.09-.21.21v1.31c0 .12.1.22.21.22h.21c.94 0 1.7.79 1.7 1.75v7c0 .92-.68 1.67-1.55 1.75a.21.21 0 0 0-.18.16l-.33 1.32c-.01.06 0 .13.04.19.04.05.1.08.17.08h3.55v3.3c0 .1.1.2.2.2h1.28c.12 0 .21-.1.21-.22v-3.28h1.7v3.3c0 .1.1.2.21.2h1.27c.12 0 .22-.1.22-.22v-3.28h.85c2.65 0 4.24-1.64 4.24-4.37 0-1.28-.68-2.39-1.68-3zm-6.8-4.01h2.54c.94 0 1.7.78 1.7 1.75 0 .96-.76 1.75-1.7 1.75h-2.55v-3.5zm3.39 8.75h-3.4v-3.5h3.4c.93 0 1.7.78 1.7 1.75 0 .96-.77 1.75-1.7 1.75z"></path></g></svg>
-                    </div>
-                    <span className="text-lg">Order 1</span>
-                  </div>
-                  <div className="hidden md:flex lg:hidden xl:flex px-4 items-center ">
-                    <span className = 'bg-red-200 text-red-600 py-1 px-3 rounded-full text-xs '>false</span>
-                  </div>
-                  <div className="flex w-3/5 md:w/12">
-                    <div className="w-1/2 px-4">
-                      <div className="text-right">
-                        <p>14 Piece</p>
-                      </div>
-                    </div>
-                    <div className="w-1/2 px-4">
-                      <div className="text-right text-grey">
-                        <p>20303 Baht</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="px-6 py-4">
-                  <div className="text-center text-grey">
-                    TOTAL ORDER DAILY 300
+                <tbody className="text-gray-600 text-sm font-light ">
+                  {data.orders.map((order) => (
+                    <tr
+                      className="border-b border-gray-200 hover:bg-gray-100"
+                      key={order._id}
+                    >
+                      <td className="py-3 px-6 text-left whitespace-nowrap">
+                        <div className="flex items-center">
+                          <div className="mr-2">
+                            <Truncate width={200}>{order._id}</Truncate>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-3 px-6 text-left w-1/4">
+                        <div className="flex items-center justify-center">
+                          {String(order.deliveryStatus) === "false" ? (
+                            <span className="bg-red-200 text-red-600 py-1 px-3 rounded-full text-xs">
+                              {String(order.deliveryStatus)}
+                            </span>
+                          ) : (
+                            <span className="bg-green-200 text-green-600 py-1 px-4 rounded-full text-xs">
+                              {String(order.deliveryStatus)}
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="py-3 px-6 text-center w-1/3">
+                        <Truncate width={160}>
+                          <span>{order.products.length} Piece</span>
+                        </Truncate>
+                      </td>
+                      <td className="py-3 px-6 text-center w-full">
+                        <Truncate width={160}>
+                          <span>{order.totalPrice} Baht</span>
+                        </Truncate>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+                <div className="px-6 py-4 h-full relative">
+                  <div className="absolute text-center text-grey inset-x-0 bottom-0 mb-5">
+                    TOTAL ORDER DAILY {allOrders}
                   </div>
                 </div>
               </div>
             </div>
+
+
             <div className="w-full lg:w-1/2 px-4">
               <div className="bg-white border-t border-b sm:rounded sm:border shadow">
                 <div className="border-b">
