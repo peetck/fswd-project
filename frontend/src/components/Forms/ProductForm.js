@@ -158,7 +158,7 @@ const ProductForm = ({ product }) => {
     setStock((prev) =>
       prev.map((i) => {
         if (i.color === st.color && i.size === +st.size) {
-          return { ...i, quantity: st.quantity };
+          return { ...i, quantity: +st.quantity };
         }
         return i;
       })

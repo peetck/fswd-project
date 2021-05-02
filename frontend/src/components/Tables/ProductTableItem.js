@@ -27,8 +27,6 @@ const ProductTableItem = ({ product }) => {
     `
   );
 
-  console.log(product);
-
   return (
     <Fragment>
       <tr
@@ -69,14 +67,14 @@ const ProductTableItem = ({ product }) => {
               </span>
             </div>
 
-            {product.type !== "PromotionProduct" && (
-              <Link
-                to={`/admin/product/${product._id}`}
-                className="w-4 m-2 transform hover:text-purple-500 hover:scale-110"
-              >
-                <span className="material-icons">mode_edit</span>
-              </Link>
-            )}
+            <Link
+              to={`/admin/${
+                product.type === "NormalProduct" ? "product" : "promotion"
+              }/${product._id}`}
+              className="w-4 m-2 transform hover:text-purple-500 hover:scale-110"
+            >
+              <span className="material-icons">mode_edit</span>
+            </Link>
 
             <div
               className="w-4 m-2 transform cursor-pointer hover:text-purple-500 hover:scale-110"

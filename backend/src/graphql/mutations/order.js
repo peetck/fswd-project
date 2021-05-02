@@ -9,6 +9,8 @@ import {
   CartModel,
 } from "../../models";
 
+export const updateOrder = OrderTC.getResolver("updateById");
+
 export const createOrder = OrderTC.getResolver("createOne").wrapResolve(
   (next) => async (req) => {
     if (!req?.context?.user) {

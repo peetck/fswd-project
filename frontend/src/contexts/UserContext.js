@@ -87,18 +87,8 @@ export const UserContextProvider = (props) => {
 
   const [
     fetchCart,
-    { data: cart, loading, error: errorCart, refetch: refetchCart },
-  ] = useLazyQuery(CUSTOMER_USER_QUERY, {
-    variables: {
-      _id: user?._id,
-    },
-  });
-
-  useEffect(() => {
-    if (user) {
-      fetchCart();
-    }
-  }, [user]);
+    { data: cart, error: errorCart, refetch: refetchCart },
+  ] = useLazyQuery(CUSTOMER_USER_QUERY);
 
   useEffect(() => {
     const token = cookies["fswd-token"];
@@ -106,6 +96,13 @@ export const UserContextProvider = (props) => {
       const data = jwt_decode(token);
       if (Date.now() < data.exp * 1000) {
         setUser(data);
+        if (data.type === "CustomerUser") {
+          fetchCart({
+            variables: {
+              _id: data._id,
+            },
+          });
+        }
       } else {
         removeCookie("fswd-token");
       }
@@ -190,7 +187,7 @@ export const UserContextProvider = (props) => {
           products: products,
         },
       });
-      await refetchCart();
+      await refetchCart({ _id: user._id });
     } catch (error) {
       toast.error(error.message);
     }
@@ -198,14 +195,6 @@ export const UserContextProvider = (props) => {
 
   if (errorCart) {
     toast.error(errorCart.message);
-  }
-
-  if (loading) {
-    return (
-      <div className="flex flex-1 justify-center items-center w-screen h-screen">
-        <Loader />
-      </div>
-    );
   }
 
   return (

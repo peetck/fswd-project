@@ -3,31 +3,38 @@ import { Link } from "react-router-dom";
 import { useQuery, gql, useMutation } from "@apollo/client";
 import Truncate from "react-truncate";
 
-const AdminOrders = () => {
-  const { data, loading } = useQuery(
-    gql`
-      query {
-        orders {
-          _id
-          products {
-            title
-            type
-            priceAfterDiscount
-            percent
-            price
-            quantity
-            color
-            size
-          }
-          totalPrice
-          deliveryAddress
-          deliveryStatus
-          createdAt
-          userId
-        }
+const UPDATE_ORDER_MUTATION = gql`
+  mutation($_id: MongoID!, $deliveryStatus: EnumOrderDeliveryStatus!) {
+    updateOrder(_id: $_id, record: { deliveryStatus: $deliveryStatus }) {
+      recordId
+    }
+  }
+`;
+
+const ORDERS_QUERY = gql`
+  query {
+    orders {
+      _id
+      products {
+        title
+        type
+        priceAfterDiscount
+        percent
+        price
+        quantity
+        color
+        size
       }
-    `
-  );
+      totalPrice
+      deliveryAddress
+      deliveryStatus
+      createdAt
+      userId
+    }
+  }
+`;
+const AdminOrders = () => {
+  const { data, loading, refetch } = useQuery(ORDERS_QUERY);
 
   const [removeOrder] = useMutation(gql`
     mutation($_id: MongoID!) {
@@ -37,11 +44,11 @@ const AdminOrders = () => {
     }
   `);
 
+  const [updateOrder] = useMutation(UPDATE_ORDER_MUTATION);
+
   if (loading) {
     return <h1>Loading...</h1>;
   }
-
-  console.log(data.orders);
 
   return (
     <div>
@@ -88,13 +95,13 @@ const AdminOrders = () => {
                         </td>
                         <td className="py-3 px-6 text-center">
                           <div className="flex items-center justify-center">
-                            {String(order.deliveryStatus) === "false" ? (
-                              <span className="bg-red-200 text-red-600 py-1 px-3 rounded-full text-xs">
-                                {String(order.deliveryStatus)}
+                            {order.deliveryStatus === "Waiting" ? (
+                              <span className="bg-red-200 text-yellow-500 py-1 px-3 rounded-full text-xs">
+                                {order.deliveryStatus}
                               </span>
                             ) : (
                               <span className="bg-green-200 text-green-600 py-1 px-4 rounded-full text-xs">
-                                {String(order.deliveryStatus)}
+                                {order.deliveryStatus}
                               </span>
                             )}
                           </div>
@@ -127,9 +134,15 @@ const AdminOrders = () => {
                             </div>
                             <div
                               className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"
-                              onClick={() =>
-                                removeOrder({ variables: { _id: order._id } })
-                              }
+                              onClick={async () => {
+                                await updateOrder({
+                                  variables: {
+                                    _id: order._id,
+                                    deliveryStatus: "Delivered",
+                                  },
+                                });
+                                await refetch();
+                              }}
                             >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -145,7 +158,15 @@ const AdminOrders = () => {
                                 />
                               </svg>
                             </div>
-                            <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                            <div
+                              className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"
+                              onClick={async () => {
+                                await removeOrder({
+                                  variables: { _id: order._id },
+                                });
+                                await refetch();
+                              }}
+                            >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"

@@ -5,7 +5,7 @@ import {
   ProductModel,
   NormalProductModel,
   PromotionProductModel,
-  CartModel,
+  PromotionProductTC,
 } from "../../models";
 
 export const createNormalProduct = NormalProductTC.getResolver(
@@ -19,6 +19,10 @@ export const createNormalProduct = NormalProductTC.getResolver(
 
 export const updateNormalProduct = NormalProductTC.getResolver("updateById");
 export const removeNormalProduct = NormalProductTC.getResolver("removeById");
+
+export const updatePromotionProduct = PromotionProductTC.getResolver(
+  "updateById"
+);
 
 const CreatePromotionProductInput = schemaComposer.createInputTC({
   name: "CreatePromotionProductInput",

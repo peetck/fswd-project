@@ -1,7 +1,8 @@
 import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 
-import AdminEditProduct from "./AdminEditProduct";
+import AdminCreateProduct from "./AdminCreateProduct";
+import AdminUpdateProduct from "./AdminUpdateProduct";
 import AdminCreatePromotion from "./AdminCreatePromotion";
 import AdminDashboard from "./AdminDashboard";
 import AdminOrderDetail from "./AdminOrderDetail";
@@ -22,12 +23,12 @@ const AdminRoute = () => {
         <Route path={`${path}/products`} component={AdminProducts} exact />
         <Route
           path={`${path}/product/create`}
-          component={AdminEditProduct}
+          component={AdminCreateProduct}
           exact
         />
         <Route
           path={`${path}/product/:productId`}
-          component={AdminEditProduct}
+          component={AdminUpdateProduct}
           exact
         />
         <Route path={`${path}/promotions`} component={AdminPromotions} exact />
