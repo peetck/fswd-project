@@ -32,7 +32,7 @@ const WithCustomerSideBar = ({ children }) => {
                   activeClassName="text-royal-blue font-bold"
                   exact
                 >
-                  <span class="material-icons mr-2">list_alt</span>
+                  <span class="material-icons mr-2">receipt</span>
                   my orders
                 </NavLink>
               </div>

@@ -93,7 +93,7 @@ const Navbar = (props) => {
                       activeClassName="text-royal-blue font-bold"
                       exact
                     >
-                      <span className="material-icons mr-1">list_alt</span>
+                      <span className="material-icons mr-1">receipt</span>
                       my orders
                     </NavLink>
 
