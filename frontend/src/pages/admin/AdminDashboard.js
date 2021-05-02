@@ -38,7 +38,6 @@ const AdminDashboard = () => {
 
     let sumProfit = 0;
     let sumAllProduct = 0;
-    let temp = 0;
 
     for (let counter in data?.orders) {
       sumProfit += Number(data?.orders[counter].totalPrice)
@@ -46,16 +45,6 @@ const AdminDashboard = () => {
         sumAllProduct += Number(data?.orders[counter].products[x].quantity)
       }
     }
-
-    temp = data?.orders.map((item) => {
-      return item.totalPrice
-    })
-    
-    let x = temp.reduce((total, member) => {
-      return total + member
-    })  
-
-    console.log(x)
 
     setProfit((sumProfit * 0.7) / capital);
     setSoldAll(sumAllProduct);
@@ -189,9 +178,7 @@ const AdminDashboard = () => {
                             {order?.products.length <= 1 ? order?.products?.map((e) => {
                             return e.quantity
                           }) : 
-                            order?.products?.map((e) => {
-                              
-                            })
+                            console.log('1')
                           } Piece</span>
                         </Truncate>
                       </td>
