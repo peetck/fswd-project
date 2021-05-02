@@ -36,7 +36,7 @@ const AdminSidebar = (props) => {
             <li className="items-center">
               <NavLink
                 className="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
-                activeClassName="nav-link-active"
+                activeClassName="text-royal-blue font-bold"
                 exact
                 to="/admin"
               >
@@ -58,7 +58,7 @@ const AdminSidebar = (props) => {
             <li className="items-center">
               <NavLink
                 className="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
-                activeClassName="nav-link-active"
+                activeClassName="text-royal-blue font-bold"
                 exact
                 to="/admin/products"
               >
@@ -71,7 +71,7 @@ const AdminSidebar = (props) => {
             <li className="items-center">
               <NavLink
                 className="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
-                activeClassName="nav-link-active"
+                activeClassName="text-royal-blue font-bold"
                 exact
                 to="/admin/product/create"
               >
@@ -93,7 +93,7 @@ const AdminSidebar = (props) => {
             <li className="items-center">
               <NavLink
                 className="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
-                activeClassName="nav-link-active"
+                activeClassName="text-royal-blue font-bold"
                 exact
                 to="/admin/promotions"
               >
@@ -106,7 +106,7 @@ const AdminSidebar = (props) => {
             <li className="items-center">
               <NavLink
                 className="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
-                activeClassName="nav-link-active"
+                activeClassName="text-royal-blue font-bold"
                 exact
                 to="/admin/promotion/create"
               >
@@ -128,7 +128,7 @@ const AdminSidebar = (props) => {
             <li className="items-center">
               <NavLink
                 className="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
-                activeClassName="nav-link-active"
+                activeClassName="text-royal-blue font-bold"
                 exact
                 to="/admin/orders"
               >
