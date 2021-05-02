@@ -33,18 +33,29 @@ const AdminDashboard = () => {
   const [profit, setProfit] = useState(0)
   const capital = 10000;
 
+
   useEffect(() => {
 
-    let sumAllProduct = 0;
     let sumProfit = 0;
+    let sumAllProduct = 0;
+    let temp = 0;
 
     for (let counter in data?.orders) {
-      sumAllProduct += data?.orders[counter]?.products.length
-      
-      sumProfit += Number(data?.orders[counter].products.map((value) => {
-        return value.price
-      }))
+      sumProfit += Number(data?.orders[counter].totalPrice)
+      for (let x in data?.orders[counter].products){
+        sumAllProduct += Number(data?.orders[counter].products[x].quantity)
+      }
     }
+
+    temp = data?.orders.map((item) => {
+      return item.totalPrice
+    })
+    
+    let x = temp.reduce((total, member) => {
+      return total + member
+    })  
+
+    console.log(x)
 
     setProfit((sumProfit * 0.7) / capital);
     setSoldAll(sumAllProduct);
@@ -55,6 +66,8 @@ const AdminDashboard = () => {
   if (loading) {
     return <h1>Loading...</h1>;
   }
+
+  //console.log(data)
 
 
   return (
@@ -172,7 +185,14 @@ const AdminDashboard = () => {
                       </td>
                       <td className="py-3 px-6 text-center xl:w-1/3 ">
                         <Truncate width={160}>
-                          <span>{order.products.length} Piece</span>
+                          <span>
+                            {order?.products.length <= 1 ? order?.products?.map((e) => {
+                            return e.quantity
+                          }) : 
+                            order?.products?.map((e) => {
+                              
+                            })
+                          } Piece</span>
                         </Truncate>
                       </td>
                       <td className="py-3 px-6 text-center xl:w-full">
