@@ -61,7 +61,7 @@ const Navbar = (props) => {
                 </li>
 
                 <li className="user-dropdown nav-item">
-                  <NavLink
+                  {/* <NavLink
                     className="px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug cursor-pointer hover:opacity-75"
                     to="/customer"
                     activeClassName="text-royal-blue"
@@ -69,8 +69,24 @@ const Navbar = (props) => {
                   >
                     <span className="material-icons mr-1">person</span>
                     {user.username}
-                  </NavLink>
+                  </NavLink> */}
+
+                  <span className="px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug cursor-pointer hover:opacity-75">
+                    <span className="material-icons mr-1">person</span>
+                    {user.username}
+                  </span>
+
                   <div className="user-dropdown-content absolute hidden w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <NavLink
+                      className="flex items-center px-4 py-2 text-sm uppercase leading-snug cursor-pointer hover:opacity-75"
+                      to="/customer"
+                      activeClassName="text-royal-blue"
+                      exact
+                    >
+                      <span className="material-icons mr-1">badge</span>
+                      my Account
+                    </NavLink>
+
                     <NavLink
                       className="flex items-center px-4 py-2 text-sm uppercase leading-snug cursor-pointer hover:opacity-75"
                       to="/customer/orders"

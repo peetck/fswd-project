@@ -86,14 +86,6 @@ const ProductDetail = () => {
     error: errorProducts,
   } = useQuery(NORMAL_PRODUCTS_QUERY);
 
-  if (errorProduct) {
-    toast.error(errorProduct.message);
-  }
-
-  if (errorProducts) {
-    toast.error(errorProducts.message);
-  }
-
   useEffect(() => {
     if (product) {
       const colorArr = [];
@@ -180,6 +172,14 @@ const ProductDetail = () => {
       }
     }
   }, [selectedColor, selectedSize]);
+
+  if (errorProduct) {
+    toast.error(errorProduct.message);
+  }
+
+  if (errorProducts) {
+    toast.error(errorProducts.message);
+  }
 
   if (loadingProduct) {
     return (
