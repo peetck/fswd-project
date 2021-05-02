@@ -323,7 +323,15 @@ const ProductDetail = () => {
       <div className="container flex flex-col mx-auto  mt-14">
         <h1 className="uppercase text-2xl font-bold">product description</h1>
 
-        <p className="mt-8">{product?.product?.description}</p>
+        <textarea
+          className="mt-8 resize-none focus:outline-none"
+          rows={product?.product?.description.split("\n").length + 2}
+          readOnly
+        >
+          {product?.product?.description}
+        </textarea>
+
+        <hr className="mt-14" />
 
         <h1 className="uppercase text-2xl font-bold mt-14">
           You may also like
