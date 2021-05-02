@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 import { useUserContext } from "../contexts/UserContext";
 import Button from "../components/Button";
@@ -17,10 +18,13 @@ const RegisterPage = (props) => {
     e.preventDefault();
 
     try {
+      if (password !== confirmPassword) {
+        throw new Error("Passwords do not match");
+      }
       await register(username, password, email, address);
-      alert("Register Success!!");
+      toast.success("Register Success");
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message);
     }
   };
 
@@ -42,6 +46,7 @@ const RegisterPage = (props) => {
                     placeholder="Username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+                    required
                   />
                 </div>
 
@@ -53,6 +58,7 @@ const RegisterPage = (props) => {
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
                   />
                 </div>
 
@@ -64,6 +70,7 @@ const RegisterPage = (props) => {
                     placeholder="Confirm Password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
                   />
                 </div>
 
@@ -75,6 +82,7 @@ const RegisterPage = (props) => {
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    required
                   />
                 </div>
 
@@ -87,11 +95,12 @@ const RegisterPage = (props) => {
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     rows={4}
+                    required
                   />
                 </div>
 
                 <div className="text-center mt-10">
-                  <Button onClick={handleRegister}>Register</Button>
+                  <Button type="submit">Register</Button>
                 </div>
               </form>
             </div>

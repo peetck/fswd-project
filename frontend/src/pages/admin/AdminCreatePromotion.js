@@ -1,11 +1,38 @@
 import React, { useState } from "react";
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery, useMutation, gql } from "@apollo/client";
 
 import Button from "../../components/Button";
 import Input from "../../components/Input";
-import { NORMAL_PRODUCTS_QUERY } from "../../graphql/queries/normalProducts";
-import { CREATE_PROMOTION_PRODUCT_MUTATION } from "../../graphql/mutations/createPromotionProduct";
-import Truncate from "react-truncate";
+
+const NORMAL_PRODUCTS_QUERY = gql`
+  query {
+    normalProducts {
+      _id
+      title
+      description
+      price
+      images
+      totalStock
+      stock {
+        quantity
+        color
+        size
+      }
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+const CREATE_PROMOTION_PRODUCT_MUTATION = gql`
+  mutation($_id: MongoID!, $percent: Float!) {
+    createPromotionProduct(record: { _id: $_id, percent: $percent }) {
+      _id
+      percent
+    }
+  }
+`;
 
 const AdminCreatePromotion = () => {
   const [product, setProduct] = useState();

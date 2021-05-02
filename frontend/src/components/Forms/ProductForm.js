@@ -6,9 +6,36 @@ import { useUserContext } from "../../contexts/UserContext";
 import ProductInformationForm from "./ProductInformationForm";
 import ProductStockForm from "./ProductStockForm";
 import Button from "../Button";
-import { CREATE_NORMAL_PRODUCT_MUTATION } from "../../graphql/mutations/createNormalProduct";
-import { UPLOAD_FILES_MUTATION } from "../../graphql/mutations/uploadFiles";
-import Card from "../Cards/Card";
+
+const CREATE_NORMAL_PRODUCT_MUTATION = gql`
+  mutation(
+    $title: String!
+    $description: String!
+    $price: Float!
+    $images: [String!]!
+    $stock: [ProductStockInput!]!
+  ) {
+    createNormalProduct(
+      record: {
+        title: $title
+        description: $description
+        price: $price
+        images: $images
+        stock: $stock
+      }
+    ) {
+      recordId
+    }
+  }
+`;
+
+const UPLOAD_FILES_MUTATION = gql`
+  mutation($files: [Upload!]!) {
+    uploadFiles(record: { files: $files }) {
+      urls
+    }
+  }
+`;
 
 const ProductForm = ({ product }) => {
   const history = useHistory();

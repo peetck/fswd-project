@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useQuery, gql } from "@apollo/client";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -74,7 +74,7 @@ const Home = () => {
     <div className="flex flex-col">
       <div className="container flex flex-col mx-auto md:flex-row mb-20 py-12">
         <div className="flex flex-col w-full justify-center text-center lg:text-left lg:w-2/3">
-          <h1 className="mb-4 text-5xl font-bold leading-tight uppercase">
+          <h1 className="mb-6 text-5xl font-bold leading-tight uppercase">
             Running with the Mind of Meditation
           </h1>
           <p className="leading-normal text-xl mb-8">
@@ -82,11 +82,6 @@ const Home = () => {
             special designs that allow you to do things you have never been able
             to do before.
           </p>
-          <div className="w-1/2 mx-auto lg:mx-0">
-            <Button onClick={() => toast.success("HEllo world")}>
-              shop collection
-            </Button>
-          </div>
         </div>
         <div className="hidden w-full justify-center lg:flex">
           <img

@@ -1,74 +1,104 @@
 import { useState, createContext, useContext, useEffect } from "react";
-import { useMutation, useLazyQuery, gql } from "@apollo/client";
+import { useMutation, gql, useLazyQuery } from "@apollo/client";
 import { useCookies } from "react-cookie";
 import jwt_decode from "jwt-decode";
+import { toast } from "react-toastify";
 
-import { LOGIN_MUTATION } from "../graphql/mutations/login";
-import { REGISTER_MUTATION } from "../graphql/mutations/register";
+import Loader from "../components/Loader";
+
+const LOGIN_MUTATION = gql`
+  mutation($username: String!, $password: String!) {
+    login(record: { username: $username, password: $password }) {
+      token
+    }
+  }
+`;
+
+const REGISTER_MUTATION = gql`
+  mutation(
+    $username: String!
+    $password: String!
+    $email: String!
+    $address: String!
+  ) {
+    createCustomerUser(
+      record: {
+        username: $username
+        password: $password
+        email: $email
+        address: $address
+      }
+    ) {
+      recordId
+    }
+  }
+`;
+
+const UPDATE_CART_MUTATION = gql`
+  mutation($_id: MongoID!, $products: [UpdateByIdCartProductsInput!]!) {
+    updateCart(_id: $_id, record: { products: $products }) {
+      recordId
+    }
+  }
+`;
+
+const CUSTOMER_USER_QUERY = gql`
+  query($_id: MongoID!) {
+    customerUser(_id: $_id) {
+      cart {
+        _id
+        totalPrice
+        products {
+          productId
+          quantity
+          color
+          size
+          product {
+            title
+            price
+            images
+            stock {
+              quantity
+              color
+              size
+            }
+            type
+            ... on PromotionProduct {
+              percent
+              priceAfterDiscount
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
 const UserContext = createContext();
 
 export const UserContextProvider = (props) => {
   const [user, setUser] = useState(null);
-  // กลับมาเปลี่ยน วิธีการ query
-  const [fetchCart, { data: cart, refetch: refetchCart, error }] = useLazyQuery(
-    gql`
-      query($_id: MongoID!) {
-        customerUser(_id: $_id) {
-          cart {
-            _id
-            totalPrice
-            products {
-              productId
-              quantity
-              color
-              size
-              product {
-                title
-                price
-                images
-                stock {
-                  quantity
-                  color
-                  size
-                }
-                type
-                ... on PromotionProduct {
-                  percent
-                  priceAfterDiscount
-                }
-              }
-            }
-          }
-        }
-      }
-    `,
-    {
-      variables: {
-        _id: user?._id,
-      },
-    }
-  );
+
+  const [cookies, setCookie, removeCookie] = useCookies(["fswd-token"]);
+
+  const [login] = useMutation(LOGIN_MUTATION);
+  const [register] = useMutation(REGISTER_MUTATION);
+  const [updateCart] = useMutation(UPDATE_CART_MUTATION);
+
+  const [
+    fetchCart,
+    { data: cart, loading, error: errorCart, refetch: refetchCart },
+  ] = useLazyQuery(CUSTOMER_USER_QUERY, {
+    variables: {
+      _id: user?._id,
+    },
+  });
 
   useEffect(() => {
     if (user) {
       fetchCart();
     }
   }, [user]);
-
-  // console.log(cart);
-
-  const [cookies, setCookie, removeCookie] = useCookies(["fswd-token"]);
-
-  const [login] = useMutation(LOGIN_MUTATION);
-  const [register] = useMutation(REGISTER_MUTATION);
-  const [updateCart] = useMutation(gql`
-    mutation($_id: MongoID!, $products: [UpdateByIdCartProductsInput!]!) {
-      updateCart(_id: $_id, record: { products: $products }) {
-        recordId
-      }
-    }
-  `);
 
   useEffect(() => {
     const token = cookies["fswd-token"];
@@ -162,9 +192,21 @@ export const UserContextProvider = (props) => {
       });
       await refetchCart();
     } catch (error) {
-      console.log(error);
+      toast.error(error.message);
     }
   };
+
+  if (errorCart) {
+    toast.error(errorCart.message);
+  }
+
+  if (loading) {
+    return (
+      <div className="flex flex-1 justify-center items-center w-screen h-screen">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <UserContext.Provider
