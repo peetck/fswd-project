@@ -51,6 +51,10 @@ const AdminDashboard = () => {
     setAllOrders(data?.orders.length);
   }, [data])
 
+  const sumProduct = () => {
+
+  }
+
 
   if (loading) {
     return <h1>Loading...</h1>;
@@ -146,50 +150,52 @@ const AdminDashboard = () => {
                     <h3 className="text-blue-dark py-4 font-normal text-lg">ORDER DAILY</h3>
                   </div>
                 </div>
-                <tbody className="text-gray-600 text-sm font-light">
-                  {data.orders.map((order) => (
-                    <tr
-                      className="border-b border-gray-200 hover:bg-gray-100"
-                      key={order._id}
-                    >
-                      <td className="py-3 px-6 text-left whitespace-nowrap">
-                        <div className="flex items-center">
-                          <div className="mr-2">
-                            <Truncate width={200}>{order._id}</Truncate>
+                <table>
+                  <tbody className="text-gray-600 text-sm font-light">
+                    {data.orders.map((order) => (
+                      <tr
+                        className="border-b border-gray-200 hover:bg-gray-100"
+                        key={order._id}
+                      >
+                        <td className="py-3 px-6 text-left whitespace-nowrap">
+                          <div className="flex items-center">
+                            <div className="mr-2">
+                              <Truncate width={200}>{order._id}</Truncate>
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                      <td className="py-3 px-6 text-left w-1/4">
-                        <div className="flex items-center justify-center">
-                          {String(order.deliveryStatus) === "false" ? (
-                            <span className="bg-red-200 text-red-600 py-1 px-3 rounded-full text-xs">
-                              {String(order.deliveryStatus)}
-                            </span>
-                          ) : (
-                            <span className="bg-green-200 text-green-600 py-1 px-4 rounded-full text-xs">
-                              {String(order.deliveryStatus)}
-                            </span>
-                          )}
-                        </div>
-                      </td>
-                      <td className="py-3 px-6 text-center xl:w-1/3 ">
-                        <Truncate width={160}>
-                          <span>
-                            {order?.products.length <= 1 ? order?.products?.map((e) => {
-                            return e.quantity
-                          }) : 
-                            console.log('1')
-                          } Piece</span>
-                        </Truncate>
-                      </td>
-                      <td className="py-3 px-6 text-center xl:w-full">
-                        <Truncate width={160}>
-                          <span>{order.totalPrice} Baht</span>
-                        </Truncate>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
+                        </td>
+                        <td className="py-3 px-6 text-left w-1/4">
+                          <div className="flex items-center justify-center">
+                            {String(order.deliveryStatus) === "false" ? (
+                              <span className="bg-red-200 text-red-600 py-1 px-3 rounded-full text-xs">
+                                {String(order.deliveryStatus)}
+                              </span>
+                            ) : (
+                              <span className="bg-green-200 text-green-600 py-1 px-4 rounded-full text-xs">
+                                {String(order.deliveryStatus)}
+                              </span>
+                            )}
+                          </div>
+                        </td>
+                        <td className="py-3 px-6 text-center xl:w-1/3 ">
+                          <Truncate width={160}>
+                            <span>
+                              {order?.products.length <= 1 ? order?.products?.map((e) => {
+                                return e.quantity
+                            }) : 
+                              console.log('1')
+                            } Piece</span>
+                          </Truncate>
+                        </td>
+                        <td className="py-3 px-6 text-center xl:w-full">
+                          <Truncate width={160}>
+                            <span>{order.totalPrice} Baht</span>
+                          </Truncate>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
                 <div className="px-6 py-4 h-full relative">
                   <div className="absolute text-center text-grey inset-x-0 bottom-0 mb-5">
                     TOTAL ORDER DAILY {allOrders}
