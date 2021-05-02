@@ -1,11 +1,28 @@
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
-import { useQuery } from "@apollo/client";
-import Truncate from "react-truncate";
+import { useQuery, gql } from "@apollo/client";
 
-import { NORMAL_PRODUCTS_QUERY } from "../../graphql/queries/normalProducts";
-import Button from "../../components/Button";
 import ProductTable from "../../components/Tables/ProductTable";
+
+const NORMAL_PRODUCTS_QUERY = gql`
+  query {
+    normalProducts {
+      _id
+      title
+      description
+      price
+      images
+      totalStock
+      stock {
+        quantity
+        color
+        size
+      }
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
 
 const AdminProducts = () => {
   const { data: products, loading, error } = useQuery(NORMAL_PRODUCTS_QUERY);
