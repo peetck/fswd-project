@@ -56,6 +56,11 @@ export const createPromotionProduct = schemaComposer.createResolver({
     const promotionProduct = PromotionProductModel.hydrate(product.toObject());
 
     promotionProduct.type = "PromotionProduct";
+
+    if (percent < 1 || percent > 100) {
+      throw new Error("Percent must be in range 1 to 100");
+    }
+
     promotionProduct.percent = percent;
 
     await promotionProduct.save();

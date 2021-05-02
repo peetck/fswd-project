@@ -95,6 +95,9 @@ const Checkout = () => {
   const makeOrder = async () => {
     try {
       if (paymentMethod === "CreditCard") {
+        if (cart.products.length === 0) {
+          throw new Error("Cart is empty");
+        }
         await chargeCreditCard();
       } else if (paymentMethod === "CashOnDelivery") {
         await createOrder({

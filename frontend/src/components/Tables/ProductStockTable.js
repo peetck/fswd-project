@@ -6,10 +6,10 @@ import Button from "../Button";
 const ProductStockTable = ({ stock, removeFromStock, handleEditButton }) => {
   return (
     <div className="overflow-x-auto">
-      <div className="min-w-screen flex items-center justify-center overflow-hidden">
+      <div className="min-w-screen flex items-center justify-center">
         <div className="w-full">
           <div className="bg-white shadow-md rounded my-4">
-            <table className="min-w-max w-full table-auto">
+            <table className="w-full table-auto">
               <thead>
                 <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                   <th className="py-3 px-6 text-center">Size</th>
@@ -47,10 +47,10 @@ const ProductStockTable = ({ stock, removeFromStock, handleEditButton }) => {
                         </td>
                         <td className="py-3 px-6 text-center">
                           <div className="flex items-center justify-center">
-                            <Button onClick={() => handleEditButton(st)}>
+                            <Button small onClick={() => handleEditButton(st)}>
                               edit
                             </Button>
-                            <Button onClick={() => removeFromStock(st)}>
+                            <Button small onClick={() => removeFromStock(st)}>
                               remove
                             </Button>
                           </div>

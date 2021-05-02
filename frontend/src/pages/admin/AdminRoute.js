@@ -10,14 +10,12 @@ import AdminOrders from "./AdminOrders";
 import AdminProducts from "./AdminProducts";
 import AdminPromotions from "./AdminPromotions";
 import AdminUpdatePromotion from "./AdminUpdatePromotion";
-import AdminHeader from "../../components/AdminHeader";
 
 const AdminRoute = () => {
   const { path } = useRouteMatch();
 
   return (
     <div className="w-full">
-      {/* <AdminHeader /> */}
       <Switch>
         <Route path={path} component={AdminDashboard} exact />
         <Route path={`${path}/products`} component={AdminProducts} exact />

@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { useQuery, useMutation, gql } from "@apollo/client";
+import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 
-import Button from "../../components/Button";
-import Input from "../../components/Input";
+import Loader from "../../components/Loader";
+import PromotionForm from "../../components/Forms/PromotionForm";
 
 const NORMAL_PRODUCTS_QUERY = gql`
   query {
@@ -35,108 +37,61 @@ const CREATE_PROMOTION_PRODUCT_MUTATION = gql`
 `;
 
 const AdminCreatePromotion = () => {
-  const [product, setProduct] = useState();
-  const [percent, setPercent] = useState();
+  const history = useHistory();
 
-  const { data: products, loading, error } = useQuery(NORMAL_PRODUCTS_QUERY);
+  const { data: products, loading, error: errorProducts } = useQuery(
+    NORMAL_PRODUCTS_QUERY
+  );
   const [createPromotionProduct] = useMutation(
     CREATE_PROMOTION_PRODUCT_MUTATION
   );
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, product, percent) => {
     e.preventDefault();
-
     try {
+      if (!product) {
+        throw new Error("Please select product first");
+      }
+
+      if (isNaN(percent.trim())) {
+        throw new Error("Percent must be a number");
+      }
+
+      if (+percent.trim() < 1 || +percent.trim() > 100) {
+        throw new Error("Percent must be in range 1 to 100");
+      }
+
       await createPromotionProduct({
         variables: {
           _id: product,
-          percent: +percent,
+          percent: +percent.trim(),
         },
       });
-      console.log(product, percent);
+
+      toast.success("Create promotion product successfully");
+      history.push("/admin/promotions");
     } catch (error) {
-      console.log(error);
+      toast.error(error.message);
     }
   };
 
+  if (errorProducts) {
+    toast.error(errorProducts.message);
+  }
+
   if (loading) {
-    return <h1>Loading...</h1>;
+    return (
+      <div className="flex h-screen justify-center items-center">
+        <Loader />
+      </div>
+    );
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="bg-white rounded-lg p-6 m-5 mt-7">
-        <div className="flex flex-col">
-          <div className="my-2">
-            <Input
-              name="product"
-              label="Product"
-              type="select"
-              value={product}
-              defaultValue="default"
-              onChange={(e) => {
-                setProduct(e.target.value);
-              }}
-            >
-              {products?.normalProducts.map((product) => (
-                <option value={product._id} key={product._id}>
-                  {product.title}
-                </option>
-              ))}
-            </Input>
-          </div>
-
-          <div className="my-2">
-            <Input
-              name="percentageDiscount"
-              placeholder="Percentage discount"
-              label="Percentage discount"
-              type="text"
-              value={percent}
-              onChange={(e) => {
-                if (
-                  !e.target.value ||
-                  e.target.value.match(/^\d{1,}(\.\d{0,2})?$/)
-                ) {
-                  setPercent(e.target.value.replace(/^0+/, ""));
-                }
-              }}
-            />
-          </div>
-        </div>
-        <div className="flex justify-center mt-8">
-          <Button onClick={handleSubmit}>Create Promotion</Button>
-        </div>
-      </div>
-    </form>
-    // <form onSubmit={handleSubmit}>
-    //   <select
-    //   className="border p-2 rounded"
-    //     value={product}
-    //     defaultValue="default"
-    //     onChange={(e) => {
-    //       setProduct(e.target.value);
-    //     }}
-    //   >
-    //     <option value="default">--select--</option>
-    //     {products?.normalProducts.map((product) => (
-    //       <option value={product._id} key={product._id}>
-    //         {product.title}
-    //       </option>
-    //     ))}
-    //   </select>
-
-    //   <p>
-    //     Percent:{" "}
-    //     <input
-    //       type="text"
-    //       value={percent}
-    //       onChange={(e) => setPercent(e.target.value)}
-    //     />
-    //   </p>
-
-    //   <input type="submit" value="Create Promotion" />
-    // </form>
+    <PromotionForm
+      products={products?.normalProducts}
+      onSubmit={handleSubmit}
+    />
   );
 };
 

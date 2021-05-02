@@ -1,4 +1,4 @@
-import { OrderTC } from "../../models";
+import { CustomerUserTC, OrderTC } from "../../models";
 
 OrderTC.addFields({
   totalPrice: {
@@ -15,4 +15,12 @@ OrderTC.addFields({
       return totalPrice;
     },
   },
+});
+
+OrderTC.addRelation("user", {
+  resolver: () => CustomerUserTC.getResolver("findById"),
+  prepareArgs: {
+    _id: (source) => source.userId,
+  },
+  projection: { userId: true },
 });

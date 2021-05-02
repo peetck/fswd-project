@@ -1,13 +1,7 @@
-import { schemaComposer } from "graphql-compose";
-
 import {
-  UserTC,
   OrderTC,
-  CartSchema,
-  ProductTC,
   CustomerUserTC,
   ProductModel,
-  PromotionProductModel,
   CartTC,
   CartModel,
 } from "../../models";

@@ -1,6 +1,14 @@
 import React from "react";
 
-const Button = ({ children, onClick, disabled, type, checked }) => {
+const Button = ({
+  children,
+  onClick,
+  disabled,
+  type,
+  checked,
+  danger,
+  small,
+}) => {
   if (type === "checkbox") {
     return (
       <button
@@ -40,7 +48,15 @@ const Button = ({ children, onClick, disabled, type, checked }) => {
 
   return (
     <button
-      className="bg-royal-blue text-white text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+      className={`${
+        disabled
+          ? "bg-coolGray-400"
+          : danger
+          ? "bg-rose-600 hover:shadow-lg"
+          : "bg-royal-blue hover:shadow-lg"
+      } ${
+        small ? "px-3 py-2 text-xs" : "px-6 py-3 text-sm"
+      }  text-white font-bold uppercase rounded shadow outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150`}
       onClick={onClick}
       type={type}
       disabled={disabled}

@@ -40,7 +40,7 @@ const CartItem = ({
                 {color}
               </span>
               <span className="text-coolGray-400 text-xs uppercase ">
-                {size}
+                {size} US
               </span>
             </div>
 

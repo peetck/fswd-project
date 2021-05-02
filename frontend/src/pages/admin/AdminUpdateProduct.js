@@ -1,8 +1,10 @@
 import React from "react";
 import { useQuery, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import ProductForm from "../../components/Forms/ProductForm";
+import Loader from "../../components/Loader";
 
 const PRODUCT_BY_ID_QUERY = gql`
   query($_id: MongoID!) {
@@ -30,11 +32,19 @@ const AdminUpdateProduct = () => {
     },
   });
 
-  if (loading) {
-    return <h1>Loading...</h1>;
+  if (error) {
+    toast.error(error.message);
   }
 
-  return <ProductForm product={data?.productById._id} />;
+  if (loading) {
+    return (
+      <div className="flex h-screen justify-center items-center">
+        <Loader />
+      </div>
+    );
+  }
+
+  return <ProductForm product={data?.productById} />;
 };
 
 export default AdminUpdateProduct;

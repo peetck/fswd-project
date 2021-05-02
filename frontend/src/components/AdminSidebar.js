@@ -11,7 +11,7 @@ const AdminSidebar = (props) => {
       <div className="flex flex-col w-full md:w-64 text-gray-700 bg-white dark-mode:text-gray-200 dark-mode:bg-gray-800 flex-shrink-0">
         <div className="flex-shrink-0 px-8 py-4 flex flex-col">
           <div className="flex items-center justify-between">
-            <span className="md:block text-left md:pb-6 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0">
+            <span className="md:block text-left md:pb-6 mr-0 inline-block whitespace-nowrap text-lg uppercase font-bold p-4 px-0">
               Picnic shop admin
             </span>
 

@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
-const ProductCarousel = ({ images }) => {
+const ProductCarousel = ({ images, width, height, removeImage, autoPlay }) => {
   const renderIndicator = (clickHandler, isSelected) => (
     <span
       className={`inline-flex rounded-full h-3 w-3 mr-2 cursor-pointer ${
@@ -13,7 +13,7 @@ const ProductCarousel = ({ images }) => {
   );
 
   const renderArrowPrev = (onClickHandler, hasNext, label) =>
-    hasNext && (
+    (hasNext || removeImage) && (
       <button
         type="button"
         onClick={onClickHandler}
@@ -34,7 +34,7 @@ const ProductCarousel = ({ images }) => {
     );
 
   const renderArrowNext = (onClickHandler, hasNext, label) =>
-    hasNext && (
+    (hasNext || removeImage) && (
       <button
         type="button"
         onClick={onClickHandler}
@@ -57,7 +57,7 @@ const ProductCarousel = ({ images }) => {
   return (
     <Fragment>
       <div
-        style={{ width: "750px", height: "500px" }}
+        style={{ width: width ?? "750px", height: height ?? "500px" }}
         className="hidden lg:inline-block rounded-lg bg-solitude"
       >
         <Carousel
@@ -66,7 +66,7 @@ const ProductCarousel = ({ images }) => {
           showArrows={false}
           swipeable={false}
           renderIndicator={renderIndicator}
-          autoPlay
+          autoPlay={autoPlay}
           infiniteLoop
           showThumbs={false}
           showArrows
@@ -76,9 +76,18 @@ const ProductCarousel = ({ images }) => {
           {images?.map((image, index) => (
             <div
               className="w-full"
-              style={{ width: "750px", height: "500px" }}
+              style={{ width: width ?? "750px", height: height ?? "500px" }}
               key={index}
             >
+              {removeImage && (
+                <div
+                  className="absolute right-3 top-2 cursor-pointer"
+                  onClick={() => removeImage(index)}
+                >
+                  <span class="material-icons">cancel</span>
+                </div>
+              )}
+
               <img
                 className="w-full h-full rounded-md object-contain"
                 src={image}
@@ -104,7 +113,18 @@ const ProductCarousel = ({ images }) => {
           renderArrowNext={renderArrowNext}
         >
           {images?.map((image, index) => (
-            <img src={image} alt={image} key={index} />
+            <div key={index}>
+              <img src={image} alt={image} />
+
+              {removeImage && (
+                <div
+                  className="absolute right-3 top-2 cursor-pointer"
+                  onClick={() => removeImage(index)}
+                >
+                  <span class="material-icons">cancel</span>
+                </div>
+              )}
+            </div>
           ))}
         </Carousel>
       </div>

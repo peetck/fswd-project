@@ -23,8 +23,6 @@ const ProductStockForm = ({
     setSelectedSize(st.size);
   };
 
-  console.log(selectedColor, selectedSize, updatedQuantity);
-
   useEffect(() => {
     const index = stock.findIndex((st) => st.size === +selectedSize);
 
@@ -42,8 +40,8 @@ const ProductStockForm = ({
 
   return (
     <Fragment>
-      <div className="flex">
-        <div className="flex flex-col flex-1 pr-20">
+      <div className="flex flex-col xl:flex-row my-4">
+        <div className="flex flex-col flex-1 min-w-min xl:pr-20 ">
           <div className="my-4">
             <Input
               name="color"
@@ -86,13 +84,13 @@ const ProductStockForm = ({
           </div>
 
           <div className="w-36 my-4">
-            <Button onClick={() => addToStock(color, size, quantity)}>
+            <Button small onClick={() => addToStock(color, size, quantity)}>
               Add
             </Button>
           </div>
         </div>
 
-        <div className="flex flex-col flex-1 border-l pl-20">
+        <div className="flex flex-col flex-1 min-w-min xl:border-l xl:pl-20">
           <div className="my-4">
             <Input
               name="color"
@@ -143,13 +141,17 @@ const ProductStockForm = ({
               value={updatedQuantity}
               disabled={!selectedColor || !selectedSize}
               onChange={(e) => {
-                setUpdatedQuantity(e.target.value);
+                setUpdatedQuantity(
+                  e.target.value.replace(/\D/, "").replace(/^0+/, "")
+                );
               }}
             />
           </div>
 
           <div className="w-36 my-4">
             <Button
+              small
+              disabled={!selectedColor || !selectedSize || !updatedQuantity}
               onClick={() => {
                 editStock({
                   color: selectedColor,

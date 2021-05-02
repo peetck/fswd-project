@@ -22,7 +22,7 @@ export const createOrder = OrderTC.getResolver("createOne").wrapResolve(
     const cart = await CartModel.findOne({ userId: userId });
 
     if (cart.products.length === 0) {
-      throw new Error("Cart is empty.");
+      throw new Error("Cart is empty");
     }
 
     const products = [];

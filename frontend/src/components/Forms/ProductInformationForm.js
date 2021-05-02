@@ -2,6 +2,7 @@ import React from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import Input from "../Input";
+import ProductCarousel from "../ProductCarousel";
 
 const ProductInformationForm = ({
   title,
@@ -13,9 +14,9 @@ const ProductInformationForm = ({
 }) => {
   return (
     <div>
-      <h1 className="text-lg uppercase">Information</h1>
-      <div className="flex w-full flex-col p-5 xl:flex-row">
-        <div className="w-1/2 pr-20">
+      <h1 className="text-xl font-bold uppercase">Information</h1>
+      <div className="flex w-full flex-col p-5 min-w-min xl:flex-row">
+        <div className="w-full xl:w-1/2 xl:pr-20">
           <div className="my-4">
             <Input
               name="title"
@@ -53,8 +54,8 @@ const ProductInformationForm = ({
             />
           </div>
         </div>
-        <div className="w-1/2 pl-20 border-l">
-          <div className="my-4">
+        <div className="w-full xl:w-1/2 xl:pl-20 xl:border-l">
+          <div className="my-4 w-full xl:w-52">
             <Input
               name="images"
               label="Images"
@@ -65,27 +66,14 @@ const ProductInformationForm = ({
             />
           </div>
 
-          <div className="flex flex-wrap my-4">
-            {images.map((image) => (
-              <div className="relative m-5 w-44 h-44" key={uuidv4()}>
-                <img
-                  src={
-                    typeof image === "string"
-                      ? image
-                      : URL.createObjectURL(image)
-                  }
-                  alt=""
-                  className="w-44 h-44 border "
-                />
-
-                <span
-                  className="material-icons absolute top-0 right-0 cursor-pointer hover:text-red-500"
-                  onClick={() => removeImage(image)}
-                >
-                  delete
-                </span>
-              </div>
-            ))}
+          <div className="flex flex-wrap my-5 w-full justify-center xl:justify-start">
+            <ProductCarousel
+              images={images.map((image) =>
+                typeof image === "string" ? image : URL.createObjectURL(image)
+              )}
+              width="500px"
+              removeImage={removeImage}
+            />
           </div>
         </div>
       </div>

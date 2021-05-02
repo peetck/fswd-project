@@ -192,7 +192,7 @@ const ProductDetail = () => {
   return (
     <div className="flex flex-col">
       <div className="container flex mx-auto mt-14 flex-wrap justify-center">
-        <ProductCarousel images={product?.product?.images} />
+        <ProductCarousel images={product?.product?.images} autoPlay />
 
         <div className="flex flex-1 flex-col mt-10 lg:p-5 lg:ml-5 xl:mt-0">
           <h3 className="flex flex-1 uppercase text-2xl font-bold items-center">
@@ -278,14 +278,14 @@ const ProductDetail = () => {
                             : setSelectedSize(size)
                         }
                       >
-                        {size}
+                        {size} US
                       </Button>
                     );
                   }
                 }
                 return (
                   <Button key={size} disabled type="checkbox">
-                    {size}
+                    {size} US
                   </Button>
                 );
               })}

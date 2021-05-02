@@ -1,7 +1,9 @@
 import React from "react";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery, useMutation, gql } from "@apollo/client";
+import { toast } from "react-toastify";
 
 import ProductTable from "../../components/Tables/ProductTable";
+import Loader from "../../components/Loader";
 
 const NORMAL_PRODUCTS_QUERY = gql`
   query {
@@ -17,21 +19,56 @@ const NORMAL_PRODUCTS_QUERY = gql`
         color
         size
       }
+      sold
       type
       createdAt
-      updatedAt
+    }
+  }
+`;
+
+const REMOVE_NORMAL_PRODUCT_MUTATION = gql`
+  mutation($_id: MongoID!) {
+    removeNormalProduct(_id: $_id) {
+      recordId
     }
   }
 `;
 
 const AdminProducts = () => {
-  const { data: products, loading, error } = useQuery(NORMAL_PRODUCTS_QUERY);
+  const [removeNormalProduct] = useMutation(REMOVE_NORMAL_PRODUCT_MUTATION);
 
-  if (loading) {
-    return <h1>Loading ...</h1>;
+  const { data: products, loading, error, refetch } = useQuery(
+    NORMAL_PRODUCTS_QUERY
+  );
+
+  const handleRemoveProduct = async (_id) => {
+    await removeNormalProduct({
+      variables: {
+        _id: _id,
+      },
+    });
+    toast.success("Remove product successfully");
+    await refetch();
+  };
+
+  if (error) {
+    toast.error(error.message);
   }
 
-  return <ProductTable products={products.normalProducts} />;
+  if (loading) {
+    return (
+      <div className="flex h-screen justify-center items-center">
+        <Loader />
+      </div>
+    );
+  }
+
+  return (
+    <ProductTable
+      products={products.normalProducts}
+      onRemove={handleRemoveProduct}
+    />
+  );
 };
 
 export default AdminProducts;

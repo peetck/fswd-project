@@ -1,8 +1,8 @@
 import React from "react";
 
-import ProductTableItem from "./ProductTableItem";
+import OrderTableItem from "./OrderTableItem";
 
-const ProductTable = ({ products, onRemove }) => {
+const OrderTable = ({ orders, onUpdate, onRemove }) => {
   return (
     <div className="overflow-auto">
       <div className="min-w-screen flex items-center justify-center">
@@ -11,13 +11,15 @@ const ProductTable = ({ products, onRemove }) => {
             <table className="w-full table-auto">
               <thead>
                 <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                  <th className="py-3 px-6 text-left uppercase">product id</th>
-                  <th className="py-3 px-6 text-left uppercase">Title</th>
-                  <th className="py-3 px-6 text-left uppercase">Description</th>
-                  <th className="py-3 px-6 text-center uppercase">Price</th>
-                  <th className="py-3 px-6 text-center uppercase">Quantity</th>
-                  <th className="py-3 px-6 text-center uppercase">Sold</th>
-
+                  <th className="py-3 px-6 text-left uppercase">order id</th>
+                  <th className="py-3 px-6 text-left uppercase">username</th>
+                  <th className="py-3 px-6 text-left uppercase">user email</th>
+                  <th className="py-3 px-6 text-center uppercase">
+                    total price
+                  </th>
+                  <th className="py-3 px-6 text-center uppercase">
+                    delivery status
+                  </th>
                   <th className="py-3 px-6 text-center uppercase">
                     created at
                   </th>
@@ -25,10 +27,11 @@ const ProductTable = ({ products, onRemove }) => {
                 </tr>
               </thead>
               <tbody className="text-gray-600 text-sm font-light">
-                {products.map((product) => (
-                  <ProductTableItem
-                    product={product}
-                    key={product._id}
+                {orders.map((order) => (
+                  <OrderTableItem
+                    order={order}
+                    key={order._id}
+                    onUpdate={onUpdate}
                     onRemove={onRemove}
                   />
                 ))}
@@ -41,4 +44,4 @@ const ProductTable = ({ products, onRemove }) => {
   );
 };
 
-export default ProductTable;
+export default OrderTable;
