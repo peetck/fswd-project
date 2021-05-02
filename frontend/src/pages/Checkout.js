@@ -255,7 +255,7 @@ const Checkout = () => {
                       Cash on Delivery
                     </span>
                   </label>
-                  <span className="material-icons">local_shipping</span>
+                  <span className="material-icons">paid</span>
                 </div>
               </div>
             </div>
@@ -277,7 +277,7 @@ const Checkout = () => {
             </div>
 
             <div className="border-t mt-8">
-              <div className="flex font-bold justify-between py-6 text-sm uppercase mt-11 items-end">
+              <div className="flex font-bold justify-between pb-6 text-sm uppercase mt-11 items-end">
                 <span>Total Payment</span>
                 <span className="text-xl">฿{cart?.totalPrice}</span>
               </div>

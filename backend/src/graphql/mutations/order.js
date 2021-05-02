@@ -80,6 +80,7 @@ export const createOrder = OrderTC.getResolver("createOne").wrapResolve(
           color: color,
           size: size,
           quantity: quantity,
+          imageUrl: product.images[0],
         });
       } else {
         validatedProducts.push({
@@ -89,6 +90,7 @@ export const createOrder = OrderTC.getResolver("createOne").wrapResolve(
           color: color,
           size: size,
           quantity: quantity,
+          imageUrl: product.images[0],
         });
       }
 

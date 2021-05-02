@@ -21,27 +21,41 @@ const CartItem = ({
     <Fragment>
       <div className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
         <div className="flex w-2/5 h-24">
-          <img
-            className="hidden lg:inline-block h-24 object-contain bg-solitude"
-            src={imageUrl}
-            width="100"
-            height="100"
-            alt={title}
-          />
-          <div className="flex flex-col justify-between ml-4 flex-grow">
+
+            <img
+              className="hidden lg:inline-block h-24 object-contain bg-solitude mr-4"
+              src={imageUrl}
+              width="100"
+              height="100"
+              alt={title}
+            />
+
+
+          <div className="flex flex-col justify-between flex-grow">
             <Truncate className="font-bold text-sm" lines={2}>
               {title}
             </Truncate>
             <div className="flex flex-col">
-              <span className="text-coolGray-400 text-xs">Color : {color}</span>
-              <span className="text-coolGray-400 text-xs">Size : {size}</span>
+              <span className="text-coolGray-400 text-xs uppercase">
+                {color}
+              </span>
+              <span className="text-coolGray-400 text-xs uppercase ">
+                {size}
+              </span>
             </div>
-            <span
-              className="font-bold hover:text-red-500 text-gray-500 text-xs cursor-pointer uppercase"
-              onClick={removeFromCart}
-            >
-              Remove
-            </span>
+
+            {editable ? (
+              <span
+                className="font-bold hover:text-red-500 text-gray-500 text-xs cursor-pointer uppercase"
+                onClick={removeFromCart}
+              >
+                Remove
+              </span>
+            ) : (
+              <span className="opacity-0 text-xs uppercase select-none">
+               -
+              </span>
+            )}
           </div>
         </div>
 
