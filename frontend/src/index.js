@@ -21,7 +21,7 @@ const defaultOptions = {
 };
 
 const client = new ApolloClient({
-  uri: "http://localhost:3001/graphql",
+  uri: process.env.REACT_APP_BACKEND_URL,
   cache: new InMemoryCache(),
   link: from([
     new ApolloLink((op, fw) => {
@@ -32,7 +32,7 @@ const client = new ApolloClient({
       return fw(op);
     }),
     createUploadLink({
-      uri: "http://localhost:3001/graphql",
+      uri: process.env.REACT_APP_BACKEND_URL,
     }),
   ]),
   defaultOptions: defaultOptions,
