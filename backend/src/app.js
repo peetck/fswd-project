@@ -29,7 +29,7 @@ const server = new ApolloServer({
   uploads: false,
 });
 
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
 
 app.use("/images", express.static(path.join(process.cwd(), "images")));
 
@@ -59,7 +59,11 @@ app.use(
   }
 );
 
-server.applyMiddleware({ app: app, path: PATH });
+server.applyMiddleware({
+  app: app,
+  path: PATH,
+  cors: { origin: true, credentials: true },
+});
 
 mongoose
   .connect(process.env.MONGODB_URI ?? "mongodb://localhost:27017", {
