@@ -11,6 +11,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/core": "^7.13.15",
+    "@babel/preset-env": "^7.13.15",
+    "@babel/register": "^7.13.14",
     "apollo-server-express": "^2.22.2",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -24,10 +27,7 @@
     "mongoose": "^5.12.3",
     "mongoose-bcrypt": "^1.9.0",
     "omise": "^0.8.5",
-    "uuid": "^8.3.2",
-    "@babel/core": "^7.13.15",
-    "@babel/preset-env": "^7.13.15",
-    "@babel/register": "^7.13.14"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
