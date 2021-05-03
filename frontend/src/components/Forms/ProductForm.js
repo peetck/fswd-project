@@ -67,7 +67,7 @@ const ProductForm = ({ product }) => {
 
   const [title, setTitle] = useState(product?.title ?? "");
   const [description, setDescription] = useState(product?.description ?? "");
-  const [price, setPrice] = useState(product?.price ?? "0");
+  const [price, setPrice] = useState(product?.price?.toString() ?? "0");
   const [images, setImages] = useState(product?.images ?? []);
   const [stock, setStock] = useState(
     product?.stock

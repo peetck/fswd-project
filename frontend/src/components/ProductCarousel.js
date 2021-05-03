@@ -13,7 +13,7 @@ const ProductCarousel = ({ images, width, height, removeImage, autoPlay }) => {
   );
 
   const renderArrowPrev = (onClickHandler, hasNext, label) =>
-    (hasNext || removeImage) && (
+    hasNext && (
       <button
         type="button"
         onClick={onClickHandler}
@@ -34,7 +34,7 @@ const ProductCarousel = ({ images, width, height, removeImage, autoPlay }) => {
     );
 
   const renderArrowNext = (onClickHandler, hasNext, label) =>
-    (hasNext || removeImage) && (
+    hasNext && (
       <button
         type="button"
         onClick={onClickHandler}

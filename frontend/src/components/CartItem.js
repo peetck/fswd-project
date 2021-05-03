@@ -53,7 +53,7 @@ const CartItem = ({
               </span>
             ) : (
               <span className="opacity-0 text-xs uppercase select-none">
-               -
+               
               </span>
             )}
           </div>

@@ -65,7 +65,7 @@ const OrderTableItem = ({ order, onUpdate, onRemove }) => {
 
             {order.deliveryStatus === "Waiting" ? (
               <Button small onClick={() => onUpdate(order._id)}>
-                update delivery status
+                update status
               </Button>
             ) : (
               <Button small disabled>
