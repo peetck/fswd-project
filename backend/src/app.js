@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import jwt from "express-jwt";
 import { graphqlUploadExpress } from "graphql-upload";
 import omise from "omise";
+import cors from "cors";
 
 import schema from "./graphql/index.js";
 
@@ -27,6 +28,8 @@ const server = new ApolloServer({
   }),
   uploads: false,
 });
+
+app.use(cors());
 
 app.use("/images", express.static(path.join(process.cwd(), "images")));
 
