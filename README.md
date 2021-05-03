@@ -1,5 +1,9 @@
 # Full-stack Web Developer (Project)
 
+## ADMIN USER
+- username: admin
+- password: 123456
+
 ## Project description
 > **Implement e-commerce system from requirements**
 > - **Frontend** (React, Vue or other frontend framework)
