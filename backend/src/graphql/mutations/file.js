@@ -30,6 +30,10 @@ export const uploadFiles = schemaComposer.createResolver({
 
     const urls = [];
 
+    if (!fs.existsSync(path.join(process.cwd(), "/images"))) {
+      fs.mkdirSync(path.join(process.cwd(), "/images"));
+    }
+
     for (let file of files) {
       const fileData = await file;
       const stream = fileData.createReadStream();
