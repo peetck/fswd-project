@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "fswd-project",
-  "builds": [{ "src": "src/app.js", "use": "@vercel/node" }],
-  "routes": [{ "src": "/(.*)", "dest": "src/app.js" }]
+  "builds": [{ "src": "app.js", "use": "@vercel/node" }],
+  "routes": [{ "src": "/.*", "dest": "/app.js" }]
 }
