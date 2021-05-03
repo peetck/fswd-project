@@ -24,12 +24,12 @@
     "mongoose": "^5.12.3",
     "mongoose-bcrypt": "^1.9.0",
     "omise": "^0.8.5",
-    "uuid": "^8.3.2"
-  },
-  "devDependencies": {
+    "uuid": "^8.3.2",
     "@babel/core": "^7.13.15",
     "@babel/preset-env": "^7.13.15",
-    "@babel/register": "^7.13.14",
+    "@babel/register": "^7.13.14"
+  },
+  "devDependencies": {
     "nodemon": "^2.0.7"
   }
 }
