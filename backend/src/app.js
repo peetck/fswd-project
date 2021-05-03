@@ -62,7 +62,7 @@ app.use(
 server.applyMiddleware({
   app: app,
   path: PATH,
-  cors: cors(),
+  cors: false,
 });
 
 mongoose
