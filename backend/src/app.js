@@ -29,7 +29,7 @@ const server = new ApolloServer({
   uploads: false,
 });
 
-app.use(cors({ origin: true, credentials: true }));
+app.use(cors());
 
 app.use("/images", express.static(path.join(process.cwd(), "images")));
 
@@ -62,7 +62,7 @@ app.use(
 server.applyMiddleware({
   app: app,
   path: PATH,
-  cors: { origin: true, credentials: true },
+  cors: cors(),
 });
 
 mongoose
